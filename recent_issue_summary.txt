@@ -1,0 +1,60 @@
+# Summary of Recent Issue and Changes
+
+## The Core Problem: `ERROR: 42883: operator does not exist: text[] = text`
+
+This error indicates a type mismatch in a PostgreSQL query. Specifically, it means that a column defined as an array of text (`TEXT[]`) is being compared directly with a single text string (`TEXT`) using an operator (like `=`) that doesn't support this direct comparison for arrays.
+
+## Initial State & User Request
+
+The user wanted to add a "Path" step to the `CaseSubmission.js` component, allowing users to select multiple licensing service options for some types (Document Verification, Exam Booking, Health Authority Registration) and only one for others (Complete License Process, Choose Best For Me!).
+
+## Changes Implemented (and their rationale)
+
+### 1. Database Schema Update: `cases.path` column
+
+*   **Original Type:** `TEXT`
+*   **Desired Type:** `TEXT[]` (array of text) to support multiple selections.
+*   **Migration File:** `supabase/migrations/20240329000000_alter_path_to_array.sql` was created.
+*   **Key Change in Migration:** `ALTER COLUMN path TYPE TEXT[] USING ARRAY[path]`
+    *   **Rationale:** The `USING ARRAY[path]` clause is crucial. When changing a `TEXT` column with existing data to `TEXT[]`, PostgreSQL needs explicit instructions on how to convert the existing single values. `ARRAY[path]` converts `'single_value'` into `{'single_value'}`.
+*   **User Confirmation:** The user reported manually running a command which resulted in a `TEXT` type, not `TEXT[]`. Later, the user confirmed running the correct `ALTER TABLE public.cases ALTER COLUMN path TYPE TEXT[] USING ARRAY[path]` command successfully in the Supabase SQL Editor. This should mean `cases.path` is now `TEXT[]`.
+
+### 2. Frontend Changes: `CaseSubmission.js`
+
+*   **`selectedPath` state:** Changed from `useState('')` to `useState([])` to store multiple selected paths.
+*   **Path Selection Logic:** Modified `onClick` handlers for path options:
+    *   "Document Verification", "Exam Booking", "Health Authority Registration": Logic allows toggling (adding/removing) these options from the `selectedPath` array.
+    *   "Complete License Process", "Choose Best For Me!": Logic ensures selecting one of these clears all other selections, maintaining single-select behavior.
+*   **Database Insert:** The `handleFinalSubmit` function was updated to pass `selectedPath` (which is now an array) to the `cases` table's `path` column.
+
+### 3. Database Schema Update: `milestones.path` and `milestone_steps.path` columns
+
+*   **Issue:** The user initially reported the `ERROR: 42883` on `cases`, but later it was determined that the `milestones` and `milestone_steps` tables might be missing the `path` column or have type mismatches.
+*   **Desired Type:** `TEXT[]` for both `milestones.path` and `milestone_steps.path`.
+*   **Manual Commands Provided:**
+    *   `ALTER TABLE public.milestones ADD COLUMN path TEXT[];`
+    *   `COMMENT ON COLUMN public.milestones.path IS 'Array of selected licensing paths from the parent case, copied at milestone creation.';`
+    *   `CREATE INDEX IF NOT EXISTS idx_milestones_path ON public.milestones USING GIN(path);`
+    *   `ALTER TABLE public.milestone_steps ADD COLUMN path TEXT[];`
+    *   `COMMENT ON COLUMN public.milestone_steps.path IS 'Array of selected licensing paths from the parent milestone/case, copied at step creation.';`
+    *   `CREATE INDEX IF NOT EXISTS idx_milestone_steps_path ON public.milestone_steps USING GIN(path);`
+*   **User Confirmation:** The user confirmed that "milestone and milestone tables successfully updated" after running these manual commands. This implies `milestones.path` and `milestone_steps.path` are now `TEXT[]`.
+
+### 4. Database Function Update: `create_default_milestones()`
+
+*   **Function:** `create_default_milestones()` in `supabase/migrations/20240322000000_create_milestones.sql`.
+*   **Key Change:** Modified the `INSERT` statement to include `path` and populate it with `NEW.path` (the path from the newly inserted case).
+    *   `INSERT INTO milestones (..., path) VALUES (..., NEW.path);`
+*   **Security:** Added `SECURITY DEFINER` to the function definition to allow it to bypass RLS for inserting default milestones.
+
+## Current Status of the Error
+
+Despite all the above changes, the user reports the `ERROR: 42883: operator does not exist: text[] = text` still persists, specifically "on cases".
+
+## Next Steps / Troubleshooting
+
+Given that `cases.path`, `milestones.path`, and `milestone_steps.path` are all confirmed to be `TEXT[]`, the error must be coming from a query or RLS policy that is *still* trying to compare an array column with a single text value.
+
+We need to investigate any remaining RLS policies or database functions/triggers that interact with the `path` column (on any of these tables) and ensure they are using array-compatible operators (e.g., `ANY`, `@>`, `&&`) instead of direct equality (`=`).
+
+It's crucial to identify the *exact* query causing the error. If possible, capturing the full SQL query from Supabase logs or application logs when the error occurs would be immensely helpful. 
