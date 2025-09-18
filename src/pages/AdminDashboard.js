@@ -2,6 +2,14 @@
 import { useEffect, useState } from 'react';
 import { supabase } from '../supabaseClient';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+import AdminSlotManager from '../components/admin/AdminSlotManager';
+import AdminBookingDashboard from '../components/admin/AdminBookingDashboard';
+import AdminAppointmentSlotManager from '../components/admin/AdminAppointmentSlotManager';
+import AdminSupportTickets from './AdminSupportTickets';
+import AdminAppointmentBookingDashboard from '../components/admin/AdminAppointmentBookingDashboard';
+import AdminVoucherSlotManager from '../components/admin/AdminVoucherSlotManager';
+import AdminVoucherPurchaseDashboard from '../components/admin/AdminVoucherPurchaseDashboard';
+import AdminExamBookingDashboard from '../components/admin/AdminExamBookingDashboard';
 
 const CASE_TYPE_LABELS = {
   saudi: 'Saudi Arabia',
@@ -57,7 +65,19 @@ const MILESTONE_STATUS_COLORS = {
   rejected: 'bg-gradient-to-r from-red-400 to-rose-500 text-white'
 };
 
-const TABS = ['cases', 'payments'];
+const TABS = ['cases', 'payments', 'coupons'];
+
+const ADMIN_TABS = [
+  { key: 'dashboard', label: 'Dashboard' },
+  { key: 'slots', label: 'Manage Slots' },
+  { key: 'bookings', label: 'Manage Bookings' },
+  { key: 'appointmentSlots', label: 'Manage Appointment Slots' },
+  { key: 'appointmentBookings', label: 'Appointment Bookings' },
+  { key: 'voucherSlots', label: 'Voucher Slots' },
+  { key: 'voucherPurchases', label: 'Voucher Purchases' },
+  { key: 'examBookings', label: 'Exam Bookings' },
+  { key: 'supportTickets', label: 'Support Tickets' },
+];
 
 function getStatusColor(status) {
   const colors = {
@@ -72,24 +92,47 @@ function getStatusColor(status) {
 export default function AdminDashboard() {
   const [cases, setCases] = useState([]);
   const [payments, setPayments] = useState([]);
+  const [coupons, setCoupons] = useState([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState('all');
   const [message, setMessage] = useState('');
   const [adminId, setAdminId] = useState(null);
   const [tab, setTab] = useState('cases');
   const [showAddMilestone, setShowAddMilestone] = useState(false);
+  const [showAddCoupon, setShowAddCoupon] = useState(false);
   const [newMilestone, setNewMilestone] = useState({
     name: '',
     description: '',
     due_date: '',
     status: 'pending'
   });
+  const [newCoupon, setNewCoupon] = useState({
+    code: '',
+    name: '',
+    description: '',
+    discount_type: 'percentage',
+    discount_value: '',
+    minimum_amount: '',
+    maximum_discount: '',
+    valid_from: '',
+    valid_until: '',
+    usage_limit: '',
+    applicable_packages: [],
+    show_in_promotion_modal: false,
+    promotion_modal_title: '',
+    promotion_modal_description: '',
+    promotion_modal_image_url: '',
+    promotion_modal_button_text: 'Claim Offer',
+    promotion_modal_delay_seconds: 3
+  });
   const [assignedAdmin, setAssignedAdmin] = useState({});
+  const [adminTab, setAdminTab] = useState('dashboard');
 
   useEffect(() => {
     fetchCases();
     fetchAdminId();
     fetchPayments();
+    fetchCoupons();
     // eslint-disable-next-line
   }, [filter]);
 
@@ -163,6 +206,14 @@ export default function AdminDashboard() {
       .select('*, profiles:profiles(id, full_name, email, phone)')
       .order('created_at', { ascending: false });
     if (!error && data) setPayments(data);
+  };
+
+  const fetchCoupons = async () => {
+    const { data, error } = await supabase
+      .from('coupons')
+      .select('*')
+      .order('created_at', { ascending: false });
+    if (!error && data) setCoupons(data);
   };
 
   const handleStatusChange = async (caseId, newStatus, oldHistory = [], adminId) => {
@@ -639,116 +690,267 @@ export default function AdminDashboard() {
     }
   };
 
+  const handleAddCoupon = async () => {
+    setLoading(true);
+    try {
+      // Validate required fields
+      if (!newCoupon.code?.trim() || !newCoupon.name?.trim() || !newCoupon.discount_value?.toString().trim()) {
+        setMessage('Please fill in all required fields (Code, Name, and Discount Value).');
+        setLoading(false);
+        return;
+      }
+
+      // Validate discount value
+      const discountValue = parseFloat(newCoupon.discount_value);
+      if (isNaN(discountValue) || discountValue <= 0) {
+        setMessage('Please enter a valid discount value greater than 0.');
+        setLoading(false);
+        return;
+      }
+
+      // Validate percentage discount doesn't exceed 100%
+      if (newCoupon.discount_type === 'percentage' && discountValue > 100) {
+        setMessage('Percentage discount cannot exceed 100%.');
+        setLoading(false);
+        return;
+      }
+
+      const couponData = {
+        ...newCoupon,
+        discount_value: discountValue,
+        minimum_amount: newCoupon.minimum_amount ? parseFloat(newCoupon.minimum_amount) : 0,
+        maximum_discount: newCoupon.maximum_discount ? parseFloat(newCoupon.maximum_discount) : null,
+        usage_limit: newCoupon.usage_limit ? parseInt(newCoupon.usage_limit) : null,
+        valid_from: newCoupon.valid_from ? new Date(newCoupon.valid_from).toISOString() : null,
+        valid_until: newCoupon.valid_until ? new Date(newCoupon.valid_until).toISOString() : null,
+        applicable_packages: newCoupon.applicable_packages.length > 0 ? newCoupon.applicable_packages : null
+      };
+
+      const { error } = await supabase
+        .from('coupons')
+        .insert([couponData]);
+
+      if (error) throw error;
+
+      // Reset form
+      setNewCoupon({
+        code: '',
+        name: '',
+        description: '',
+        discount_type: 'percentage',
+        discount_value: '',
+        minimum_amount: '',
+        maximum_discount: '',
+        valid_from: '',
+        valid_until: '',
+        usage_limit: '',
+        applicable_packages: [],
+        show_in_promotion_modal: false,
+        promotion_modal_title: '',
+        promotion_modal_description: '',
+        promotion_modal_image_url: '',
+        promotion_modal_button_text: 'Claim Offer',
+        promotion_modal_delay_seconds: 3
+      });
+      setShowAddCoupon(false);
+
+      // Refresh coupons
+      await fetchCoupons();
+      setMessage('Coupon added successfully!');
+    } catch (error) {
+      console.error('Error adding coupon:', error);
+      setMessage('Failed to add coupon. Please try again.');
+    }
+    setLoading(false);
+  };
+
+  const handleToggleCouponStatus = async (couponId, currentStatus) => {
+    setLoading(true);
+    try {
+      const { error } = await supabase
+        .from('coupons')
+        .update({ is_active: !currentStatus })
+        .eq('id', couponId);
+
+      if (error) throw error;
+
+      await fetchCoupons();
+      setMessage('Coupon status updated successfully!');
+    } catch (error) {
+      console.error('Error updating coupon status:', error);
+      setMessage('Failed to update coupon status. Please try again.');
+    }
+    setLoading(false);
+  };
+
+  const handleDeleteCoupon = async (couponId) => {
+    if (!window.confirm('Are you sure you want to delete this coupon?')) return;
+    
+    setLoading(true);
+    try {
+      const { error } = await supabase
+        .from('coupons')
+        .delete()
+        .eq('id', couponId);
+
+      if (error) throw error;
+
+      await fetchCoupons();
+      setMessage('Coupon deleted successfully!');
+    } catch (error) {
+      console.error('Error deleting coupon:', error);
+      setMessage('Failed to delete coupon. Please try again.');
+    }
+    setLoading(false);
+  };
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 p-4 md:p-8">
-      <div className="max-w-7xl mx-auto">
-        <div className="bg-white/10 backdrop-blur-lg border border-white/20 rounded-2xl p-6 mb-8 shadow-xl">
-          <div className="flex flex-col md:flex-row justify-between items-center mb-8">
-            <h2 className="text-3xl font-bold bg-gradient-to-r from-blue-400 to-indigo-500 bg-clip-text text-transparent mb-4 md:mb-0">
-              AI-Powered Admin Dashboard
-            </h2>
-            <div className="flex gap-4">
-        {TABS.map(t => (
-          <button
-            key={t}
-                  className={`px-6 py-2.5 rounded-xl font-semibold transition-all duration-300 transform hover:scale-105 ${
-                    tab === t 
-                      ? 'bg-gradient-to-r from-blue-600 to-indigo-700 text-white shadow-lg shadow-blue-500/30' 
-                      : 'bg-white/10 backdrop-blur-md border border-white/20 text-gray-300 hover:text-white'
-                  }`}
-            onClick={() => setTab(t)}
-          >
-                  {t === 'cases' ? 'Case Management' : 'Payment Center'}
-          </button>
-        ))}
-      </div>
-          </div>
-
-      {tab === 'cases' ? (
-            <div className="space-y-6">
-              <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-xl p-4 flex items-center space-x-4">
-                <label className="text-gray-300 font-medium">Status Filter:</label>
-                <select 
-                  value={filter} 
-                  onChange={e => setFilter(e.target.value)} 
-                  className="bg-gray-800/50 text-gray-300 border border-gray-700 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                >
-                  <option value="all">All Cases</option>
-              {STATUS_OPTIONS.map(opt => (
-                    <option key={opt} value={opt} className="capitalize">{opt.replace('_', ' ')}</option>
-              ))}
-            </select>
-          </div>
-
-              {loading && (
-                <div className="flex justify-center items-center py-12">
-                  <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
-                </div>
-              )}
-
-              {message && !loading && (
-                <div className="bg-gradient-to-r from-cyan-500 to-blue-500 text-white rounded-xl p-4 shadow-lg">
-                  {message}
-                </div>
-              )}
-
-          {!loading && cases.length > 0 && (
-                <div className="overflow-x-auto rounded-xl">
-                  <table className="w-full">
-              <thead>
-                      <tr className="bg-gradient-to-r from-gray-800 to-gray-900 text-gray-300">
-                        <th className="p-4 text-left rounded-tl-xl">User</th>
-                        <th className="p-4 text-left">Email</th>
-                        <th className="p-4 text-left">Phone</th>
-                        <th className="p-4 text-left">Case Type</th>
-                        <th className="p-4 text-left">Service Path</th>
-                        <th className="p-4 text-left">Status</th>
-                        <th className="p-4 text-left">Submitted At</th>
-                        <th className="p-4 text-left">Documents</th>
-                        <th className="p-4 text-left">Case Number</th>
-                        <th className="p-4 text-left">Notes</th>
-                        <th className="p-4 text-left">Payment Proof</th>
-                        <th className="p-4 text-left">Payment Info</th>
-                        <th className="p-4 text-left">Assigned Admin</th>
-                        <th className="p-4 text-left">Status History</th>
-                        <th className="p-4 text-left">Milestones</th>
-                        <th className="p-4 text-left rounded-tr-xl">Actions</th>
-                </tr>
-              </thead>
-                    <tbody className="divide-y divide-gray-800">
-                {cases.map(c => (
-                  <AdminCaseRow 
-                    key={c.id} 
-                    caseItem={c} 
-                    onStatusChange={handleStatusChange} 
-                    onPaymentVerify={handlePaymentVerify} 
-                    onUpdateNotes={handleUpdateNotes} 
-                    onAssignToMe={handleAssignToMe}
-                    onMilestoneUpdate={handleMilestoneUpdate}
-                    onAddMilestone={handleAddMilestone}
-                    onDeleteMilestone={handleDeleteMilestone}
-                    onAddMilestoneStep={handleAddMilestoneStep}
-                    onUpdateMilestoneStep={handleUpdateMilestoneStep}
-                    onDeleteMilestoneStep={handleDeleteMilestoneStep}
-                    adminId={adminId}
-                    onDragEnd={onDragEnd}
-                    getStatusColor={getStatusColor}
-                  />
-                ))}
-              </tbody>
-            </table>
-                </div>
-          )}
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 relative overflow-hidden py-12">
+      <div className="relative z-10 max-w-7xl mx-auto px-6">
+        {/* Admin Navigation Buttons */}
+        <div className="flex gap-4 justify-center mb-8">
+          {ADMIN_TABS.map(tabObj => (
+            <button
+              key={tabObj.key}
+              className={`px-4 py-2 rounded-lg font-semibold shadow transition-all duration-200 ${adminTab === tabObj.key ? 'bg-gradient-to-r from-blue-500 to-indigo-600 text-white' : 'bg-white/10 text-cyan-400 border border-cyan-400'}`}
+              onClick={() => setAdminTab(tabObj.key)}
+            >
+              {tabObj.label}
+            </button>
+          ))}
         </div>
-      ) : (
-        <PaymentsTable
-          payments={payments}
-          loading={loading}
-          onApprove={handleApprovePayment}
-          onReject={handleRejectPayment}
-        />
-      )}
-        </div>
+        {/* Render selected admin tab */}
+        {adminTab === 'slots' && <AdminSlotManager />}
+        {adminTab === 'bookings' && <AdminBookingDashboard />}
+        {adminTab === 'appointmentSlots' && <AdminAppointmentSlotManager />}
+        {adminTab === 'appointmentBookings' && <AdminAppointmentBookingDashboard />}
+        {adminTab === 'voucherSlots' && <AdminVoucherSlotManager />}
+        {adminTab === 'voucherPurchases' && <AdminVoucherPurchaseDashboard />}
+        {adminTab === 'examBookings' && <AdminExamBookingDashboard />}
+        {adminTab === 'supportTickets' && <AdminSupportTickets />}
+        {adminTab === 'dashboard' && (
+          <div>
+            <div className="bg-white/10 backdrop-blur-lg border border-white/20 rounded-2xl p-6 mb-8 shadow-xl">
+              <div className="flex flex-col md:flex-row justify-between items-center mb-8">
+                <h2 className="text-3xl font-bold bg-gradient-to-r from-blue-400 to-indigo-500 bg-clip-text text-transparent mb-4 md:mb-0">
+                  AI-Powered Admin Dashboard
+                </h2>
+                <div className="flex gap-4">
+                  {TABS.map(t => (
+                    <button
+                      key={t}
+                      className={`px-6 py-2.5 rounded-xl font-semibold transition-all duration-300 transform hover:scale-105 ${
+                        tab === t 
+                          ? 'bg-gradient-to-r from-blue-600 to-indigo-700 text-white shadow-lg shadow-blue-500/30' 
+                          : 'bg-white/10 backdrop-blur-md border border-white/20 text-gray-300 hover:text-white'
+                      }`}
+                      onClick={() => setTab(t)}
+                    >
+                      {t === 'cases' ? 'Case Management' : t === 'payments' ? 'Payment Center' : 'Coupon Management'}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {tab === 'cases' ? (
+                <div className="space-y-6">
+                  <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-xl p-4 flex items-center space-x-4">
+                    <label className="text-gray-300 font-medium">Status Filter:</label>
+                    <select 
+                      value={filter} 
+                      onChange={e => setFilter(e.target.value)} 
+                      className="bg-gray-800/50 text-gray-300 border border-gray-700 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    >
+                      <option value="all">All Cases</option>
+                      {STATUS_OPTIONS.map(opt => (
+                        <option key={opt} value={opt} className="capitalize">{opt.replace('_', ' ')}</option>
+                      ))}
+                    </select>
+                  </div>
+
+                  {loading && (
+                    <div className="flex justify-center items-center py-12">
+                      <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+                    </div>
+                  )}
+
+                  {message && !loading && (
+                    <div className="bg-gradient-to-r from-cyan-500 to-blue-500 text-white rounded-xl p-4 shadow-lg">
+                      {message}
+                    </div>
+                  )}
+
+                  {!loading && cases.length > 0 && (
+                    <div className="overflow-x-auto rounded-xl">
+                      <table className="w-full">
+                        <thead>
+                          <tr className="bg-gradient-to-r from-gray-800 to-gray-900 text-gray-300">
+                            <th className="p-4 text-left rounded-tl-xl">User</th>
+                            <th className="p-4 text-left">Email</th>
+                            <th className="p-4 text-left">Phone</th>
+                            <th className="p-4 text-left">Case Type</th>
+                            <th className="p-4 text-left">Service Path</th>
+                            <th className="p-4 text-left">Status</th>
+                            <th className="p-4 text-left">Submitted At</th>
+                            <th className="p-4 text-left">Documents</th>
+                            <th className="p-4 text-left">Case Number</th>
+                            <th className="p-4 text-left">Notes</th>
+                            <th className="p-4 text-left">Payment Proof</th>
+                            <th className="p-4 text-left">Payment Info</th>
+                            <th className="p-4 text-left">Assigned Admin</th>
+                            <th className="p-4 text-left">Status History</th>
+                            <th className="p-4 text-left">Milestones</th>
+                            <th className="p-4 text-left rounded-tr-xl">Actions</th>
+                          </tr>
+                        </thead>
+                        <tbody className="divide-y divide-gray-800">
+                          {cases.map(c => (
+                            <AdminCaseRow 
+                              key={c.id} 
+                              caseItem={c} 
+                              onStatusChange={handleStatusChange} 
+                              onPaymentVerify={handlePaymentVerify} 
+                              onUpdateNotes={handleUpdateNotes} 
+                              onAssignToMe={handleAssignToMe}
+                              onMilestoneUpdate={handleMilestoneUpdate}
+                              onAddMilestone={handleAddMilestone}
+                              onDeleteMilestone={handleDeleteMilestone}
+                              onAddMilestoneStep={handleAddMilestoneStep}
+                              onUpdateMilestoneStep={handleUpdateMilestoneStep}
+                              onDeleteMilestoneStep={handleDeleteMilestoneStep}
+                              adminId={adminId}
+                              onDragEnd={onDragEnd}
+                              getStatusColor={getStatusColor}
+                            />
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  )}
+                </div>
+              ) : tab === 'payments' ? (
+                <PaymentsTable
+                  payments={payments}
+                  loading={loading}
+                  onApprove={handleApprovePayment}
+                  onReject={handleRejectPayment}
+                />
+              ) : (
+                <CouponsTable
+                  coupons={coupons}
+                  loading={loading}
+                  onAddCoupon={handleAddCoupon}
+                  onToggleStatus={handleToggleCouponStatus}
+                  onDeleteCoupon={handleDeleteCoupon}
+                  showAddCoupon={showAddCoupon}
+                  setShowAddCoupon={setShowAddCoupon}
+                  newCoupon={newCoupon}
+                  setNewCoupon={setNewCoupon}
+                />
+              )}
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
@@ -946,22 +1148,22 @@ function AdminCaseRow({
             >
               {editing ? 'Cancel' : 'Edit'}
             </button>
-          {editing && (
+            {editing && (
               <button 
                 onClick={() => { onUpdateNotes(caseItem.id, notes, caseNumber); setEditing(false); }} 
                 className={`${THEME.success} text-white px-4 py-2 rounded-lg transition-all duration-200 hover:shadow-lg hover:shadow-green-500/20`}
               >
                 Save
               </button>
-          )}
-          {!caseItem.payment_verified && (caseItem.payment?.status === 'approved') && (
+            )}
+            {!caseItem.payment_verified && (caseItem.payment?.status === 'approved') && (
               <button 
                 onClick={() => onPaymentVerify(caseItem)} 
                 className={`${THEME.primary} text-white px-4 py-2 rounded-lg transition-all duration-200 hover:shadow-lg hover:shadow-blue-500/20`}
               >
                 Verify Payment
               </button>
-          )}
+            )}
           </div>
         </td>
       </tr>
@@ -1019,62 +1221,62 @@ function AdminCaseRow({
           <td colSpan={15} className="p-4">
             <div className={`${THEME.glass} rounded-xl p-6`}>
               <div className="space-y-6">
-              <div className="flex justify-between items-center">
+                <div className="flex justify-between items-center">
                   <h4 className="text-xl font-semibold text-gray-300">Case Milestones</h4>
-                <button
-                  onClick={() => setShowAddMilestone(!showAddMilestone)}
+                  <button
+                    onClick={() => setShowAddMilestone(!showAddMilestone)}
                     className={`${THEME.success} text-white px-4 py-2 rounded-lg transition-all duration-200 hover:shadow-lg hover:shadow-green-500/20`}
-                >
-                  {showAddMilestone ? 'Cancel Add Milestone' : 'Add Milestone'}
-                </button>
-              </div>
+                  >
+                    {showAddMilestone ? 'Cancel Add Milestone' : 'Add Milestone'}
+                  </button>
+                </div>
 
                 {/* Add Milestone Form */}
-              {showAddMilestone && (
+                {showAddMilestone && (
                   <div className={`${THEME.card} p-6 rounded-xl mb-6`}>
                     <h5 className="text-lg font-semibold text-gray-300 mb-4">Add New Milestone</h5>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
+                      <div>
                         <label className="block text-sm font-medium text-gray-400 mb-1">Name</label>
-                      <input
-                        type="text"
-                        value={newMilestone.name}
-                        onChange={(e) => setNewMilestone({ ...newMilestone, name: e.target.value })}
+                        <input
+                          type="text"
+                          value={newMilestone.name}
+                          onChange={(e) => setNewMilestone({ ...newMilestone, name: e.target.value })}
                           className="w-full bg-gray-800/50 text-gray-300 border border-gray-700 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                        placeholder="Milestone name"
-                      />
-                    </div>
-                    <div>
+                          placeholder="Milestone name"
+                        />
+                      </div>
+                      <div>
                         <label className="block text-sm font-medium text-gray-400 mb-1">Description</label>
-                      <textarea
-                        value={newMilestone.description}
-                        onChange={(e) => setNewMilestone({ ...newMilestone, description: e.target.value })}
+                        <textarea
+                          value={newMilestone.description}
+                          onChange={(e) => setNewMilestone({ ...newMilestone, description: e.target.value })}
                           className="w-full bg-gray-800/50 text-gray-300 border border-gray-700 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                        rows="2"
-                        placeholder="Milestone description"
-                      />
-                    </div>
-                    <div>
+                          rows="2"
+                          placeholder="Milestone description"
+                        />
+                      </div>
+                      <div>
                         <label className="block text-sm font-medium text-gray-400 mb-1">Due Date</label>
-                      <input
-                        type="date"
-                        value={newMilestone.due_date}
-                        onChange={(e) => setNewMilestone({ ...newMilestone, due_date: e.target.value })}
+                        <input
+                          type="date"
+                          value={newMilestone.due_date}
+                          onChange={(e) => setNewMilestone({ ...newMilestone, due_date: e.target.value })}
                           className="w-full bg-gray-800/50 text-gray-300 border border-gray-700 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                      />
-                    </div>
-                    <div>
+                        />
+                      </div>
+                      <div>
                         <label className="block text-sm font-medium text-gray-400 mb-1">Status</label>
-                       <select
-                        value={newMilestone.status}
-                        onChange={(e) => setNewMilestone({ ...newMilestone, status: e.target.value })}
+                        <select
+                          value={newMilestone.status}
+                          onChange={(e) => setNewMilestone({ ...newMilestone, status: e.target.value })}
                           className="w-full bg-gray-800/50 text-gray-300 border border-gray-700 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                      >
-                        {MILESTONE_STATUS_OPTIONS.map(opt => (
+                        >
+                          {MILESTONE_STATUS_OPTIONS.map(opt => (
                             <option key={opt} value={opt} className="capitalize">{opt.replace('_', ' ')}</option>
-                        ))}
-                      </select>
-                    </div>
+                          ))}
+                        </select>
+                      </div>
                     </div>
                     <div className="flex justify-end space-x-3 mt-4">
                       <button
@@ -1086,248 +1288,248 @@ function AdminCaseRow({
                       <button
                         onClick={() => {
                           onAddMilestone(caseItem.id, newMilestone);
-                           setNewMilestone({
-                              name: '',
-                              description: '',
-                              due_date: '',
-                              status: 'pending'
-                            });
+                          setNewMilestone({
+                            name: '',
+                            description: '',
+                            due_date: '',
+                            status: 'pending'
+                          });
                           setShowAddMilestone(false);
                         }}
                         className={`${THEME.primary} text-white px-4 py-2 rounded-lg transition-all duration-200 hover:shadow-lg hover:shadow-blue-500/20`}
                       >
                         Add Milestone
                       </button>
+                    </div>
                   </div>
-                </div>
-              )}
+                )}
 
                 {/* Milestones Grid */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {caseItem.milestones.map((milestone) => (
+                  {caseItem.milestones.map((milestone) => (
                     <div key={milestone.id} className={`${THEME.card} p-6 rounded-xl`}>
                       <div className="flex items-center justify-between mb-4">
                         <h5 className="text-lg font-semibold text-gray-300">{milestone.name}</h5>
                         <div className="flex items-center space-x-3">
-                        {editingMilestone?.id === milestone.id ? (
-                          <div className="flex items-center space-x-2">
-                            <select
-                              value={editingMilestone.status}
-                              onChange={(e) => setEditingMilestone({
-                                ...editingMilestone,
-                                status: e.target.value
-                              })}
+                          {editingMilestone?.id === milestone.id ? (
+                            <div className="flex items-center space-x-2">
+                              <select
+                                value={editingMilestone.status}
+                                onChange={(e) => setEditingMilestone({
+                                  ...editingMilestone,
+                                  status: e.target.value
+                                })}
                                 className="bg-gray-800/50 text-gray-300 border border-gray-700 rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                            >
-                              {MILESTONE_STATUS_OPTIONS.map(opt => (
+                              >
+                                {MILESTONE_STATUS_OPTIONS.map(opt => (
                                   <option key={opt} value={opt} className="capitalize">{opt.replace('_', ' ')}</option>
-                              ))}
-                            </select>
-                            <button
-                              onClick={() => {
-                                onMilestoneUpdate(caseItem.id, milestone.id, editingMilestone);
-                                setEditingMilestone(null);
-                              }}
+                                ))}
+                              </select>
+                              <button
+                                onClick={() => {
+                                  onMilestoneUpdate(caseItem.id, milestone.id, editingMilestone);
+                                  setEditingMilestone(null);
+                                }}
                                 className={`${THEME.success} text-white px-3 py-1.5 rounded-lg text-sm transition-all duration-200`}
-                            >
-                              Save
-                            </button>
-                            <button
-                              onClick={() => setEditingMilestone(null)}
+                              >
+                                Save
+                              </button>
+                              <button
+                                onClick={() => setEditingMilestone(null)}
                                 className={`${THEME.glass} text-gray-300 hover:text-white px-3 py-1.5 rounded-lg text-sm transition-all duration-200`}
-                            >
-                              Cancel
-                            </button>
-                          </div>
-                        ) : (
-                          <>
+                              >
+                                Cancel
+                              </button>
+                            </div>
+                          ) : (
+                            <>
                               <span className={`px-3 py-1 rounded-full text-sm font-medium ${MILESTONE_STATUS_COLORS[milestone.status]}`}>
-                              {milestone.status.replace('_', ' ')}
-                            </span>
-                            <button
-                              onClick={() => setEditingMilestone(milestone)}
+                                {milestone.status.replace('_', ' ')}
+                              </span>
+                              <button
+                                onClick={() => setEditingMilestone(milestone)}
                                 className="text-blue-400 hover:text-blue-300 transition-colors duration-200"
-                            >
-                              Edit
-                            </button>
-                            <button
-                              onClick={() => onDeleteMilestone(caseItem.id, milestone.id)}
+                              >
+                                Edit
+                              </button>
+                              <button
+                                onClick={() => onDeleteMilestone(caseItem.id, milestone.id)}
                                 className="text-red-400 hover:text-red-300 transition-colors duration-200"
-                            >
-                              Delete
-                            </button>
-                          </>
-                        )}
+                              >
+                                Delete
+                              </button>
+                            </>
+                          )}
+                        </div>
                       </div>
-                    </div>
 
                       <p className="text-gray-400 mb-3">{milestone.description}</p>
                       
-                    {milestone.due_date && (
+                      {milestone.due_date && (
                         <p className="text-sm text-gray-500 mb-3">
-                        Due: {new Date(milestone.due_date).toLocaleDateString()}
-                      </p>
-                    )}
+                          Due: {new Date(milestone.due_date).toLocaleDateString()}
+                        </p>
+                      )}
 
-                    {milestone.notes && (
+                      {milestone.notes && (
                         <p className="text-sm text-gray-400 italic mb-4">"{milestone.notes}"</p>
-                    )}
+                      )}
 
-                    {editingMilestone?.id === milestone.id && (
+                      {editingMilestone?.id === milestone.id && (
                         <div className="mb-4">
-                        <textarea
-                          value={editingMilestone.notes || ''}
-                          onChange={(e) => setEditingMilestone({
-                            ...editingMilestone,
-                            notes: e.target.value
-                          })}
-                          placeholder="Add notes..."
+                          <textarea
+                            value={editingMilestone.notes || ''}
+                            onChange={(e) => setEditingMilestone({
+                              ...editingMilestone,
+                              notes: e.target.value
+                            })}
+                            placeholder="Add notes..."
                             className="w-full bg-gray-800/50 text-gray-300 border border-gray-700 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                          rows="2"
-                        />
-                      </div>
-                    )}
+                            rows="2"
+                          />
+                        </div>
+                      )}
 
                       {/* Milestone Steps Section */}
                       <div className="mt-6 pt-6 border-t border-gray-700">
                         <div className="flex justify-between items-center mb-4">
                           <h6 className="text-sm font-semibold text-gray-300">Steps</h6>
                           <button
-                             onClick={() => setShowAddStep(showAddStep === milestone.id ? null : milestone.id)}
+                            onClick={() => setShowAddStep(showAddStep === milestone.id ? null : milestone.id)}
                             className={`${THEME.primary} text-white px-3 py-1.5 rounded-lg text-sm transition-all duration-200 hover:shadow-lg hover:shadow-blue-500/20`}
-                           >
-                             {showAddStep === milestone.id ? 'Cancel Add Step' : 'Add Step'}
+                          >
+                            {showAddStep === milestone.id ? 'Cancel Add Step' : 'Add Step'}
                           </button>
-                       </div>
+                        </div>
 
                         {/* Add Step Form */}
-                    {showAddStep === milestone.id && (
+                        {showAddStep === milestone.id && (
                           <div className={`${THEME.glass} p-4 rounded-lg mb-4`}>
                             <h6 className="text-sm font-medium text-gray-300 mb-3">Add New Step</h6>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                               <div>
+                              <div>
                                 <label className="block text-sm font-medium text-gray-400 mb-1">Name</label>
-                                   <input
-                                       type="text"
-                                       value={newStepData.name}
-                                       onChange={(e) => setNewStepData({ ...newStepData, name: e.target.value })}
+                                <input
+                                  type="text"
+                                  value={newStepData.name}
+                                  onChange={(e) => setNewStepData({ ...newStepData, name: e.target.value })}
                                   className="w-full bg-gray-800/50 text-gray-300 border border-gray-700 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                        placeholder="Step name"
-                                   />
-                               </div>
-                               <div>
+                                  placeholder="Step name"
+                                />
+                              </div>
+                              <div>
                                 <label className="block text-sm font-medium text-gray-400 mb-1">Due Date (Optional)</label>
-                                   <input
-                                       type="date"
-                                       value={newStepData.due_date}
-                                       onChange={(e) => setNewStepData({ ...newStepData, due_date: e.target.value })}
+                                <input
+                                  type="date"
+                                  value={newStepData.due_date}
+                                  onChange={(e) => setNewStepData({ ...newStepData, due_date: e.target.value })}
                                   className="w-full bg-gray-800/50 text-gray-300 border border-gray-700 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                   />
-                               </div>
-                               <div>
+                                />
+                              </div>
+                              <div>
                                 <label className="block text-sm font-medium text-gray-400 mb-1">Status</label>
-                                   <select
-                                       value={newStepData.status}
-                                       onChange={(e) => setNewStepData({ ...newStepData, status: e.target.value })}
+                                <select
+                                  value={newStepData.status}
+                                  onChange={(e) => setNewStepData({ ...newStepData, status: e.target.value })}
                                   className="w-full bg-gray-800/50 text-gray-300 border border-gray-700 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                   >
-                                       {MILESTONE_STATUS_OPTIONS.map(opt => (
+                                >
+                                  {MILESTONE_STATUS_OPTIONS.map(opt => (
                                     <option key={opt} value={opt} className="capitalize">{opt.replace('_', ' ')}</option>
-                                       ))}
-                                   </select>
-                               </div>
-                               <div>
+                                  ))}
+                                </select>
+                              </div>
+                              <div>
                                 <label className="block text-sm font-medium text-gray-400 mb-1">Additional Charge (PKR)</label>
-                                   <input
-                                       type="number"
-                                       step="0.01"
-                                       value={newStepData.additional_charge}
-                                       onChange={(e) => setNewStepData({ ...newStepData, additional_charge: e.target.value })}
+                                <input
+                                  type="number"
+                                  step="0.01"
+                                  value={newStepData.additional_charge}
+                                  onChange={(e) => setNewStepData({ ...newStepData, additional_charge: e.target.value })}
                                   className="w-full bg-gray-800/50 text-gray-300 border border-gray-700 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                        placeholder="e.g., 35000"
-                                   />
-                               </div>
+                                  placeholder="e.g., 35000"
+                                />
+                              </div>
                             </div>
                             <div className="flex justify-end space-x-3 mt-4">
-                                   <button
-                                       onClick={() => setShowAddStep(null)}
+                              <button
+                                onClick={() => setShowAddStep(null)}
                                 className={`${THEME.glass} text-gray-300 hover:text-white px-3 py-1.5 rounded-lg text-sm transition-all duration-200`}
-                                   >
-                                       Cancel
-                                    </button>
-                                    <button
-                                        onClick={() => {
-                                           onAddMilestoneStep(milestone.id, newStepData);
-                                            setNewStepData({
-                                               name: '',
-                                               due_date: '',
-                                                status: 'pending',
-                                                additional_charge: ''
-                                            });
-                                            setShowAddStep(null);
-                                        }}
+                              >
+                                Cancel
+                              </button>
+                              <button
+                                onClick={() => {
+                                  onAddMilestoneStep(milestone.id, newStepData);
+                                  setNewStepData({
+                                    name: '',
+                                    due_date: '',
+                                    status: 'pending',
+                                    additional_charge: ''
+                                  });
+                                  setShowAddStep(null);
+                                }}
                                 className={`${THEME.primary} text-white px-3 py-1.5 rounded-lg text-sm transition-all duration-200 hover:shadow-lg hover:shadow-blue-500/20`}
-                                    >
-                                        Add Step
-                                   </button>
+                              >
+                                Add Step
+                              </button>
                             </div>
-                       </div>
-                    )}
+                          </div>
+                        )}
 
                         {/* Steps List */}
-{milestone.milestone_steps && milestone.milestone_steps.length > 0 ? (
-  <DragDropContext onDragEnd={(result) => onDragEnd(result, caseItem.id, milestone.id)}>
-    <Droppable droppableId={`milestone-${milestone.id}`}>
-      {(provided) => (
+                        {milestone.milestone_steps && milestone.milestone_steps.length > 0 ? (
+                          <DragDropContext onDragEnd={(result) => onDragEnd(result, caseItem.id, milestone.id)}>
+                            <Droppable droppableId={`milestone-${milestone.id}`}>
+                              {(provided) => (
                                 <div ref={provided.innerRef} {...provided.droppableProps} className="space-y-3">
-          {milestone.milestone_steps.map((step, index) => (
-            <Draggable key={step.id} draggableId={step.id.toString()} index={index}>
-              {(provided) => (
-                <div
-                  ref={provided.innerRef}
-                  {...provided.draggableProps}
-                  {...provided.dragHandleProps}
+                                  {milestone.milestone_steps.map((step, index) => (
+                                    <Draggable key={step.id} draggableId={step.id.toString()} index={index}>
+                                      {(provided) => (
+                                        <div
+                                          ref={provided.innerRef}
+                                          {...provided.draggableProps}
+                                          {...provided.dragHandleProps}
                                           className={`${THEME.card} p-4 rounded-lg flex items-center justify-between group hover:shadow-lg hover:shadow-blue-500/10 transition-all duration-200`}
-                >
+                                        >
                                           <div className="flex items-center space-x-3">
                                             <div className={`w-2 h-2 rounded-full ${
-                        step.status === 'completed'
-                          ? 'bg-green-500'
-                          : step.status === 'in_progress'
-                          ? 'bg-blue-500'
+                                              step.status === 'completed'
+                                                ? 'bg-green-500'
+                                                : step.status === 'in_progress'
+                                                ? 'bg-blue-500'
                                                 : 'bg-gray-500'
                                             }`}></div>
                                             <span className="text-gray-300">{step.name}</span>
                                             <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${MILESTONE_STATUS_COLORS[step.status]}`}>
-                          {step.status.replace('_', ' ')}
-                        </span>
-                      </div>
+                                              {step.status.replace('_', ' ')}
+                                            </span>
+                                          </div>
                                           <div className="flex items-center space-x-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-                          <button
-                            onClick={() => setEditingStep(step)}
+                                            <button
+                                              onClick={() => setEditingStep(step)}
                                               className="text-blue-400 hover:text-blue-300 transition-colors duration-200"
-                          >
-                            Edit
-                          </button>
-                          <button
-                            onClick={() => onDeleteMilestoneStep(step.id)}
+                                            >
+                                              Edit
+                                            </button>
+                                            <button
+                                              onClick={() => onDeleteMilestoneStep(step.id)}
                                               className="text-red-400 hover:text-red-300 transition-colors duration-200"
-                          >
-                            Delete
-                          </button>
-                  </div>
-                </div>
-              )}
-            </Draggable>
-          ))}
-          {provided.placeholder}
-        </div>
-      )}
-    </Droppable>
-  </DragDropContext>
-) : (
+                                            >
+                                              Delete
+                                            </button>
+                                          </div>
+                                        </div>
+                                      )}
+                                    </Draggable>
+                                  ))}
+                                  {provided.placeholder}
+                                </div>
+                              )}
+                            </Droppable>
+                          </DragDropContext>
+                        ) : (
                           <p className="text-sm text-gray-500 text-center py-4">No steps defined for this milestone.</p>
-)}
+                        )}
 
                         {/* Edit Step Form */}
                         {editingStep && (
@@ -1418,7 +1620,7 @@ function AdminCaseRow({
                             </div>
                           </div>
                         )}
-</div>
+                      </div>
                     </div>
                   ))}
                 </div>
@@ -1472,7 +1674,7 @@ function PaymentsTable({ payments, loading, onApprove, onReject }) {
       ) : (
         <div className="overflow-x-auto rounded-xl">
           <table className="w-full">
-          <thead>
+            <thead>
               <tr className="bg-gradient-to-r from-gray-800 to-gray-900 text-gray-300">
                 <th className="p-4 text-left rounded-tl-xl">User</th>
                 <th className="p-4 text-left">Email</th>
@@ -1481,17 +1683,17 @@ function PaymentsTable({ payments, loading, onApprove, onReject }) {
                 <th className="p-4 text-left">Screenshot</th>
                 <th className="p-4 text-left">Status</th>
                 <th className="p-4 text-left rounded-tr-xl">Actions</th>
-            </tr>
-          </thead>
+              </tr>
+            </thead>
             <tbody className="divide-y divide-gray-800">
-            {payments.map(p => (
+              {payments.map(p => (
                 <tr key={p.id} className="hover:bg-gray-800/50 transition-colors duration-200">
                   <td className="p-4 text-gray-300">{p.profiles?.full_name || '—'}</td>
                   <td className="p-4 text-gray-300">{p.profiles?.email || '—'}</td>
                   <td className="p-4 text-gray-300">{p.profiles?.phone || '—'}</td>
                   <td className="p-4 text-gray-300">{p.amount}</td>
                   <td className="p-4">
-                  {p.screenshot_url ? (
+                    {p.screenshot_url ? (
                       <a 
                         href={p.screenshot_url} 
                         target="_blank" 
@@ -1500,8 +1702,8 @@ function PaymentsTable({ payments, loading, onApprove, onReject }) {
                       >
                         View Screenshot
                       </a>
-                  ) : '—'}
-                </td>
+                    ) : '—'}
+                  </td>
                   <td className="p-4">
                     <span className={`px-3 py-1 rounded-full text-sm font-medium ${
                       p.status === 'pending' ? STATUS_COLORS.pending :
@@ -1510,29 +1712,375 @@ function PaymentsTable({ payments, loading, onApprove, onReject }) {
                     }`}>
                       {p.status.charAt(0).toUpperCase() + p.status.slice(1)}
                     </span>
-                </td>
+                  </td>
                   <td className="p-4">
-                  {p.status === 'pending' && (
-                      <div className="flex space-x-2">
-                        <button 
-                          onClick={() => onApprove(p)} 
-                          className={`${THEME.success} text-white px-4 py-2 rounded-lg transition-all duration-200 hover:shadow-lg hover:shadow-green-500/20`}
-                        >
-                          Approve
-                        </button>
-                        <button 
-                          onClick={() => onReject(p)} 
-                          className={`${THEME.danger} text-white px-4 py-2 rounded-lg transition-all duration-200 hover:shadow-lg hover:shadow-red-500/20`}
-                        >
-                          Reject
-                        </button>
+                    <div className="flex space-x-2">
+                      <button
+                        onClick={() => onApprove(p)}
+                        className={`${THEME.success} text-white px-4 py-2 rounded-lg transition-all duration-200 hover:shadow-lg hover:shadow-green-500/20`}
+                      >
+                        Approve
+                      </button>
+                      <button
+                        onClick={() => onReject(p)}
+                        className={`${THEME.danger} text-white px-4 py-2 rounded-lg transition-all duration-200 hover:shadow-lg hover:shadow-red-500/20`}
+                      >
+                        Reject
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
+    </div>
+  );
+}
+
+function CouponsTable({ coupons, loading, onAddCoupon, onToggleStatus, onDeleteCoupon, showAddCoupon, setShowAddCoupon, newCoupon, setNewCoupon }) {
+  const packages = [
+    { id: 'saudi', name: 'Saudi Arabia' },
+    { id: 'uae', name: 'UAE' },
+    { id: 'qatar', name: 'Qatar' }
+  ];
+
+  return (
+    <div>
+      <h3 className="text-2xl font-bold bg-gradient-to-r from-green-400 to-emerald-500 bg-clip-text text-transparent mb-6">
+        Coupon Management Center
+      </h3>
+      
+      <div className="flex justify-between items-center mb-6">
+        <button
+          onClick={() => setShowAddCoupon(!showAddCoupon)}
+          className="bg-gradient-to-r from-green-500 to-emerald-600 text-white px-6 py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300"
+        >
+          {showAddCoupon ? 'Cancel' : 'Add New Coupon'}
+        </button>
+      </div>
+
+      {/* Add Coupon Form */}
+      {showAddCoupon && (
+        <div className="bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl p-6 mb-8 shadow-xl">
+          <h4 className="text-xl font-semibold text-gray-300 mb-6">Add New Coupon</h4>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <label className="block text-gray-300 text-sm font-medium mb-2">Coupon Code *</label>
+              <input
+                type="text"
+                value={newCoupon.code}
+                onChange={e => setNewCoupon({...newCoupon, code: e.target.value})}
+                className="w-full px-4 py-2 bg-gray-800/50 border border-gray-700 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="e.g., SAVE20"
+              />
+            </div>
+            <div>
+              <label className="block text-gray-300 text-sm font-medium mb-2">Coupon Name *</label>
+              <input
+                type="text"
+                value={newCoupon.name}
+                onChange={e => setNewCoupon({...newCoupon, name: e.target.value})}
+                className="w-full px-4 py-2 bg-gray-800/50 border border-gray-700 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="e.g., 20% Off Saudi Package"
+              />
+            </div>
+            <div className="md:col-span-2">
+              <label className="block text-gray-300 text-sm font-medium mb-2">Description</label>
+              <textarea
+                value={newCoupon.description}
+                onChange={e => setNewCoupon({...newCoupon, description: e.target.value})}
+                className="w-full px-4 py-2 bg-gray-800/50 border border-gray-700 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                rows="3"
+                placeholder="Coupon description..."
+              />
+            </div>
+            <div>
+              <label className="block text-gray-300 text-sm font-medium mb-2">Discount Type *</label>
+              <select
+                value={newCoupon.discount_type}
+                onChange={e => setNewCoupon({...newCoupon, discount_type: e.target.value})}
+                className="w-full px-4 py-2 bg-gray-800/50 border border-gray-700 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                <option value="percentage">Percentage (%)</option>
+                <option value="fixed">Fixed Amount (PKR)</option>
+              </select>
+            </div>
+            <div>
+              <label className="block text-gray-300 text-sm font-medium mb-2">Discount Value *</label>
+              <input
+                type="number"
+                required
+                min="0.01"
+                step="0.01"
+                value={newCoupon.discount_value}
+                onChange={e => setNewCoupon({...newCoupon, discount_value: e.target.value})}
+                className="w-full px-4 py-2 bg-gray-800/50 border border-gray-700 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder={newCoupon.discount_type === 'percentage' ? '20' : '5000'}
+              />
+            </div>
+            <div>
+              <label className="block text-gray-300 text-sm font-medium mb-2">Minimum Amount (PKR)</label>
+              <input
+                type="number"
+                value={newCoupon.minimum_amount}
+                onChange={e => setNewCoupon({...newCoupon, minimum_amount: e.target.value})}
+                className="w-full px-4 py-2 bg-gray-800/50 border border-gray-700 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="0"
+              />
+            </div>
+            <div>
+              <label className="block text-gray-300 text-sm font-medium mb-2">Maximum Discount (PKR)</label>
+              <input
+                type="number"
+                value={newCoupon.maximum_discount}
+                onChange={e => setNewCoupon({...newCoupon, maximum_discount: e.target.value})}
+                className="w-full px-4 py-2 bg-gray-800/50 border border-gray-700 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="No limit"
+              />
+            </div>
+            <div>
+              <label className="block text-gray-300 text-sm font-medium mb-2">Usage Limit</label>
+              <input
+                type="number"
+                value={newCoupon.usage_limit}
+                onChange={e => setNewCoupon({...newCoupon, usage_limit: e.target.value})}
+                className="w-full px-4 py-2 bg-gray-800/50 border border-gray-700 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="No limit"
+              />
+            </div>
+            <div>
+              <label className="block text-gray-300 text-sm font-medium mb-2">Valid From</label>
+              <input
+                type="datetime-local"
+                value={newCoupon.valid_from}
+                onChange={e => setNewCoupon({...newCoupon, valid_from: e.target.value})}
+                className="w-full px-4 py-2 bg-gray-800/50 border border-gray-700 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+            <div>
+              <label className="block text-gray-300 text-sm font-medium mb-2">Valid Until</label>
+              <input
+                type="datetime-local"
+                value={newCoupon.valid_until}
+                onChange={e => setNewCoupon({...newCoupon, valid_until: e.target.value})}
+                className="w-full px-4 py-2 bg-gray-800/50 border border-gray-700 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+            <div className="md:col-span-2">
+              <label className="block text-gray-300 text-sm font-medium mb-2">Applicable Packages</label>
+              <div className="flex flex-wrap gap-3">
+                {packages.map(pkg => (
+                  <label key={pkg.id} className="flex items-center space-x-2">
+                    <input
+                      type="checkbox"
+                      checked={newCoupon.applicable_packages.includes(pkg.id)}
+                      onChange={e => {
+                        if (e.target.checked) {
+                          setNewCoupon({
+                            ...newCoupon,
+                            applicable_packages: [...newCoupon.applicable_packages, pkg.id]
+                          });
+                        } else {
+                          setNewCoupon({
+                            ...newCoupon,
+                            applicable_packages: newCoupon.applicable_packages.filter(id => id !== pkg.id)
+                          });
+                        }
+                      }}
+                      className="rounded border-gray-600 bg-gray-800 text-blue-500 focus:ring-blue-500"
+                    />
+                    <span className="text-gray-300">{pkg.name}</span>
+                  </label>
+                ))}
+              </div>
+              <p className="text-gray-400 text-sm mt-2">Leave unchecked to apply to all packages</p>
+            </div>
+
+            {/* Promotion Modal Section */}
+            <div className="md:col-span-2">
+              <div className="border-t border-gray-700 pt-6 mt-6">
+                <h5 className="text-lg font-semibold text-gray-300 mb-4 flex items-center space-x-2">
+                  <span className="w-6 h-6 bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg flex items-center justify-center">
+                    <span className="text-white text-sm">🎁</span>
+                  </span>
+                  <span>Promotion Modal Settings</span>
+                </h5>
+                
+                <div className="space-y-4">
+                  <div className="flex items-center space-x-3">
+                    <input
+                      type="checkbox"
+                      id="show_in_promotion_modal"
+                      checked={newCoupon.show_in_promotion_modal}
+                      onChange={e => setNewCoupon({...newCoupon, show_in_promotion_modal: e.target.checked})}
+                      className="rounded border-gray-600 bg-gray-800 text-purple-500 focus:ring-purple-500"
+                    />
+                    <label htmlFor="show_in_promotion_modal" className="text-gray-300 font-medium">
+                      Show this coupon in promotion modal for new visitors
+                    </label>
+                  </div>
+
+                  {newCoupon.show_in_promotion_modal && (
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pl-6 border-l-2 border-purple-500/30">
+                      <div>
+                        <label className="block text-gray-300 text-sm font-medium mb-2">Modal Title</label>
+                        <input
+                          type="text"
+                          value={newCoupon.promotion_modal_title}
+                          onChange={e => setNewCoupon({...newCoupon, promotion_modal_title: e.target.value})}
+                          className="w-full px-4 py-2 bg-gray-800/50 border border-gray-700 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-purple-500"
+                          placeholder="e.g., Special Welcome Offer!"
+                        />
                       </div>
+                      <div>
+                        <label className="block text-gray-300 text-sm font-medium mb-2">Button Text</label>
+                        <input
+                          type="text"
+                          value={newCoupon.promotion_modal_button_text}
+                          onChange={e => setNewCoupon({...newCoupon, promotion_modal_button_text: e.target.value})}
+                          className="w-full px-4 py-2 bg-gray-800/50 border border-gray-700 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-purple-500"
+                          placeholder="Claim Offer"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-gray-300 text-sm font-medium mb-2">Delay (seconds)</label>
+                        <input
+                          type="number"
+                          min="1"
+                          max="10"
+                          value={newCoupon.promotion_modal_delay_seconds}
+                          onChange={e => setNewCoupon({...newCoupon, promotion_modal_delay_seconds: parseInt(e.target.value) || 3})}
+                          className="w-full px-4 py-2 bg-gray-800/50 border border-gray-700 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-purple-500"
+                          placeholder="3"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-gray-300 text-sm font-medium mb-2">Image URL (optional)</label>
+                        <input
+                          type="url"
+                          value={newCoupon.promotion_modal_image_url}
+                          onChange={e => setNewCoupon({...newCoupon, promotion_modal_image_url: e.target.value})}
+                          className="w-full px-4 py-2 bg-gray-800/50 border border-gray-700 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-purple-500"
+                          placeholder="https://example.com/image.jpg"
+                        />
+                      </div>
+                      <div className="md:col-span-2">
+                        <label className="block text-gray-300 text-sm font-medium mb-2">Modal Description</label>
+                        <textarea
+                          value={newCoupon.promotion_modal_description}
+                          onChange={e => setNewCoupon({...newCoupon, promotion_modal_description: e.target.value})}
+                          className="w-full px-4 py-2 bg-gray-800/50 border border-gray-700 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-purple-500"
+                          rows="3"
+                          placeholder="Custom description for the promotion modal..."
+                        />
+                      </div>
+                    </div>
                   )}
-                </td>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="flex justify-end mt-6">
+            <button
+              onClick={onAddCoupon}
+              className="bg-gradient-to-r from-green-500 to-emerald-600 text-white px-6 py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300"
+            >
+              Add Coupon
+            </button>
+          </div>
+        </div>
+      )}
+
+      {loading ? (
+        <div className="flex justify-center items-center py-12">
+          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+        </div>
+      ) : (
+        <div className="overflow-x-auto rounded-xl">
+          <table className="w-full">
+            <thead>
+              <tr className="bg-gradient-to-r from-gray-800 to-gray-900 text-gray-300">
+                <th className="p-4 text-left rounded-tl-xl">Code</th>
+                <th className="p-4 text-left">Name</th>
+                <th className="p-4 text-left">Discount</th>
+                <th className="p-4 text-left">Usage</th>
+                <th className="p-4 text-left">Valid Period</th>
+                <th className="p-4 text-left">Status</th>
+                <th className="p-4 text-left">Promotion</th>
+                <th className="p-4 text-left rounded-tr-xl">Actions</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody className="divide-y divide-gray-800">
+              {coupons.map(coupon => (
+                <tr key={coupon.id} className="hover:bg-gray-800/50 transition-colors duration-200">
+                  <td className="p-4 text-gray-300 font-mono">{coupon.code}</td>
+                  <td className="p-4 text-gray-300">{coupon.name}</td>
+                  <td className="p-4 text-gray-300">
+                    {coupon.discount_type === 'percentage' ? `${coupon.discount_value}%` : `PKR ${coupon.discount_value}`}
+                    {coupon.maximum_discount && (
+                      <div className="text-sm text-gray-400">Max: PKR {coupon.maximum_discount}</div>
+                    )}
+                  </td>
+                  <td className="p-4 text-gray-300">
+                    {coupon.used_count || 0}
+                    {coupon.usage_limit && ` / ${coupon.usage_limit}`}
+                  </td>
+                  <td className="p-4 text-gray-300">
+                    <div className="text-sm">
+                      {coupon.valid_from && (
+                        <div>From: {new Date(coupon.valid_from).toLocaleDateString()}</div>
+                      )}
+                      {coupon.valid_until && (
+                        <div>Until: {new Date(coupon.valid_until).toLocaleDateString()}</div>
+                      )}
+                    </div>
+                  </td>
+                  <td className="p-4">
+                    <span className={`px-3 py-1 rounded-full text-sm font-medium ${
+                      coupon.is_active 
+                        ? 'bg-gradient-to-r from-green-400 to-emerald-500 text-white' 
+                        : 'bg-gradient-to-r from-red-400 to-rose-500 text-white'
+                    }`}>
+                      {coupon.is_active ? 'Active' : 'Inactive'}
+                    </span>
+                  </td>
+                  <td className="p-4">
+                    {coupon.show_in_promotion_modal ? (
+                      <span className="px-3 py-1 rounded-full text-sm font-medium bg-gradient-to-r from-purple-400 to-pink-500 text-white">
+                        Modal Active
+                      </span>
+                    ) : (
+                      <span className="px-3 py-1 rounded-full text-sm font-medium bg-gray-600 text-gray-300">
+                        Not in Modal
+                      </span>
+                    )}
+                  </td>
+                  <td className="p-4">
+                    <div className="flex space-x-2">
+                      <button
+                        onClick={() => onToggleStatus(coupon.id, coupon.is_active)}
+                        className={`px-4 py-2 rounded-lg transition-all duration-200 hover:shadow-lg ${
+                          coupon.is_active
+                            ? 'bg-gradient-to-r from-red-500 to-rose-600 text-white hover:shadow-red-500/20'
+                            : 'bg-gradient-to-r from-green-500 to-emerald-600 text-white hover:shadow-green-500/20'
+                        }`}
+                      >
+                        {coupon.is_active ? 'Deactivate' : 'Activate'}
+                      </button>
+                      <button
+                        onClick={() => onDeleteCoupon(coupon.id)}
+                        className="bg-gradient-to-r from-red-500 to-rose-600 text-white px-4 py-2 rounded-lg transition-all duration-200 hover:shadow-lg hover:shadow-red-500/20"
+                      >
+                        Delete
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       )}
     </div>

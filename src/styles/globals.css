@@ -114,6 +114,20 @@
     animation-delay: 0.4s;
   }
 
+  /* Shimmer animation for skeleton loaders */
+  @keyframes shimmer {
+    0% {
+      background-position: -200% 0;
+    }
+    100% {
+      background-position: 200% 0;
+    }
+  }
+  
+  .animate-shimmer {
+    animation: shimmer 2s infinite;
+  }
+
   /* Progress bar */
   .progress-bar {
     @apply h-2 bg-secondary-700/50 rounded-full overflow-hidden;

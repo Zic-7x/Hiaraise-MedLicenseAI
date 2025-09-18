@@ -4,6 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useDropzone } from 'react-dropzone';
 import { FiUpload, FiCheck, FiAlertCircle, FiFile, FiX, FiLock } from 'react-icons/fi';
+import CustomSelect from '../components/CustomSelect';
 
 // Add theme constants to match UserDashboard
 const THEME = {
@@ -136,7 +137,11 @@ const UploadBox = ({ onUpload, label, required, acceptedFile, onRemove }) => {
       'application/pdf': ['.pdf']
     },
     maxSize: 5 * 1024 * 1024, // 5MB
-    multiple: false
+    multiple: false,
+    noClick: false, // Ensure click events work properly
+    noKeyboard: false, // Ensure keyboard events work properly
+    preventDropOnDocument: true, // Prevent page refresh on mobile
+    useFsAccessApi: false // Disable File System Access API for better mobile compatibility
   });
 
   return (
@@ -158,7 +163,11 @@ const UploadBox = ({ onUpload, label, required, acceptedFile, onRemove }) => {
             </span>
           </div>
           <button
-            onClick={onRemove}
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              onRemove();
+            }}
             className="text-gray-400 hover:text-red-400 transition-colors"
           >
             <FiX className="text-xl" />
@@ -240,7 +249,7 @@ const StepIndicator = ({ currentStep, totalSteps }) => {
         <div key={index} className="flex items-center">
           <motion.div
             className={`
-              w-10 h-10 rounded-full flex items-center justify-center shadow-lg
+              w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center shadow-lg
               ${currentStep === index 
                 ? 'bg-gradient-to-r from-blue-600 to-indigo-700 text-white' 
                 : currentStep > index 
@@ -252,13 +261,13 @@ const StepIndicator = ({ currentStep, totalSteps }) => {
             whileTap={{ scale: 0.95 }}
           >
             {currentStep > index ? (
-              <FiCheck className="text-xl" />
+              <FiCheck className="text-sm sm:text-xl" />
             ) : (
-              <span className="font-semibold">{index + 1}</span>
+              <span className="font-semibold text-sm sm:text-base">{index + 1}</span>
             )}
           </motion.div>
           {index < totalSteps - 1 && (
-            <div className="w-24 h-1 mx-2 relative">
+            <div className="w-12 sm:w-24 h-1 mx-1 sm:mx-2 relative">
               <div className="absolute inset-0 bg-white/20 rounded-full overflow-hidden">
                 <motion.div
                   className="h-full bg-gradient-to-r from-blue-600 to-indigo-700"
@@ -294,10 +303,13 @@ export default function CaseSubmission() {
     experienceLetter: null,
     additionalExperience: null
   });
+  const [documentUrls, setDocumentUrls] = useState({});
   const [paymentProof, setPaymentProof] = useState(null);
   const [message, setMessage] = useState('');
   const [loading, setLoading] = useState(false);
   const [canSubmit, setCanSubmit] = useState(false);
+  const [accessCheckLoading, setAccessCheckLoading] = useState(true);
+  const [hasPackageAccess, setHasPackageAccess] = useState(false);
   const [checking, setChecking] = useState(true);
   const [existingCase, setExistingCase] = useState(null);
   const [additionalDocuments, setAdditionalDocuments] = useState([]);
@@ -307,6 +319,7 @@ export default function CaseSubmission() {
     const checkUserStatus = async () => {
       setLoading(true);
       setChecking(true);
+      setAccessCheckLoading(true);
       const { data: { user } } = await supabase.auth.getUser();
 
       // Explicitly check if user is null or undefined
@@ -315,8 +328,39 @@ export default function CaseSubmission() {
         setCanSubmit(false);
         setLoading(false);
         setChecking(false);
+        setAccessCheckLoading(false);
         return;
       }
+
+      // Check if user has package access (not just vouchers)
+      const { data: packagePayments, error: packageError } = await supabase
+        .from('payments')
+        .select('id, package_id, voucher_slot_id, status')
+        .eq('user_id', user.id)
+        .eq('status', 'approved');
+
+      if (packageError) {
+        console.error('Error checking package access:', packageError);
+        setAccessCheckLoading(false);
+        return;
+      }
+
+      // Check if user has any package payments (not just voucher payments)
+      const hasPackagePayments = packagePayments?.some(payment => 
+        payment.package_id && !payment.voucher_slot_id
+      );
+
+      if (!hasPackagePayments) {
+        // User only has voucher purchases, redirect to voucher system
+        setMessage('Case submission is only available for users who have purchased our licensing packages. You can access your vouchers in the voucher system.');
+        setHasPackageAccess(false);
+        setAccessCheckLoading(false);
+        setLoading(false);
+        setChecking(false);
+        return;
+      }
+
+      setHasPackageAccess(true);
 
       // Check for existing case
       const { data: cases, error: caseError } = await supabase
@@ -340,6 +384,7 @@ export default function CaseSubmission() {
       setCanSubmit(!error && payments && payments.length > 0);
       setLoading(false);
       setChecking(false);
+      setAccessCheckLoading(false);
     };
     checkUserStatus();
   }, []);
@@ -371,6 +416,12 @@ export default function CaseSubmission() {
       console.log(`[handleDocumentUpload] Documents state updated for ${key}:`, newState);
       return newState;
     });
+
+    // Store the URL for later use
+    setDocumentUrls(prev => ({
+      ...prev,
+      [key]: publicUrlData.publicUrl
+    }));
 
     return publicUrlData.publicUrl;
   };
@@ -409,16 +460,11 @@ export default function CaseSubmission() {
       return;
     }
 
-    // Upload documents for current step
+    // Documents are already uploaded when selected, no need to upload again
+    // Just collect the URLs for this step
     for (const doc of currentStepData.documents) {
-      if (documents[doc.key]) {
-        try {
-          await handleDocumentUpload(documents[doc.key], doc.key);
-        } catch (error) {
-          setMessage(`Error uploading ${doc.label}: ${error.message}`);
-          setLoading(false);
-          return;
-        }
+      if (documents[doc.key] && documentUrls[doc.key]) {
+        stepDocuments[doc.key] = documentUrls[doc.key];
       }
     }
 
@@ -493,20 +539,17 @@ export default function CaseSubmission() {
       payment_proof_url = supabase.storage.from('payment-proofs').getPublicUrl(data.path).data.publicUrl;
     }
 
-    // Collect URLs from the updated documents state here
-    const finalDocumentUrls = {};
+    // Use the stored document URLs instead of trying to generate new ones
+    const finalDocumentUrls = { ...documentUrls };
+
+    // Verify all required documents have URLs
     for (const step of DOCUMENT_STEPS) {
       for (const doc of step.documents) {
-        if (documents[doc.key]) {
-          const { data: publicUrlData } = supabase.storage.from('case-documents').getPublicUrl(`${user.id}/${Date.now()}_${doc.key}_${documents[doc.key].name}`);
-          if (publicUrlData.publicUrl) {
-            finalDocumentUrls[doc.key] = publicUrlData.publicUrl;
-          } else {
-            console.error(`Could not get public URL for ${doc.key}`);
-            setMessage(`Could not finalize case submission: failed to get URL for ${doc.label}.`);
-            setLoading(false);
-            return;
-          }
+        if (doc.required && documents[doc.key] && !finalDocumentUrls[doc.key]) {
+          console.error(`Missing URL for required document: ${doc.key}`);
+          setMessage(`Could not finalize case submission: missing URL for ${doc.label}.`);
+          setLoading(false);
+          return;
         }
       }
     }
@@ -533,7 +576,7 @@ export default function CaseSubmission() {
     setLoading(false);
   };
 
-  if (checking) {
+  if (checking || accessCheckLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 relative overflow-hidden">
         {/* Animated Background Elements */}
@@ -550,6 +593,59 @@ export default function CaseSubmission() {
         >
           <div className="w-16 h-16 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mx-auto mb-4" />
           <p className="text-gray-300">Checking status...</p>
+        </motion.div>
+      </div>
+    );
+  }
+
+  // Show access denied message for voucher-only users
+  if (!hasPackageAccess) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 relative overflow-hidden">
+        {/* Animated Background Elements */}
+        <div className="absolute inset-0 overflow-hidden">
+          <div className="absolute -top-40 -right-40 w-80 h-80 bg-purple-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse"></div>
+          <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-cyan-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse delay-1000"></div>
+          <div className="absolute top-40 left-1/2 w-60 h-60 bg-pink-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse delay-500"></div>
+        </div>
+        
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="bg-white/10 backdrop-blur-xl rounded-2xl p-8 border border-white/20 shadow-xl text-center max-w-md mx-4 relative z-10"
+        >
+          <div className="w-16 h-16 bg-gradient-to-br from-amber-400 to-orange-500 rounded-full flex items-center justify-center mx-auto mb-6">
+            <FiLock className="text-white text-2xl" />
+          </div>
+          
+          <h2 className="text-2xl font-bold text-white mb-4">Access Restricted</h2>
+          
+          <p className="text-gray-300 mb-6 leading-relaxed">
+            {message}
+          </p>
+          
+          <div className="space-y-3">
+            <Link
+              to="/voucher-system"
+              className="block w-full bg-gradient-to-r from-green-500 to-emerald-600 text-white px-6 py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300 text-center"
+            >
+              Go to Voucher System
+            </Link>
+            
+            <Link
+              to="/services"
+              className="block w-full bg-gradient-to-r from-blue-500 to-indigo-600 text-white px-6 py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300 text-center"
+            >
+              View Our Packages
+            </Link>
+            
+            <Link
+              to="/dashboard"
+              className="block w-full bg-gradient-to-r from-purple-500 to-pink-600 text-white px-6 py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300 text-center"
+            >
+              Go to Dashboard
+            </Link>
+          </div>
         </motion.div>
       </div>
     );
@@ -586,11 +682,11 @@ export default function CaseSubmission() {
           animate={{ opacity: 1, y: 0 }}
           className="bg-white/10 border border-white/20 rounded-3xl shadow-2xl overflow-hidden"
         >
-          <div className="p-8">
-            <h2 className="text-3xl font-bold bg-gradient-to-r from-white to-cyan-400 bg-clip-text text-transparent mb-2">
+          <div className="p-4 sm:p-8">
+            <h2 className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-white to-cyan-400 bg-clip-text text-transparent mb-2">
               {existingCase ? 'Add Additional Documents' : 'Submit New Licensing Case'}
             </h2>
-            <p className="text-gray-300 mb-8">
+            <p className="text-gray-300 mb-6 sm:mb-8 text-sm sm:text-base">
               {existingCase 
                 ? 'Upload additional documents to support your case'
                 : 'Complete the following steps to submit your licensing case'}
@@ -625,7 +721,7 @@ export default function CaseSubmission() {
                       Please select a package from our services page before submitting a case.
                     </p>
                     <Link 
-                      to="/services" 
+                      to="/pricing" 
                       className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-blue-600 to-indigo-700 hover:from-blue-700 hover:to-indigo-800 text-white font-medium rounded-2xl transition-all duration-300 shadow-xl hover:shadow-2xl"
                     >
                       Select Package
@@ -644,17 +740,13 @@ export default function CaseSubmission() {
                     <label className="block text-sm font-medium text-gray-300 mb-2">
                       Applying For 
                     </label>
-                    <select
+                    <CustomSelect
+                      options={CASE_TYPES}
                       value={caseType}
-                      onChange={e => setCaseType(e.target.value)}
-                      className="w-full p-3 bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all text-white placeholder-gray-400"
-                      required
-                    >
-                      <option value="" className="bg-gray-800 text-gray-300">-- Select Country --</option>
-                      {CASE_TYPES.map(opt => (
-                        <option key={opt.value} value={opt.value} className="bg-gray-800 text-white hover:bg-blue-700">{opt.label}</option>
-                      ))}
-                    </select>
+                      onChange={setCaseType}
+                      placeholder="-- Select Country --"
+                      className="w-full"
+                    />
                   </motion.div>
                 )}
 
@@ -762,13 +854,13 @@ export default function CaseSubmission() {
                   </motion.div>
                 )}
 
-                <div className="flex justify-between pt-6 border-t border-white/20">
+                <div className="flex flex-col sm:flex-row justify-between gap-4 pt-6 border-t border-white/20">
                   {currentStep > 0 && (
                     <motion.button
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
                       onClick={() => setCurrentStep(currentStep - 1)}
-                      className="px-6 py-3 bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl text-gray-300 hover:bg-white/20 transition-all duration-300 shadow-xl"
+                      className="w-full sm:w-auto px-6 py-3 bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl text-gray-300 hover:bg-white/20 transition-all duration-300 shadow-xl"
                     >
                       Previous Step
                     </motion.button>
@@ -779,7 +871,7 @@ export default function CaseSubmission() {
                     onClick={handleStepSubmit}
                     disabled={loading}
                     className={`
-                      px-6 py-3 rounded-2xl text-white font-medium shadow-xl transition-all duration-300
+                      w-full sm:w-auto px-6 py-3 rounded-2xl text-white font-medium shadow-xl transition-all duration-300
                       ${loading 
                         ? 'bg-gray-600 cursor-not-allowed' 
                         : 'bg-gradient-to-r from-blue-600 to-indigo-700 hover:from-blue-700 hover:to-indigo-800'
@@ -787,7 +879,7 @@ export default function CaseSubmission() {
                     `}
                   >
                     {loading ? (
-                      <span className="flex items-center">
+                      <span className="flex items-center justify-center">
                         <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                           <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                           <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>

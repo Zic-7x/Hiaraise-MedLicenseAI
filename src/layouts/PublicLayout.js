@@ -4,10 +4,11 @@ import { useEffect, useState } from 'react';
 import { supabase } from '../supabaseClient';
 import MainLayout from './MainLayout';
 import PublicNavbar from '../components/PublicNavbar';
+import Navbar from '../components/Navbar';
 import { Link } from 'react-router-dom';
 
 // List of public routes that should be accessible even when logged in
-const PUBLIC_ACCESSIBLE_ROUTES = ['/services', '/about', '/contact'];
+const PUBLIC_ACCESSIBLE_ROUTES = ['/pricing', '/about', '/contact', '/vouchers', '/prometric-vouchers', '/my-vouchers', '/my-exams', '/get-exam-pass'];
 
 export default function PublicLayout() {
   const [checking, setChecking] = useState(true);
@@ -44,15 +45,8 @@ export default function PublicLayout() {
   return (
     <MainLayout>
       {session ? (
-        // Use the authenticated navbar for logged-in users accessing public pages
-        <div className="bg-blue-700 text-white px-4 md:px-6 py-3 shadow-lg rounded-lg mt-2 mb-6">
-          <div className="flex flex-wrap justify-center gap-4 md:gap-6">
-            <Link to="/services" className="hover:text-teal-200 focus:text-teal-300 transition-colors font-semibold">Services</Link>
-            <Link to="/about" className="hover:text-teal-200 focus:text-teal-300 transition-colors font-semibold">About Us</Link>
-            <Link to="/contact" className="hover:text-teal-200 focus:text-teal-300 transition-colors font-semibold">Contact</Link>
-            <Link to="/dashboard/user" className="hover:text-teal-200 focus:text-teal-300 transition-colors font-semibold">Dashboard</Link>
-          </div>
-        </div>
+        // Use the full authenticated navbar for logged-in users accessing public pages
+        <Navbar />
       ) : (
         // Use the public navbar for non-authenticated users
         <PublicNavbar />
