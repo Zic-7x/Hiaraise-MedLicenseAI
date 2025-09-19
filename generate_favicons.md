@@ -53,7 +53,7 @@ convert favicon-16x16.png favicon-32x32.png favicon.ico
 
 ## ✅ **Verification Steps**
 
-1. **Test Favicon**: Visit https://app.hiaraise.com/favicon.ico
+1. **Test Favicon**: Visit https://hiaraise.com/favicon.ico
 2. **Google Search Console**: Submit your sitemap
 3. **Rich Results Test**: Use Google's testing tool
 4. **Browser Test**: Check in Chrome, Firefox, Safari

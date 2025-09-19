@@ -68,7 +68,7 @@ The `manifest.json` now includes:
 ## 🔍 **Verification Steps**
 
 ### **Test Your Favicon:**
-1. **Direct URL Test**: Visit `https://app.hiaraise.com/favicon.ico`
+1. **Direct URL Test**: Visit `https://hiaraise.com/favicon.ico`
 2. **Browser Tab**: Check if favicon appears in browser tab
 3. **Bookmark Test**: Bookmark your site and check favicon
 4. **Mobile Test**: Check on mobile devices

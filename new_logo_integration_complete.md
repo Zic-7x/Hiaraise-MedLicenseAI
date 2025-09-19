@@ -84,7 +84,7 @@ public/
 
 ### **2. Test Your Setup**
 - **Browser Tab**: Check favicon appears in browser tab
-- **Direct URL**: Visit `https://app.hiaraise.com/favicon.ico`
+- **Direct URL**: Visit `https://hiaraise.com/favicon.ico`
 - **Bookmark**: Bookmark your site and check favicon
 - **Mobile**: Test on mobile devices
 
