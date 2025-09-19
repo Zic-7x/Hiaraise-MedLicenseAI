@@ -141,6 +141,11 @@ export default function AdminDashboard() {
     // eslint-disable-next-line
   }, [filter]);
 
+  // Debug: Log payments state changes
+  useEffect(() => {
+    console.log('Payments state updated:', payments.length, 'payments');
+  }, [payments]);
+
   const fetchAdminId = async () => {
     const { data: { user } } = await supabase.auth.getUser();
     if (user) setAdminId(user.id);
@@ -206,11 +211,56 @@ export default function AdminDashboard() {
   };
 
   const fetchPayments = async () => {
-    const { data, error } = await supabase
-      .from('payments')
-      .select('*, profiles:profiles(id, full_name, email, phone)')
-      .order('created_at', { ascending: false });
-    if (!error && data) setPayments(data);
+    try {
+      // First, let's check if there are any payments at all
+      const { data: countData, error: countError } = await supabase
+        .from('payments')
+        .select('id', { count: 'exact', head: true });
+      
+      console.log('Total payments in database:', countData?.length || 0);
+      
+      if (countError) {
+        console.error('Error counting payments:', countError);
+      }
+      
+      // Now try with the full query including foreign key relationships
+      const { data, error } = await supabase
+        .from('payments')
+        .select(`
+          *, 
+          profiles:profiles(id, full_name, email, phone),
+          voucher_slots!voucher_slot_id(id, exam_authority, exam_date, final_price),
+          appointment_slots!appointment_slot_id(id, exam_authority, exam_date, final_price)
+        `)
+        .order('created_at', { ascending: false });
+      
+      if (error) {
+        console.error('Error fetching payments with relationships:', error);
+        
+        // Fallback: fetch payments without foreign key relationships
+        const { data: fallbackData, error: fallbackError } = await supabase
+          .from('payments')
+          .select(`
+            *, 
+            profiles:profiles(id, full_name, email, phone)
+          `)
+          .order('created_at', { ascending: false });
+        
+        if (fallbackError) {
+          console.error('Error fetching payments (fallback):', fallbackError);
+          setPayments([]);
+        } else {
+          console.log('Payments fetched successfully (fallback):', fallbackData);
+          setPayments(fallbackData || []);
+        }
+      } else {
+        console.log('Payments fetched successfully:', data);
+        setPayments(data || []);
+      }
+    } catch (err) {
+      console.error('Unexpected error fetching payments:', err);
+      setPayments([]);
+    }
   };
 
   const fetchCoupons = async () => {
@@ -380,10 +430,49 @@ export default function AdminDashboard() {
   const handleApprovePayment = async (payment) => {
     setLoading(true);
     await supabase.from('payments').update({ status: 'approved' }).eq('id', payment.id);
+    
+    // Determine notification message based on payment type
+    let notificationMessage;
+    if (payment.voucher_slot_id) {
+      // This is a voucher payment - generate voucher code
+      try {
+        // Generate voucher code first
+        const { data: voucherCode, error: codeError } = await supabase.rpc('generate_voucher_code');
+        
+        if (codeError) {
+          console.error('Error generating voucher code:', codeError);
+          throw new Error('Failed to generate voucher code');
+        }
+        
+        // Update the voucher purchase with approved status and voucher code in one operation
+        // This will trigger the slot availability update
+        const { error: updateError } = await supabase
+          .from('voucher_purchases')
+          .update({ 
+            status: 'approved', // Update status to approved
+            voucher_code: voucherCode // Set the generated voucher code
+          })
+          .eq('payment_id', payment.id);
+        
+        if (updateError) {
+          console.error('Error updating voucher status and code:', updateError);
+          throw new Error('Failed to update voucher status and code');
+        }
+        
+        notificationMessage = '🎉 Your voucher payment has been approved! Your voucher code has been generated and is now available in your dashboard. You can use it to book your exam appointment.';
+      } catch (error) {
+        console.error('Error processing voucher approval:', error);
+        notificationMessage = '🎉 Your voucher payment has been approved! Your voucher code will be generated shortly and will appear in your dashboard.';
+      }
+    } else {
+      // This is a regular package payment
+      notificationMessage = 'Your payment has been approved. You can now submit your case.';
+    }
+    
     // Notify user
     await supabase.from('notifications').insert({
       user_id: payment.user_id,
-      message: 'Your payment has been approved. You can now submit your case.',
+      message: notificationMessage,
     });
     fetchPayments();
     setLoading(false);
@@ -392,10 +481,21 @@ export default function AdminDashboard() {
   const handleRejectPayment = async (payment) => {
     setLoading(true);
     await supabase.from('payments').update({ status: 'rejected' }).eq('id', payment.id);
+    
+    // Determine notification message based on payment type
+    let notificationMessage;
+    if (payment.voucher_slot_id) {
+      // This is a voucher payment
+      notificationMessage = '❌ Your voucher payment was rejected. Please contact support for assistance or try submitting a new payment.';
+    } else {
+      // This is a regular package payment
+      notificationMessage = 'Your payment was rejected. Please contact support.';
+    }
+    
     // Notify user
     await supabase.from('notifications').insert({
       user_id: payment.user_id,
-      message: 'Your payment was rejected. Please contact support.',
+      message: notificationMessage,
     });
     fetchPayments();
     setLoading(false);
@@ -1667,11 +1767,46 @@ function StatusHistory({ history, theme }) {
 }
 
 function PaymentsTable({ payments, loading, onApprove, onReject }) {
+  const handleRefreshPayments = async () => {
+    console.log('Manual refresh triggered');
+    // This will trigger the parent component to refetch payments
+    window.location.reload();
+  };
+
   return (
     <div>
-      <h3 className="text-2xl font-bold bg-gradient-to-r from-blue-400 to-indigo-500 bg-clip-text text-transparent mb-6">
-        Payment Management Center
-      </h3>
+      <div className="flex justify-between items-center mb-6">
+        <h3 className="text-2xl font-bold bg-gradient-to-r from-blue-400 to-indigo-500 bg-clip-text text-transparent">
+          Payment Management Center
+        </h3>
+        <button
+          onClick={handleRefreshPayments}
+          className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition-colors duration-200"
+        >
+          Refresh Payments
+        </button>
+      </div>
+      
+      {/* Debug Info */}
+      <div className="bg-gray-800/50 border border-gray-600 rounded-lg p-4 mb-6">
+        <h4 className="text-white font-semibold mb-2">Debug Information</h4>
+        <p className="text-gray-300 text-sm">Total payments loaded: {payments.length}</p>
+        <p className="text-gray-300 text-sm">Loading state: {loading ? 'Yes' : 'No'}</p>
+        {payments.length > 0 && (
+          <>
+            <p className="text-gray-300 text-sm">First payment ID: {payments[0].id}</p>
+            <div className="mt-2">
+              <p className="text-gray-300 text-sm font-semibold">Payment Types Breakdown:</p>
+              <ul className="text-gray-300 text-xs ml-4">
+                <li>• Voucher payments: {payments.filter(p => p.voucher_slot_id).length}</li>
+                <li>• Appointment payments: {payments.filter(p => p.appointment_slot_id).length}</li>
+                <li>• Package payments: {payments.filter(p => p.package_type || p.case_id).length}</li>
+                <li>• Other payments: {payments.filter(p => !p.voucher_slot_id && !p.appointment_slot_id && !p.package_type && !p.case_id).length}</li>
+              </ul>
+            </div>
+          </>
+        )}
+      </div>
       {loading ? (
         <div className="flex justify-center items-center py-12">
           <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
@@ -1684,6 +1819,7 @@ function PaymentsTable({ payments, loading, onApprove, onReject }) {
                 <th className="p-4 text-left rounded-tl-xl">User</th>
                 <th className="p-4 text-left">Email</th>
                 <th className="p-4 text-left">Phone</th>
+                <th className="p-4 text-left">Service Type</th>
                 <th className="p-4 text-left">Amount</th>
                 <th className="p-4 text-left">Screenshot</th>
                 <th className="p-4 text-left">Status</th>
@@ -1691,12 +1827,61 @@ function PaymentsTable({ payments, loading, onApprove, onReject }) {
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-800">
-              {payments.map(p => (
-                <tr key={p.id} className="hover:bg-gray-800/50 transition-colors duration-200">
-                  <td className="p-4 text-gray-300">{p.profiles?.full_name || '—'}</td>
-                  <td className="p-4 text-gray-300">{p.profiles?.email || '—'}</td>
-                  <td className="p-4 text-gray-300">{p.profiles?.phone || '—'}</td>
-                  <td className="p-4 text-gray-300">{p.amount}</td>
+              {payments.map(p => {
+                // Determine service type and details
+                let serviceType = 'Package';
+                let serviceDetails = '';
+                
+                if (p.voucher_slot_id && p.voucher_slots) {
+                  serviceType = 'Voucher';
+                  serviceDetails = `${p.voucher_slots.exam_authority} - ${new Date(p.voucher_slots.exam_date).toLocaleDateString()}`;
+                } else if (p.appointment_slot_id && p.appointment_slots) {
+                  serviceType = 'Appointment';
+                  serviceDetails = `${p.appointment_slots.exam_authority} - ${new Date(p.appointment_slots.exam_date).toLocaleDateString()}`;
+                } else if (p.package_type) {
+                  serviceType = 'Package';
+                  serviceDetails = CASE_TYPE_LABELS[p.package_type] || p.package_type;
+                } else if (p.voucher_slot_id) {
+                  // Fallback: we have voucher_slot_id but no relationship data
+                  serviceType = 'Voucher';
+                  serviceDetails = 'Voucher Purchase';
+                } else if (p.appointment_slot_id) {
+                  // Fallback: we have appointment_slot_id but no relationship data
+                  serviceType = 'Appointment';
+                  serviceDetails = 'Appointment Booking';
+                } else if (p.case_id) {
+                  serviceType = 'Package';
+                  serviceDetails = 'Case Package';
+                } else {
+                  // Default fallback for any other payment type
+                  serviceType = 'Package';
+                  serviceDetails = 'General Package';
+                }
+                
+                // Debug logging for each payment
+                console.log(`Payment ${p.id}:`, {
+                  serviceType,
+                  serviceDetails,
+                  voucher_slot_id: p.voucher_slot_id,
+                  appointment_slot_id: p.appointment_slot_id,
+                  package_type: p.package_type,
+                  case_id: p.case_id
+                });
+                
+                return (
+                  <tr key={p.id} className="hover:bg-gray-800/50 transition-colors duration-200">
+                    <td className="p-4 text-gray-300">{p.profiles?.full_name || '—'}</td>
+                    <td className="p-4 text-gray-300">{p.profiles?.email || '—'}</td>
+                    <td className="p-4 text-gray-300">{p.profiles?.phone || '—'}</td>
+                    <td className="p-4">
+                      <div className="text-gray-300">
+                        <div className="font-medium">{serviceType}</div>
+                        {serviceDetails && (
+                          <div className="text-sm text-gray-400">{serviceDetails}</div>
+                        )}
+                      </div>
+                    </td>
+                    <td className="p-4 text-gray-300">${p.amount}</td>
                   <td className="p-4">
                     {p.screenshot_url ? (
                       <a 
@@ -1735,7 +1920,8 @@ function PaymentsTable({ payments, loading, onApprove, onReject }) {
                     </div>
                   </td>
                 </tr>
-              ))}
+                );
+              })}
             </tbody>
           </table>
         </div>

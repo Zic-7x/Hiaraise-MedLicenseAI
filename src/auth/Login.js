@@ -29,38 +29,75 @@ export default function Login() {
     trackFormStart();
     
     // Check for verification success message in URL parameters
-    const params = new URLSearchParams(location.search);
-    const type = params.get('type');
-    const message = params.get('message'); // Supabase might include a message param
+    // Handle both query parameters (?param=value) and hash fragments (#param=value)
+    const urlParams = new URLSearchParams(location.search);
+    const hashParams = new URLSearchParams(location.hash.substring(1)); // Remove # from hash
+    
+    const type = urlParams.get('type') || hashParams.get('type');
+    const accessToken = urlParams.get('access_token') || hashParams.get('access_token');
+    const refreshToken = urlParams.get('refresh_token') || hashParams.get('refresh_token');
+    const message = urlParams.get('message') || hashParams.get('message');
 
-    if (type === 'email_change') {
-      // Handle email change verification success if needed
-      // For now, we focus on signup verification
-    } else if (type === 'signup') {
-      // This might not be the exact type param for signup verification, 
-      // need to confirm Supabase docs or test
-      // Let's rely on the presence of access_token and type=invite or recovery for now
-    }
+    console.log('URL parameters:', { 
+      type, 
+      accessToken: !!accessToken, 
+      refreshToken: !!refreshToken, 
+      message,
+      hash: location.hash,
+      search: location.search
+    });
 
-    // Supabase often redirects with type=invite or type=recovery, and an access_token
-    // after email verification (depending on the specific auth flow).
-    // A more robust way is to check for a session after the redirect.
-    const checkSessionForVerification = async () => {
-        const { data: { session }, error } = await supabase.auth.getSession();
-        if (session && session.user.email_confirmed_at) {
-            // Clear URL parameters to prevent the message from reappearing on refresh
-            navigate(location.pathname, { replace: true });
-            setMessage('Email verified successfully! You can now log in.');
+    // Handle email verification redirect with access tokens
+    const handleEmailVerification = async () => {
+      if (accessToken && refreshToken) {
+        console.log('Processing email verification with tokens');
+        try {
+          // Set the session using the tokens from URL
+          const { data, error } = await supabase.auth.setSession({
+            access_token: accessToken,
+            refresh_token: refreshToken
+          });
+
+          if (error) {
+            console.error('Error setting session:', error);
+            setMessage('Email verification failed. Please try again.');
+            setMessageType('error');
+            return;
+          }
+
+          if (data.session && data.session.user.email_confirmed_at) {
+            console.log('Email verified successfully, redirecting to dashboard');
+            // Clear URL parameters and redirect to dashboard
+            navigate('/dashboard/user', { replace: true });
+          } else {
+            console.log('Session established but email not confirmed yet');
+            setMessage('Email verification in progress. Please wait...');
             setMessageType('success');
-        } else if (error) {
-             console.error('Error checking session:', error);
+          }
+        } catch (error) {
+          console.error('Error during email verification:', error);
+          setMessage('Email verification failed. Please try again.');
+          setMessageType('error');
         }
+      } else {
+        // Check for existing session (fallback)
+        const checkSessionForVerification = async () => {
+          const { data: { session }, error } = await supabase.auth.getSession();
+          if (session && session.user.email_confirmed_at) {
+            console.log('Existing verified session found, redirecting to dashboard');
+            navigate('/dashboard/user', { replace: true });
+          } else if (error) {
+            console.error('Error checking session:', error);
+          }
+        };
+        checkSessionForVerification();
+      }
     };
 
-    // Check for session immediately on mount, in case of a redirect after verification
-    checkSessionForVerification();
+    // Handle email verification immediately on mount
+    handleEmailVerification();
 
-  }, [location.search, navigate, trackFormStart]); // Depend on location.search and navigate
+  }, [location.search, location.hash, navigate, trackFormStart]);
 
   const handleChange = (e) => {
     if (!formInteracted) {

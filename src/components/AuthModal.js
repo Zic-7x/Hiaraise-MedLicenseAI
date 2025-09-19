@@ -151,11 +151,20 @@ export default function AuthModal({ isOpen, onClose, initialMode = 'login', onSu
       setMessage('Successfully logged in!');
       setMessageType('success');
 
-      // Close modal and call success callback
-      setTimeout(() => {
+      // Close modal and call success callback after ensuring session is established
+      setTimeout(async () => {
+        // Double-check that session is properly established
+        const { data: { session } } = await supabase.auth.getSession();
+        if (session) {
         onClose();
         if (onSuccess) onSuccess();
-      }, 1000);
+        } else {
+          // If session is not established, show error
+          setError('Login successful but session not established. Please try again.');
+          setMessage('');
+          setMessageType('');
+        }
+      }, 1500); // Increased delay to ensure session is established
 
     } catch (error) {
       setError(error.message);

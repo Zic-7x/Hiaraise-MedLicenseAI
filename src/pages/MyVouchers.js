@@ -31,7 +31,7 @@ export default function MyVouchers() {
         .single();
       setProfile(profileData);
 
-      // Fetch approved vouchers
+      // Fetch approved vouchers (only those with voucher codes)
       const { data: approvedData, error: approvedError } = await supabase
         .from('voucher_purchases')
         .select(`
@@ -45,7 +45,8 @@ export default function MyVouchers() {
           )
         `)
         .eq('user_id', user.id)
-        .in('status', ['approved', 'purchased']) // Only show approved or purchased vouchers
+        .not('voucher_code', 'is', null) // Only show vouchers that have voucher codes (admin approved)
+        .in('status', ['approved', 'purchased']) // Show approved and purchased vouchers
         .order('created_at', { ascending: false });
       
       if (approvedError) {
@@ -54,7 +55,7 @@ export default function MyVouchers() {
         setVouchers(approvedData || []);
       }
 
-      // Fetch pending vouchers
+      // Fetch pending vouchers (those with pending status)
       const { data: pendingData, error: pendingError } = await supabase
         .from('voucher_purchases')
         .select(`
@@ -68,7 +69,7 @@ export default function MyVouchers() {
           )
         `)
         .eq('user_id', user.id)
-        .eq('status', 'pending') // Only show pending vouchers
+        .eq('status', 'pending') // Only show vouchers with pending status (awaiting admin approval)
         .order('created_at', { ascending: false });
       
       if (pendingError) {
@@ -228,7 +229,7 @@ export default function MyVouchers() {
             <li><strong>Click "Submit for Exam"</strong> - Use the button on your voucher</li>
             <li><strong>Follow Hiaraise workflow</strong> - Complete our submission process</li>
             <li><strong>Upload required documents</strong> - Submit all necessary paperwork</li>
-            <li><strong>Pay processing fees</strong> - Complete Hiaraise service payment</li>
+            <li><strong>Complete submission</strong> - Finish Hiaraise service process</li>
             <li><strong>Track your progress</strong> - Monitor status in your dashboard</li>
           </ul>
         </div>
@@ -365,8 +366,42 @@ export default function MyVouchers() {
                 <FiClock className="w-6 h-6 text-yellow-400 mr-3" />
                 Pending Approval ({pendingVouchers.length})
               </h2>
+              
+              {/* Pending Vouchers Info Banner */}
+              <div className="bg-gradient-to-r from-yellow-900/20 to-orange-900/20 border border-yellow-400/30 rounded-2xl p-6 mb-6">
+                <div className="flex items-start space-x-4">
+                  <div className="w-12 h-12 bg-gradient-to-r from-yellow-500 to-orange-500 rounded-xl flex items-center justify-center flex-shrink-0">
+                    <FiAlertCircle className="w-6 h-6 text-white" />
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="text-lg font-semibold text-white mb-2">Vouchers Awaiting Admin Approval</h3>
+                    <p className="text-yellow-200 text-sm mb-3">
+                      Your voucher purchases are currently being reviewed by our admin team. Once approved, your voucher codes will be generated and these vouchers will appear in your "Approved Vouchers" section below.
+                    </p>
+                    <div className="text-yellow-300 text-sm">
+                      <p className="font-semibold mb-1">What happens next:</p>
+                      <ul className="list-disc list-inside space-y-1 text-xs">
+                        <li>Admin reviews your payment verification</li>
+                        <li>Voucher code is generated upon approval</li>
+                        <li>You'll receive an email notification</li>
+                        <li>Voucher appears in "Approved Vouchers" section</li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
               <div className="space-y-4">
-                {pendingVouchers.map((voucher, index) => (
+                {pendingVouchers.map((voucher, index) => {
+                  const examDate = new Date(voucher.voucher_slots.exam_date);
+                  const dayOfWeek = examDate.toLocaleDateString('en-US', { weekday: 'long' });
+                  const formattedDate = examDate.toLocaleDateString('en-US', { 
+                    year: 'numeric', 
+                    month: 'long', 
+                    day: 'numeric' 
+                  });
+                  
+                  return (
                   <motion.div
                     key={voucher.id}
                     initial={{ opacity: 0, y: 20 }}
@@ -374,7 +409,7 @@ export default function MyVouchers() {
                     transition={{ duration: 0.5, delay: index * 0.1 }}
                     className="bg-gradient-to-r from-yellow-900/20 to-orange-900/20 border border-yellow-400/30 rounded-2xl p-6"
                   >
-                    <div className="flex items-center justify-between">
+                      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
                       <div className="flex items-center space-x-4">
                         <div className="w-12 h-12 bg-gradient-to-r from-yellow-500 to-orange-500 rounded-xl flex items-center justify-center">
                           <FiClock className="w-6 h-6 text-white" />
@@ -384,21 +419,31 @@ export default function MyVouchers() {
                             {voucher.voucher_slots.exam_authority} Exam Voucher
                           </h3>
                           <p className="text-yellow-300 text-sm">
-                            Submitted on {new Date(voucher.created_at).toLocaleDateString('en-US', { 
+                              Purchased on {new Date(voucher.created_at).toLocaleDateString('en-US', { 
                               year: 'numeric', 
                               month: 'long', 
                               day: 'numeric' 
                             })}
                           </p>
+                            <p className="text-yellow-200 text-sm">
+                              Exam Date: {dayOfWeek}, {formattedDate}
+                            </p>
+                            <p className="text-yellow-200 text-sm">
+                              Price: ${voucher.voucher_slots.final_price}
+                            </p>
                         </div>
                       </div>
                       <div className="text-right">
-                        <div className="text-yellow-300 font-semibold mb-1">Payment Verification</div>
-                        <div className="text-yellow-400 text-sm">Admin reviewing your payment</div>
+                          <div className="text-yellow-300 font-semibold mb-1">Status: Pending Approval</div>
+                          <div className="text-yellow-400 text-sm mb-2">Admin reviewing your payment</div>
+                          <div className="text-yellow-200 text-xs">
+                            Voucher code will be generated after approval
+                          </div>
                       </div>
                     </div>
                   </motion.div>
-                ))}
+                  );
+                })}
               </div>
             </motion.div>
           )}
@@ -431,7 +476,7 @@ export default function MyVouchers() {
                   <li>• <strong>Click "Submit for Exam"</strong> - Use the button on this voucher</li>
                   <li>• <strong>Follow Hiaraise workflow</strong> - Complete our submission process</li>
                   <li>• <strong>Upload required documents</strong> - Submit all necessary paperwork</li>
-                  <li>• <strong>Pay processing fees</strong> - Complete Hiaraise service payment</li>
+                  <li>• <strong>Complete submission</strong> - Finish Hiaraise service process</li>
                   <li>• <strong>Track your progress</strong> - Monitor status in your dashboard</li>
                 </ul>
               </div>
@@ -449,6 +494,7 @@ export default function MyVouchers() {
             <div className="mt-4 p-4 bg-amber-900/20 border border-amber-400/30 rounded-lg">
               <h4 className="text-amber-300 font-semibold mb-2">⚠️ Important Reminders</h4>
               <ul className="text-amber-200 text-sm space-y-1">
+                <li>• Voucher codes are issued only after admin approval of your payment</li>
                 <li>• Vouchers are valid only for the specific date and time selected</li>
                 <li>• Submit through Hiaraise before voucher expiration</li>
                 <li>• Voucher codes are unique and cannot be transferred after use</li>
@@ -473,7 +519,7 @@ export default function MyVouchers() {
                 </h3>
                 <p className="text-gray-300 mb-8 max-w-md mx-auto">
                   {pendingVouchers.length > 0 
-                    ? 'You have pending voucher requests awaiting admin approval. Once approved, they will appear here.'
+                    ? 'You have pending voucher requests awaiting admin approval. Once approved, they will appear here with voucher codes.'
                     : 'You haven\'t purchased any exam vouchers yet. Browse our available slots and start saving on your exam fees.'
                   }
                 </p>

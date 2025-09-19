@@ -109,7 +109,7 @@ export default function ProtectedLayout() {
           console.log('Authentication successful, user can continue on current page');
         };
         openAuthModal('login', onAuthSuccess);
-      }, 500); // Delay to avoid premature modal during session refresh
+      }, 1000); // Increased delay to avoid conflicts with other auth flows
       return () => clearTimeout(timeout);
     }
   }, [session, loading, openAuthModal]);

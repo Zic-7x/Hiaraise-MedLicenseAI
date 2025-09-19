@@ -116,7 +116,8 @@ export default function AdminVoucherPurchaseDashboard() {
           className="bg-white/5 border border-white/20 rounded-lg text-white px-3 py-2 focus:outline-none focus:ring-2 focus:ring-cyan-500"
         >
           <option value="all">All Status</option>
-          <option value="purchased">Purchased</option>
+          <option value="pending">Pending</option>
+          <option value="approved">Approved</option>
           <option value="used">Used</option>
           <option value="expired">Expired</option>
           <option value="cancelled">Cancelled</option>
@@ -124,15 +125,21 @@ export default function AdminVoucherPurchaseDashboard() {
       </div>
 
       {/* Summary Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+      <div className="grid grid-cols-1 md:grid-cols-5 gap-4 mb-8">
         <div className="bg-blue-900/20 border border-blue-400/30 rounded-lg p-4">
           <div className="text-blue-300 text-sm font-medium">Total Purchases</div>
           <div className="text-2xl font-bold text-white">{total}</div>
         </div>
-        <div className="bg-green-900/20 border border-green-400/30 rounded-lg p-4">
-          <div className="text-green-300 text-sm font-medium">Active Vouchers</div>
+        <div className="bg-yellow-900/20 border border-yellow-400/30 rounded-lg p-4">
+          <div className="text-yellow-300 text-sm font-medium">Pending Approval</div>
           <div className="text-2xl font-bold text-white">
-            {purchases.filter(p => getPurchaseStatus(p).status === 'active').length}
+            {purchases.filter(p => p.status === 'pending').length}
+          </div>
+        </div>
+        <div className="bg-green-900/20 border border-green-400/30 rounded-lg p-4">
+          <div className="text-green-300 text-sm font-medium">Approved Vouchers</div>
+          <div className="text-2xl font-bold text-white">
+            {purchases.filter(p => p.status === 'approved').length}
           </div>
         </div>
         <div className="bg-purple-900/20 border border-purple-400/30 rounded-lg p-4">
@@ -248,13 +255,13 @@ export default function AdminVoucherPurchaseDashboard() {
                         <div className="space-y-1">
                           <div className="flex items-center space-x-2">
                             <FiDollarSign className="w-4 h-4 text-green-400" />
-                            <span className="text-white font-semibold">${purchase.final_price}</span>
+                            <span className="text-white font-semibold">${purchase.final_price_at_purchase || 0}</span>
                           </div>
                           <div className="text-xs text-gray-400">
-                            Saved: ${purchase.discount_amount}
+                            Exam Authority: {purchase.exam_authority || slot?.exam_authority || 'N/A'}
                           </div>
-                          <div className="text-xs text-red-300">
-                            Original: ${purchase.original_price}
+                          <div className="text-xs text-blue-300">
+                            Purchase Date: {format(new Date(purchase.created_at), 'MMM d, yyyy')}
                           </div>
                         </div>
                       </td>

@@ -119,6 +119,9 @@ Please arrive 30 minutes early and bring your voucher code and valid ID.`;
                   <span className="block mt-2 text-yellow-300 font-semibold">
                     🔍 Our admin team is verifying your payment. Your voucher code will be issued once approved (usually takes a few seconds to a few minutes).
                   </span>
+                  <span className="block mt-2 text-blue-300 font-semibold">
+                    📋 Important: Voucher codes are only issued after admin approval of your payment.
+                  </span>
                 </p>
               </>
             ) : (
@@ -228,45 +231,125 @@ Please arrive 30 minutes early and bring your voucher code and valid ID.`;
             )}
 
             {/* Important Instructions */}
-            <div className={`rounded-lg p-3 mb-4 ${
+            <div className={`rounded-lg p-4 mb-4 ${
               isPendingApproval 
                 ? 'bg-yellow-900/20 border border-yellow-400/30' 
                 : 'bg-amber-900/20 border border-amber-400/30'
             }`}>
-              <h5 className={`font-semibold mb-2 text-sm ${
+              <h5 className={`font-semibold mb-3 text-sm ${
                 isPendingApproval ? 'text-yellow-300' : 'text-amber-300'
               }`}>
-                {isPendingApproval ? '⏳ Payment Verification Status:' : '📋 Important Instructions:'}
+                {isPendingApproval ? '⏳ Payment Verification Status:' : '📋 How to Use Your Voucher:'}
               </h5>
-              <ul className={`text-xs space-y-1 text-left ${
+              <ul className={`text-xs space-y-2 text-left ${
                 isPendingApproval ? 'text-yellow-200' : 'text-amber-200'
               }`}>
                 {isPendingApproval ? (
                   <>
                     <li>• Your payment is being verified by our admin team</li>
-                    <li>• Voucher code will be issued once payment is approved</li>
+                    <li>• Voucher code will be issued only after admin approval</li>
                     <li>• You will receive an email notification when approved</li>
                     <li>• Usually takes a few seconds to a few minutes</li>
                     <li>• Check your dashboard for status updates</li>
+                    <li>• Voucher codes are not generated until payment is verified</li>
                   </>
                 ) : (
                   <>
-                    <li>• Arrive 30 minutes before your exam time</li>
-                    <li>• Bring a valid government-issued ID</li>
-                    <li>• Present your voucher code at the exam center</li>
-                    <li>• Keep this confirmation as backup</li>
+                    <li>• <strong>Step 1:</strong> Go to your dashboard and click "My Vouchers"</li>
+                    <li>• <strong>Step 2:</strong> Find your approved voucher and click "Submit for Exam"</li>
+                    <li>• <strong>Step 3:</strong> Follow the Hiaraise submission process to get your exam pass</li>
+                    <li>• <strong>Step 4:</strong> Upload required documents and complete submission</li>
+                    <li>• <strong>Step 5:</strong> Track your progress in the dashboard</li>
+                    <li>• <strong>Important:</strong> Voucher is valid until {voucherData.examDate} at {voucherData.examTime.split(' - ')[1]}</li>
                   </>
                 )}
               </ul>
             </div>
 
+            {/* Additional Instructions for Pending Vouchers */}
+            {isPendingApproval && (
+              <div className="bg-gradient-to-r from-blue-900/20 to-purple-900/20 border border-blue-400/30 rounded-lg p-4 mb-4">
+                <h5 className="text-blue-300 font-semibold mb-3 text-sm">📋 What to Expect After Approval:</h5>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+                  <div>
+                    <h6 className="text-blue-200 font-semibold mb-2">🎯 Step 1: After Approval</h6>
+                    <ul className="text-blue-100 space-y-1">
+                      <li>• You'll receive an email notification</li>
+                      <li>• Voucher code will be generated</li>
+                      <li>• Voucher appears in "My Vouchers"</li>
+                      <li>• You can start the submission process</li>
+                    </ul>
+                  </div>
+                  <div>
+                    <h6 className="text-purple-200 font-semibold mb-2">📱 Step 2: Using Your Voucher</h6>
+                    <ul className="text-purple-100 space-y-1">
+                      <li>• Go to "My Vouchers" in your dashboard</li>
+                      <li>• Click "Submit for Exam" on your voucher</li>
+                      <li>• Follow Hiaraise submission process</li>
+                      <li>• Upload documents and pay fees</li>
+                    </ul>
+                  </div>
+                </div>
+                <div className="mt-3 p-3 bg-yellow-900/20 border border-yellow-400/30 rounded-lg">
+                  <h6 className="text-yellow-300 font-semibold mb-1 text-xs">⏰ Important:</h6>
+                  <ul className="text-yellow-200 text-xs space-y-1">
+                    <li>• Voucher is valid until {voucherData.examDate} at {voucherData.examTime.split(' - ')[1]}</li>
+                    <li>• Submit through Hiaraise before expiration</li>
+                    <li>• Check your dashboard regularly for updates</li>
+                    <li>• Contact support if you have any questions</li>
+                  </ul>
+                </div>
+              </div>
+            )}
+
+            {/* Additional Instructions for Approved Vouchers */}
+            {!isPendingApproval && (
+              <div className="bg-gradient-to-r from-blue-900/20 to-purple-900/20 border border-blue-400/30 rounded-lg p-4 mb-4">
+                <h5 className="text-blue-300 font-semibold mb-3 text-sm">🎯 Complete Voucher Usage Process:</h5>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+                  <div>
+                    <h6 className="text-blue-200 font-semibold mb-2">📋 Step 1: Prepare Your Voucher</h6>
+                    <ul className="text-blue-100 space-y-1">
+                      <li>• Print your voucher from "My Vouchers"</li>
+                      <li>• Save voucher code: {voucherData.voucherCode}</li>
+                      <li>• Verify exam details and date</li>
+                      <li>• Prepare valid government-issued ID</li>
+                    </ul>
+                  </div>
+                  <div>
+                    <h6 className="text-purple-200 font-semibold mb-2">🎯 Step 2: Submit Through Hiaraise</h6>
+                    <ul className="text-purple-100 space-y-1">
+                      <li>• Click "Submit for Exam" on your voucher</li>
+                      <li>• Complete Hiaraise submission process</li>
+                      <li>• Upload all required documents</li>
+                    </ul>
+                  </div>
+                </div>
+                <div className="mt-3 p-3 bg-green-900/20 border border-green-400/30 rounded-lg">
+                  <h6 className="text-green-300 font-semibold mb-1 text-xs">✅ What Happens Next:</h6>
+                  <ul className="text-green-200 text-xs space-y-1">
+                    <li>• Hiaraise handles all exam registration and scheduling</li>
+                    <li>• We coordinate with exam centers on your behalf</li>
+                    <li>• You receive exam pass confirmation via email</li>
+                    <li>• Track your application status in real-time</li>
+                  </ul>
+                </div>
+              </div>
+            )}
+
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
-              <a href="/dashboard" className="inline-block px-5 py-2 bg-gradient-to-r from-blue-500 to-indigo-600 text-white rounded-xl font-semibold shadow hover:shadow-lg transition-all duration-300 text-sm" onClick={handleGoToDashboard}>
+              <a href="/dashboard/user" className="inline-block px-5 py-2 bg-gradient-to-r from-blue-500 to-indigo-600 text-white rounded-xl font-semibold shadow hover:shadow-lg transition-all duration-300 text-sm" onClick={handleGoToDashboard}>
                 Go to Dashboard
               </a>
-              <a href="/voucher-system" className="inline-block px-5 py-2 bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-xl font-semibold shadow hover:shadow-lg transition-all duration-300 text-sm" onClick={handleGoToVouchers}>
-                Buy Another Voucher
-              </a>
+              {!isPendingApproval ? (
+                <a href="/my-vouchers" className="inline-block px-5 py-2 bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-xl font-semibold shadow hover:shadow-lg transition-all duration-300 text-sm">
+                  View My Vouchers
+                </a>
+              ) : (
+                <a href="/voucher-system" className="inline-block px-5 py-2 bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-xl font-semibold shadow hover:shadow-lg transition-all duration-300 text-sm" onClick={handleGoToVouchers}>
+                  Buy Another Voucher
+                </a>
+              )}
             </div>
           </div>
         ) : (
@@ -284,7 +367,7 @@ Please arrive 30 minutes early and bring your voucher code and valid ID.`;
                 You will receive a confirmation email once your payment is verified. After verification, you can proceed with submitting your case.
               </p>
             </div>
-            <a href="/dashboard" className="inline-block mt-2 px-5 py-2 bg-gradient-to-r from-blue-500 to-indigo-600 text-white rounded-xl font-semibold shadow hover:shadow-lg transition-all duration-300 text-sm" onClick={handleGoToDashboard}>
+            <a href="/dashboard/user" className="inline-block mt-2 px-5 py-2 bg-gradient-to-r from-blue-500 to-indigo-600 text-white rounded-xl font-semibold shadow hover:shadow-lg transition-all duration-300 text-sm" onClick={handleGoToDashboard}>
               Go to Dashboard
             </a>
           </div>

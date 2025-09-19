@@ -267,12 +267,20 @@ export default function Licenses() {
                     </ul>
                   </div>
 
-                  <Link
-                    to={license.link}
-                    className="block w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-semibold py-3 px-6 rounded-lg transition-all duration-300 transform hover:scale-105 text-center"
-                  >
-                    Learn More
-                  </Link>
+                  <div className="space-y-3">
+                    <Link
+                      to={license.link}
+                      className="block w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-semibold py-3 px-6 rounded-lg transition-all duration-300 transform hover:scale-105 text-center"
+                    >
+                      Learn More
+                    </Link>
+                    <Link
+                      to="/pricing"
+                      className="block w-full bg-gradient-to-r from-green-600 to-blue-600 hover:from-green-700 hover:to-blue-700 text-white font-semibold py-3 px-6 rounded-lg transition-all duration-300 transform hover:scale-105 text-center"
+                    >
+                      Get License
+                    </Link>
+                  </div>
                 </div>
               ))}
             </div>
@@ -318,12 +326,20 @@ export default function Licenses() {
                     </ul>
                   </div>
 
-                  <Link
-                    to={license.link}
-                    className="block w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-semibold py-3 px-6 rounded-lg transition-all duration-300 transform hover:scale-105 text-center"
-                  >
-                    Learn More
-                  </Link>
+                  <div className="space-y-3">
+                    <Link
+                      to={license.link}
+                      className="block w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-semibold py-3 px-6 rounded-lg transition-all duration-300 transform hover:scale-105 text-center"
+                    >
+                      Learn More
+                    </Link>
+                    <Link
+                      to="/pricing"
+                      className="block w-full bg-gradient-to-r from-green-600 to-blue-600 hover:from-green-700 hover:to-blue-700 text-white font-semibold py-3 px-6 rounded-lg transition-all duration-300 transform hover:scale-105 text-center"
+                    >
+                      Get License
+                    </Link>
+                  </div>
                 </div>
               ))}
             </div>
@@ -369,12 +385,20 @@ export default function Licenses() {
                     </ul>
                   </div>
 
-                  <Link
-                    to={license.link}
-                    className="block w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-semibold py-3 px-6 rounded-lg transition-all duration-300 transform hover:scale-105 text-center"
-                  >
-                    Learn More
-                  </Link>
+                  <div className="space-y-3">
+                    <Link
+                      to={license.link}
+                      className="block w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-semibold py-3 px-6 rounded-lg transition-all duration-300 transform hover:scale-105 text-center"
+                    >
+                      Learn More
+                    </Link>
+                    <Link
+                      to="/pricing"
+                      className="block w-full bg-gradient-to-r from-green-600 to-blue-600 hover:from-green-700 hover:to-blue-700 text-white font-semibold py-3 px-6 rounded-lg transition-all duration-300 transform hover:scale-105 text-center"
+                    >
+                      Get License
+                    </Link>
+                  </div>
                 </div>
               ))}
             </div>

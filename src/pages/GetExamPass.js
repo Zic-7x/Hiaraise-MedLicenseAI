@@ -59,7 +59,7 @@ export default function GetExamPass() {
           )
         `)
         .eq('voucher_code', code.toUpperCase())
-        .eq('status', 'purchased')
+        .eq('status', 'approved') // Check for approved vouchers (after admin approval)
         .single();
 
       if (error) {

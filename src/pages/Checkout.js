@@ -214,44 +214,62 @@ const PaymentVerificationLoading = ({ isVisible, state, onTryAgain, tryAgainDisa
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       className="fixed inset-0 z-50 flex items-center justify-center"
-      style={{ background: 'linear-gradient(135deg, rgba(30,41,59,0.95) 0%, rgba(67,56,202,0.92) 100%)', backdropFilter: 'blur(8px)' }}
+      style={{ 
+        background: 'linear-gradient(135deg, rgba(15,23,42,0.85) 0%, rgba(30,41,59,0.90) 25%, rgba(67,56,202,0.88) 75%, rgba(99,102,241,0.85) 100%)', 
+        backdropFilter: 'blur(12px)',
+        WebkitBackdropFilter: 'blur(12px)'
+      }}
     >
+      {/* Enhanced glass effect overlay */}
+      <div className="absolute inset-0 bg-gradient-to-br from-white/5 via-transparent to-white/10 pointer-events-none" />
+      
       <motion.div
-        initial={{ scale: 0.95, opacity: 0 }}
-        animate={{ scale: 1, opacity: 1 }}
-        exit={{ scale: 0.95, opacity: 0 }}
-        transition={{ duration: 0.3 }}
-        className="bg-gradient-to-br from-blue-900/80 via-purple-900/90 to-slate-900/90 border border-blue-400/20 rounded-3xl p-8 md:p-12 text-center shadow-2xl max-w-md mx-4 relative"
-        style={{ boxShadow: '0 8px 40px 0 rgba(67,56,202,0.25)' }}
+        initial={{ scale: 0.9, opacity: 0, y: 20 }}
+        animate={{ scale: 1, opacity: 1, y: 0 }}
+        exit={{ scale: 0.9, opacity: 0, y: 20 }}
+        transition={{ duration: 0.4, ease: "easeOut" }}
+        className="relative bg-white/10 backdrop-blur-xl border border-white/20 rounded-3xl p-8 md:p-12 text-center shadow-2xl max-w-md mx-4 overflow-hidden"
+        style={{ 
+          boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25), 0 0 0 1px rgba(255, 255, 255, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.1)',
+          background: 'linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 50%, rgba(255,255,255,0.08) 100%)'
+        }}
       >
-        {/* Animated floating gradient ring */}
-        <div className="absolute -top-8 left-1/2 -translate-x-1/2 w-32 h-8 bg-gradient-to-r from-cyan-400/30 via-purple-400/30 to-pink-400/30 blur-2xl rounded-full opacity-60 animate-pulse" />
+        {/* Enhanced animated floating gradient rings */}
+        <div className="absolute -top-12 left-1/2 -translate-x-1/2 w-40 h-12 bg-gradient-to-r from-cyan-400/20 via-purple-400/30 to-pink-400/20 blur-3xl rounded-full opacity-70 animate-pulse" />
+        <div className="absolute -top-8 left-1/2 -translate-x-1/2 w-32 h-8 bg-gradient-to-r from-blue-400/25 via-indigo-400/25 to-purple-400/25 blur-2xl rounded-full opacity-60 animate-pulse" style={{ animationDelay: '0.5s' }} />
+        
+        {/* Glass effect inner glow */}
+        <div className="absolute inset-0 bg-gradient-to-br from-white/5 via-transparent to-white/10 rounded-3xl pointer-events-none" />
         {state === 'loading' && (
           <>
-            <div className="mb-6">
+            <div className="mb-6 relative z-10">
               <DecentSpinner />
-              <h2 className="text-2xl md:text-3xl font-bold text-white mb-2 mt-6">Verifying Payment</h2>
-              <p className="text-blue-200 text-sm md:text-base">Please wait while we verify your payment...</p>
+              <h2 className="text-2xl md:text-3xl font-bold text-white mb-2 mt-6 drop-shadow-lg">Verifying Payment</h2>
+              <p className="text-blue-100 text-sm md:text-base drop-shadow-md">Please wait while we verify your payment...</p>
             </div>
           </>
         )}
         {state === 'fail' && (
           <>
-            <div className="mb-6 flex flex-col items-center">
+            <div className="mb-6 flex flex-col items-center relative z-10">
               <span className="relative flex items-center justify-center w-24 h-24 md:w-28 md:h-28 mx-auto mb-4">
-                <span className="absolute inline-flex h-full w-full rounded-full bg-gradient-to-tr from-yellow-400/30 via-yellow-500/20 to-yellow-600/10 animate-pulse opacity-80"></span>
-                <span className="absolute inline-flex h-full w-full rounded-full bg-yellow-900/40 border-4 border-yellow-400/20 shadow-lg"></span>
-                <FiAlertCircle className="relative z-10 text-yellow-300 drop-shadow-lg" style={{ fontSize: '3.5rem', filter: 'drop-shadow(0 0 8px #fde04788)' }} />
+                <span className="absolute inline-flex h-full w-full rounded-full bg-gradient-to-tr from-yellow-400/40 via-yellow-500/30 to-yellow-600/20 animate-pulse opacity-90"></span>
+                <span className="absolute inline-flex h-full w-full rounded-full bg-yellow-900/50 border-4 border-yellow-400/30 shadow-xl backdrop-blur-sm"></span>
+                <FiAlertCircle className="relative z-10 text-yellow-200 drop-shadow-lg" style={{ fontSize: '3.5rem', filter: 'drop-shadow(0 0 12px #fde047aa)' }} />
               </span>
-              <h2 className="text-2xl md:text-3xl font-bold text-yellow-200 mb-2">Unable to verify payment automatically.</h2>
-              <p className="text-gray-200 text-sm md:text-base mb-4">Please try again or go back to payment details.</p>
+              <h2 className="text-2xl md:text-3xl font-bold text-yellow-100 mb-2 drop-shadow-lg">Unable to verify payment. </h2>
+              <p className="text-gray-100 text-sm md:text-base mb-6 drop-shadow-md">Please try again or go back to payment details and make payment if you haven't made yet.</p>
               <div className="flex flex-col sm:flex-row gap-3 justify-center">
                 <motion.button
                   whileHover={!tryAgainDisabled ? { scale: 1.05 } : {}}
                   whileTap={!tryAgainDisabled ? { scale: 0.97 } : {}}
                   onClick={onTryAgain}
-                  className={`px-6 py-2 rounded-xl font-semibold text-white bg-gradient-to-r from-blue-500 to-indigo-600 shadow-lg transition-colors duration-300 disabled:opacity-50 disabled:cursor-not-allowed text-base tracking-wide`}
+                  className={`px-6 py-3 rounded-xl font-semibold text-white bg-gradient-to-r from-blue-500/90 to-indigo-600/90 shadow-xl backdrop-blur-sm transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed text-base tracking-wide border border-white/20 hover:shadow-2xl`}
                   disabled={tryAgainDisabled}
+                  style={{ 
+                    background: 'linear-gradient(135deg, rgba(59,130,246,0.9) 0%, rgba(99,102,241,0.9) 100%)',
+                    boxShadow: '0 8px 32px rgba(59,130,246,0.3), inset 0 1px 0 rgba(255,255,255,0.2)'
+                  }}
                 >
                   {tryAgainDisabled ? `Verify Again (${tryAgainSeconds}s)` : 'Verify Again'}
                 </motion.button>
@@ -259,7 +277,11 @@ const PaymentVerificationLoading = ({ isVisible, state, onTryAgain, tryAgainDisa
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.97 }}
                   onClick={() => { if (onBack) { onBack(); } }}
-                  className="px-6 py-2 rounded-xl font-semibold text-white bg-gradient-to-r from-purple-500 to-pink-600 shadow-lg transition-all duration-300 text-base tracking-wide border-2 border-white/10"
+                  className="px-6 py-3 rounded-xl font-semibold text-white bg-gradient-to-r from-purple-500/90 to-pink-600/90 shadow-xl backdrop-blur-sm transition-all duration-300 text-base tracking-wide border border-white/20 hover:shadow-2xl"
+                  style={{ 
+                    background: 'linear-gradient(135deg, rgba(168,85,247,0.9) 0%, rgba(236,72,153,0.9) 100%)',
+                    boxShadow: '0 8px 32px rgba(168,85,247,0.3), inset 0 1px 0 rgba(255,255,255,0.2)'
+                  }}
                 >
                   Go Back & Make Payment
                 </motion.button>
@@ -269,14 +291,14 @@ const PaymentVerificationLoading = ({ isVisible, state, onTryAgain, tryAgainDisa
         )}
         {state === 'final_fail' && (
           <>
-            <div className="mb-6 flex flex-col items-center">
+            <div className="mb-6 flex flex-col items-center relative z-10">
               <span className="relative flex items-center justify-center w-24 h-24 md:w-28 md:h-28 mx-auto mb-4">
-                <span className="absolute inline-flex h-full w-full rounded-full bg-gradient-to-tr from-red-400/30 via-red-500/20 to-red-600/10 animate-pulse opacity-80"></span>
-                <span className="absolute inline-flex h-full w-full rounded-full bg-red-900/40 border-4 border-red-400/20 shadow-lg"></span>
-                <FiAlertCircle className="relative z-10 text-red-300 drop-shadow-lg" style={{ fontSize: '3.5rem', filter: 'drop-shadow(0 0 8px #f8717188)' }} />
+                <span className="absolute inline-flex h-full w-full rounded-full bg-gradient-to-tr from-red-400/40 via-red-500/30 to-red-600/20 animate-pulse opacity-90"></span>
+                <span className="absolute inline-flex h-full w-full rounded-full bg-red-900/50 border-4 border-red-400/30 shadow-xl backdrop-blur-sm"></span>
+                <FiAlertCircle className="relative z-10 text-red-200 drop-shadow-lg" style={{ fontSize: '3.5rem', filter: 'drop-shadow(0 0 12px #f87171aa)' }} />
               </span>
-              <h2 className="text-2xl md:text-3xl font-bold text-red-200 mb-2">Payment not Detected</h2>
-              <p className="text-gray-200 text-sm md:text-base">Please upload payment proof.</p>
+              <h2 className="text-2xl md:text-3xl font-bold text-red-100 mb-2 drop-shadow-lg">Payment not Detected</h2>
+              <p className="text-gray-100 text-sm md:text-base drop-shadow-md">Please upload payment proof.</p>
             </div>
           </>
         )}
@@ -1544,11 +1566,11 @@ export default function Checkout() {
           slot_id: voucherSlot.id,
           user_id: user.id,
           payment_id: payment.id,
-          voucher_code: null, // Will be generated by admin after approval
+          // Don't set voucher_code - it will be generated by admin after approval
           exam_authority: voucherSlot.exam_authority,
           final_price_at_purchase: voucherSlot.final_price,
           expires_at: voucherSlot.slot_expires_at || new Date(voucherSlot.exam_date + 'T' + voucherSlot.end_time).toISOString(),
-          status: 'purchased' // Mark as purchased to trigger slot availability update
+          status: 'pending' // Mark as pending until admin approval
         };
         const { data: voucher, error: voucherError } = await supabase
           .from('voucher_purchases')
@@ -1571,7 +1593,7 @@ export default function Checkout() {
         });
         
         setSubmitted(true);
-        setMessage(`✅ Voucher Purchase Successful! Your ${voucherSlot.exam_authority} voucher has been purchased and the slot is now reserved for you. Your voucher code will be generated shortly. Redirecting to confirmation page...`);
+        setMessage(`✅ Voucher Purchase Successful! Your ${voucherSlot.exam_authority} voucher has been purchased and the slot is now reserved for you. Your voucher code will be generated after admin approval. Redirecting to confirmation page...`);
         
         // Add a small delay to ensure the success message is visible before redirect
         setTimeout(() => {
@@ -1584,7 +1606,7 @@ export default function Checkout() {
               examDate: voucherSlot.exam_date,
               examTime: `${voucherSlot.start_time.slice(0,5)} - ${voucherSlot.end_time.slice(0,5)}`,
               finalPrice: voucherSlot.final_price,
-              status: 'purchased',
+              status: 'pending', // Changed from 'purchased' to 'pending' to indicate awaiting approval
               paymentId: payment.id
             } 
           });

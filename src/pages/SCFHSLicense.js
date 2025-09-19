@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { FaWhatsapp } from 'react-icons/fa';
 import { useAnalytics } from '../utils/useAnalytics';
 import { trackButtonClick } from '../utils/analytics';
@@ -330,6 +330,20 @@ export default function SCFHSLicense() {
                 </div>
               </div>
 
+              {/* Get License Button after Step 3 */}
+              <div className="bg-gradient-to-r from-green-900/20 to-blue-900/20 backdrop-blur-xl border border-green-500/30 rounded-xl p-6 text-center">
+                <h3 className="text-xl font-semibold text-white mb-3">Ready to Start Your SCFHS License Journey?</h3>
+                <p className="text-gray-300 mb-4">
+                  Get professional assistance with your SCFHS license application and save time and money.
+                </p>
+                <Link
+                  to="/pricing"
+                  className="inline-block bg-gradient-to-r from-green-600 to-blue-600 hover:from-green-700 hover:to-blue-700 text-white font-semibold py-3 px-8 rounded-lg transition-all duration-300 transform hover:scale-105"
+                >
+                  Get License Services
+                </Link>
+              </div>
+
               {/* Step 4 */}
               <div className="bg-white/5 backdrop-blur-xl border border-white/20 rounded-xl p-6">
                 <div className="flex items-start space-x-4">
@@ -378,6 +392,20 @@ export default function SCFHSLicense() {
                     </div>
                   </div>
                 </div>
+              </div>
+
+              {/* Get License Button after Step 5 */}
+              <div className="bg-gradient-to-r from-green-900/20 to-blue-900/20 backdrop-blur-xl border border-green-500/30 rounded-xl p-6 text-center">
+                <h3 className="text-xl font-semibold text-white mb-3">Need Help with Final Registration?</h3>
+                <p className="text-gray-300 mb-4">
+                  Our experts can guide you through the final steps of your SCFHS license process.
+                </p>
+                <Link
+                  to="/pricing"
+                  className="inline-block bg-gradient-to-r from-green-600 to-blue-600 hover:from-green-700 hover:to-blue-700 text-white font-semibold py-3 px-8 rounded-lg transition-all duration-300 transform hover:scale-105"
+                >
+                  Get License Services
+                </Link>
               </div>
             </div>
           </section>
@@ -443,6 +471,20 @@ export default function SCFHSLicense() {
                   <strong>Important:</strong> Final registration fees in Saudi Arabia are typically paid by your employer 
                   (Saudi healthcare facility). You only need to pay the initial application fees from Pakistan.
                 </p>
+              </div>
+
+              {/* Get License Button after Price Breakdown */}
+              <div className="mt-6 bg-gradient-to-r from-green-900/20 to-blue-900/20 backdrop-blur-xl border border-green-500/30 rounded-xl p-6 text-center">
+                <h3 className="text-xl font-semibold text-white mb-3">Save Money with Our License Services</h3>
+                <p className="text-gray-300 mb-4">
+                  Get exclusive discounts and professional assistance to reduce your SCFHS license costs.
+                </p>
+                <Link
+                  to="/pricing"
+                  className="inline-block bg-gradient-to-r from-green-600 to-blue-600 hover:from-green-700 hover:to-blue-700 text-white font-semibold py-3 px-8 rounded-lg transition-all duration-300 transform hover:scale-105"
+                >
+                  Get License Services
+                </Link>
               </div>
             </div>
           </section>
