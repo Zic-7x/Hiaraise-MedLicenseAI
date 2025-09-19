@@ -145,21 +145,21 @@ export default function StartLicense() {
           "@type": "WebPage",
           "name": "Start License Process | Hiaraise",
           "description": "Begin your medical licensing journey with Hiaraise. Enjoy expert support, AI-powered accuracy, and maximize your chances for exam exemption and direct licensing in UAE, Qatar, and Saudi Arabia.",
-          "url": "https://app.hiaraise.com/start-license",
+          "url": "https://hiaraise.com/start-license",
           "breadcrumb": {
             "@type": "BreadcrumbList",
             "itemListElement": [
-              { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://app.hiaraise.com/" },
-              { "@type": "ListItem", "position": 2, "name": "Start License", "item": "https://app.hiaraise.com/start-license" }
+              { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://hiaraise.com/" },
+              { "@type": "ListItem", "position": 2, "name": "Start License", "item": "https://hiaraise.com/start-license" }
             ]
           },
           "publisher": {
             "@type": "Organization",
             "name": "Hiaraise AI",
-            "url": "https://app.hiaraise.com/",
+            "url": "https://hiaraise.com/",
             "logo": {
               "@type": "ImageObject",
-              "url": "https://app.hiaraise.com/logo.png"
+              "url": "https://hiaraise.com/logo.png"
             }
           }
         })}</script>

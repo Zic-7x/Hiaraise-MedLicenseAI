@@ -201,7 +201,7 @@ export default function PrometricVouchers() {
         <meta name="keywords" content="buy Prometric voucher, Prometric exam voucher lowest price, Prometric voucher discount, Prometric exam voucher cheap, Prometric voucher resell, earn money Prometric voucher, Prometric voucher for clients, Prometric exam booking discount, Prometric medical license voucher cheap, Prometric voucher reselling, Prometric exam voucher buy, Prometric voucher purchase" />
         <meta property="og:title" content="Prometric Vouchers - Exclusive Discounts & Flexible Scheduling" />
         <meta property="og:description" content="Discover exclusive Prometric vouchers with up to 50% discount. Flexible scheduling, instant delivery, and lifetime validity." />
-        <meta property="og:url" content="https://app.hiaraise.com/prometric-vouchers" />
+        <meta property="og:url" content="https://hiaraise.com/prometric-vouchers" />
         <meta property="og:type" content="website" />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="Prometric Vouchers - Exclusive Discounts" />
@@ -211,11 +211,11 @@ export default function PrometricVouchers() {
           "@type": "Service",
           "name": "Prometric Exam Vouchers",
           "description": "Exclusive Prometric exam vouchers with up to 50% discount, flexible scheduling, and instant delivery.",
-          "url": "https://app.hiaraise.com/prometric-vouchers",
+          "url": "https://hiaraise.com/prometric-vouchers",
           "provider": {
             "@type": "Organization",
             "name": "Hiaraise MedLicense",
-            "url": "https://app.hiaraise.com"
+            "url": "https://hiaraise.com"
           },
           "serviceType": "Exam Voucher Service",
           "areaServed": ["UAE", "Saudi Arabia", "Qatar", "Kuwait", "Bahrain", "Oman"],

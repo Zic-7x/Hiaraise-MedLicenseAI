@@ -72,7 +72,7 @@ export default function QCHPVoucher() {
         <meta name="keywords" content="buy QCHP Prometric voucher, QCHP Prometric exam voucher lowest price, Qatar Council for Healthcare Prometric voucher discount, QCHP Prometric license exam cheap, QCHP Prometric exam voucher resell, earn money QCHP Prometric voucher, QCHP Prometric voucher for clients, QCHP Prometric exam booking discount, Qatar medical license Prometric voucher cheap, buy QCHP voucher, QCHP exam voucher" />
         <meta property="og:title" content="QCHP License Exam Vouchers - Up to 50% Discount" />
         <meta property="og:description" content="Get exclusive QCHP license exam vouchers with up to 50% discount. Secure your Qatar Council for Healthcare exam slot with flexible scheduling." />
-        <meta property="og:url" content="https://app.hiaraise.com/vouchers/qchp-license-qatar" />
+        <meta property="og:url" content="https://hiaraise.com/vouchers/qchp-license-qatar" />
         <meta property="og:type" content="website" />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="QCHP License Exam Vouchers - Up to 50% Discount" />
@@ -82,8 +82,8 @@ export default function QCHPVoucher() {
           "@type": "Product",
           "name": "QCHP License Exam Vouchers",
           "description": "Exclusive QCHP license exam vouchers with up to 50% discount. Available for Qatar Council for Healthcare medical licensing exams.",
-          "url": "https://app.hiaraise.com/vouchers/qchp-license-qatar",
-          "image": "https://app.hiaraise.com/Prometric-Logo.png",
+          "url": "https://hiaraise.com/vouchers/qchp-license-qatar",
+          "image": "https://hiaraise.com/Prometric-Logo.png",
           "brand": {
             "@type": "Brand",
             "name": "Qatar Council for Healthcare"

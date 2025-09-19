@@ -7,18 +7,50 @@ export default function Privacy() {
   return (
     <>
       <Helmet>
-        <title>Privacy Policy | Hiaraise MedLicense</title>
-        <meta name="description" content="Comprehensive privacy policy for Hiaraise MedLicense platform. Learn about data protection, GDPR compliance, and how we handle your information." />
+        <title>Privacy Policy | Hiaraise MedLicense AI Portal</title>
+        <meta name="description" content="Comprehensive privacy policy for Hiaraise MedLicense platform. Learn about data protection, GDPR compliance, and how we handle your information for medical licensing services." />
+        <meta name="keywords" content="privacy policy, data protection, GDPR compliance, medical licensing privacy, healthcare data privacy, Hiaraise privacy, medical license data security, personal information protection" />
+        
+        {/* Open Graph Meta Tags */}
+        <meta property="og:title" content="Privacy Policy | Hiaraise MedLicense AI Portal" />
+        <meta property="og:description" content="Comprehensive privacy policy for Hiaraise MedLicense platform. Learn about data protection, GDPR compliance, and how we handle your information." />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://hiaraise.com/privacy" />
+        <meta property="og:image" content="https://hiaraise.com/logo.png" />
+        
+        {/* Twitter Card Meta Tags */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Privacy Policy | Hiaraise MedLicense" />
+        <meta name="twitter:description" content="Comprehensive privacy policy for Hiaraise MedLicense platform." />
+        <meta name="twitter:image" content="https://hiaraise.com/logo.png" />
+        
+        {/* Additional SEO Meta Tags */}
+        <meta name="robots" content="index, follow" />
+        <meta name="author" content="Hiaraise" />
+        <link rel="canonical" href="https://hiaraise.com/privacy" />
+        
+        {/* Enhanced Structured Data */}
         <script type="application/ld+json">{JSON.stringify({
           "@context": "https://schema.org",
           "@type": "WebPage",
-          "name": "Privacy Policy | Hiaraise MedLicense",
-          "description": "Comprehensive privacy policy for Hiaraise MedLicense platform.",
-          "url": "https://app.hiaraise.com/privacy",
+          "name": "Privacy Policy | Hiaraise MedLicense AI Portal",
+          "description": "Comprehensive privacy policy for Hiaraise MedLicense platform. Learn about data protection, GDPR compliance, and how we handle your information.",
+          "url": "https://hiaraise.com/privacy",
+          "breadcrumb": {
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+              { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://hiaraise.com/" },
+              { "@type": "ListItem", "position": 2, "name": "Privacy Policy", "item": "https://hiaraise.com/privacy" }
+            ]
+          },
           "publisher": {
             "@type": "Organization",
             "name": "Hiaraise AI",
-            "url": "https://app.hiaraise.com/"
+            "url": "https://hiaraise.com/",
+            "logo": {
+              "@type": "ImageObject",
+              "url": "https://hiaraise.com/logo.png"
+            }
           }
         })}</script>
       </Helmet>

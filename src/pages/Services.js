@@ -118,28 +118,49 @@ export default function Services() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 relative overflow-hidden py-12">
       <Helmet>
-        <title>Medical Licensing Services | Hiaraise</title>
-        <meta name="description" content="Comprehensive medical licensing services for UAE, Qatar, and Saudi Arabia. Fast, expert-guided, and AI-powered. See pricing, process, and FAQs." />
+        <title>Medical Licensing Services & Pricing - DHA, SCFHS, QCHP, MOHAP | Hiaraise</title>
+        <meta name="description" content="Professional medical licensing services for UAE, Qatar, and Saudi Arabia. Transparent pricing: DHA License (PKR 185,250), SCFHS License (PKR 270,250), QCHP License (PKR 197,500), MOHAP License (PKR 189,500). Fast processing with expert guidance." />
+        <meta name="keywords" content="medical licensing services, DHA license cost, SCFHS license price, QCHP license fee, MOHAP license pricing, medical license Pakistan, healthcare licensing services, Gulf medical license" />
+        
+        {/* Open Graph Meta Tags */}
+        <meta property="og:title" content="Medical Licensing Services & Pricing - DHA, SCFHS, QCHP, MOHAP" />
+        <meta property="og:description" content="Professional medical licensing services with transparent pricing for UAE, Qatar, and Saudi Arabia. Fast processing with expert guidance for Pakistani healthcare professionals." />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://hiaraise.com/pricing" />
+        <meta property="og:image" content="https://hiaraise.com/logo.png" />
+        
+        {/* Twitter Card Meta Tags */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Medical Licensing Services & Pricing" />
+        <meta name="twitter:description" content="Professional medical licensing services with transparent pricing for UAE, Qatar, and Saudi Arabia." />
+        <meta name="twitter:image" content="https://hiaraise.com/logo.png" />
+        
+        {/* Additional SEO Meta Tags */}
+        <meta name="robots" content="index, follow" />
+        <meta name="author" content="Hiaraise" />
+        <link rel="canonical" href="https://hiaraise.com/pricing" />
+        
+        {/* Enhanced Structured Data */}
         <script type="application/ld+json">{JSON.stringify({
           "@context": "https://schema.org",
           "@type": "WebPage",
-          "name": "Medical Licensing Services | Hiaraise",
+          "name": "Medical Licensing Services & Pricing | Hiaraise",
           "description": "Comprehensive medical licensing services for UAE, Qatar, and Saudi Arabia. Fast, expert-guided, and AI-powered. See pricing, process, and FAQs.",
-          "url": "https://app.hiaraise.com/pricing",
+          "url": "https://hiaraise.com/pricing",
           "breadcrumb": {
             "@type": "BreadcrumbList",
             "itemListElement": [
-              { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://app.hiaraise.com/" },
-              { "@type": "ListItem", "position": 2, "name": "Services", "item": "https://app.hiaraise.com/pricing" }
+              { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://hiaraise.com/" },
+              { "@type": "ListItem", "position": 2, "name": "Services", "item": "https://hiaraise.com/pricing" }
             ]
           },
           "publisher": {
             "@type": "Organization",
             "name": "Hiaraise AI",
-            "url": "https://app.hiaraise.com/",
+            "url": "https://hiaraise.com/",
             "logo": {
               "@type": "ImageObject",
-              "url": "https://app.hiaraise.com/logo.png"
+              "url": "https://hiaraise.com/logo.png"
             }
           }
         })}</script>
@@ -150,7 +171,7 @@ export default function Services() {
           "provider": {
             "@type": "Organization",
             "name": "Hiaraise AI",
-            "url": "https://app.hiaraise.com/"
+            "url": "https://hiaraise.com/"
           },
           "areaServed": ["UAE", "Qatar", "Saudi Arabia"],
           "description": "Expert-guided, AI-powered medical licensing services for healthcare professionals seeking licenses in the Gulf region."

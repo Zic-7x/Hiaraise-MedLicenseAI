@@ -14,11 +14,11 @@ export default function ServicePolicy() {
           "@type": "WebPage",
           "name": "Service & Shipping Policy | Hiaraise MedLicense",
           "description": "Service and shipping policy for Hiaraise MedLicense.",
-          "url": "https://app.hiaraise.com/service-policy",
+          "url": "https://hiaraise.com/service-policy",
           "publisher": {
             "@type": "Organization",
             "name": "Hiaraise AI",
-            "url": "https://app.hiaraise.com/"
+            "url": "https://hiaraise.com/"
           }
         })}</script>
       </Helmet>

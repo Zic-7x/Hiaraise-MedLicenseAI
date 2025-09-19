@@ -72,7 +72,7 @@ export default function SCFHSVoucher() {
         <meta name="keywords" content="buy SCFHS Prometric voucher, SCFHS Prometric exam voucher lowest price, Saudi Commission for Health Specialties Prometric voucher discount, SCFHS Prometric license exam cheap, SCFHS Prometric exam voucher resell, earn money SCFHS Prometric voucher, SCFHS Prometric voucher for clients, SCFHS Prometric exam booking discount, Saudi medical license Prometric voucher cheap, buy SCFHS voucher, SCFHS exam voucher" />
         <meta property="og:title" content="SCFHS License Exam Vouchers - Up to 50% Discount" />
         <meta property="og:description" content="Get exclusive SCFHS license exam vouchers with up to 50% discount. Secure your Saudi Commission for Health Specialties exam slot with flexible scheduling." />
-        <meta property="og:url" content="https://app.hiaraise.com/vouchers/scfhs-license-saudi" />
+        <meta property="og:url" content="https://hiaraise.com/vouchers/scfhs-license-saudi" />
         <meta property="og:type" content="website" />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="SCFHS License Exam Vouchers - Up to 50% Discount" />
@@ -82,8 +82,8 @@ export default function SCFHSVoucher() {
           "@type": "Product",
           "name": "SCFHS License Exam Vouchers",
           "description": "Exclusive SCFHS license exam vouchers with up to 50% discount. Available for Saudi Commission for Health Specialties medical licensing exams.",
-          "url": "https://app.hiaraise.com/vouchers/scfhs-license-saudi",
-          "image": "https://app.hiaraise.com/Prometric-Logo.png",
+          "url": "https://hiaraise.com/vouchers/scfhs-license-saudi",
+          "image": "https://hiaraise.com/Prometric-Logo.png",
           "brand": {
             "@type": "Brand",
             "name": "Saudi Commission for Health Specialties"

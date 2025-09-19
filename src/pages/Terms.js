@@ -7,18 +7,50 @@ export default function Terms() {
   return (
     <>
       <Helmet>
-        <title>Terms and Conditions | Hiaraise MedLicense</title>
-        <meta name="description" content="Comprehensive terms and conditions for Hiaraise MedLicense platform. Learn about our services, user responsibilities, data protection, and legal terms." />
+        <title>Terms and Conditions | Hiaraise MedLicense AI Portal</title>
+        <meta name="description" content="Comprehensive terms and conditions for Hiaraise MedLicense platform. Learn about our services, user responsibilities, data protection, and legal terms for medical licensing services." />
+        <meta name="keywords" content="terms and conditions, medical licensing terms, Hiaraise terms, medical license agreement, healthcare licensing terms, DHA license terms, SCFHS license terms, QCHP license terms" />
+        
+        {/* Open Graph Meta Tags */}
+        <meta property="og:title" content="Terms and Conditions | Hiaraise MedLicense AI Portal" />
+        <meta property="og:description" content="Comprehensive terms and conditions for Hiaraise MedLicense platform. Learn about our services, user responsibilities, and legal terms." />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://hiaraise.com/terms" />
+        <meta property="og:image" content="https://hiaraise.com/logo.png" />
+        
+        {/* Twitter Card Meta Tags */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Terms and Conditions | Hiaraise MedLicense" />
+        <meta name="twitter:description" content="Comprehensive terms and conditions for Hiaraise MedLicense platform." />
+        <meta name="twitter:image" content="https://hiaraise.com/logo.png" />
+        
+        {/* Additional SEO Meta Tags */}
+        <meta name="robots" content="index, follow" />
+        <meta name="author" content="Hiaraise" />
+        <link rel="canonical" href="https://hiaraise.com/terms" />
+        
+        {/* Enhanced Structured Data */}
         <script type="application/ld+json">{JSON.stringify({
           "@context": "https://schema.org",
           "@type": "WebPage",
-          "name": "Terms and Conditions | Hiaraise MedLicense",
-          "description": "Comprehensive terms and conditions for Hiaraise MedLicense platform.",
-          "url": "https://app.hiaraise.com/terms",
+          "name": "Terms and Conditions | Hiaraise MedLicense AI Portal",
+          "description": "Comprehensive terms and conditions for Hiaraise MedLicense platform. Learn about our services, user responsibilities, data protection, and legal terms.",
+          "url": "https://hiaraise.com/terms",
+          "breadcrumb": {
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+              { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://hiaraise.com/" },
+              { "@type": "ListItem", "position": 2, "name": "Terms and Conditions", "item": "https://hiaraise.com/terms" }
+            ]
+          },
           "publisher": {
             "@type": "Organization",
             "name": "Hiaraise AI",
-            "url": "https://app.hiaraise.com/"
+            "url": "https://hiaraise.com/",
+            "logo": {
+              "@type": "ImageObject",
+              "url": "https://hiaraise.com/logo.png"
+            }
           }
         })}</script>
       </Helmet>

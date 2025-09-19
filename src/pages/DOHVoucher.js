@@ -72,7 +72,7 @@ export default function DOHVoucher() {
         <meta name="keywords" content="buy DOH Prometric voucher, DOH Prometric exam voucher lowest price, Department of Health Abu Dhabi Prometric voucher discount, DOH Prometric license exam cheap, DOH Prometric exam voucher resell, earn money DOH Prometric voucher, DOH Prometric voucher for clients, DOH Prometric exam booking discount, Abu Dhabi medical license Prometric voucher cheap, buy DOH voucher, DOH exam voucher" />
         <meta property="og:title" content="DOH License Exam Vouchers - Up to 50% Discount" />
         <meta property="og:description" content="Get exclusive DOH license exam vouchers with up to 50% discount. Secure your Department of Health Abu Dhabi exam slot with flexible scheduling." />
-        <meta property="og:url" content="https://app.hiaraise.com/vouchers/doh-license-abu-dhabi" />
+        <meta property="og:url" content="https://hiaraise.com/vouchers/doh-license-abu-dhabi" />
         <meta property="og:type" content="website" />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="DOH License Exam Vouchers - Up to 50% Discount" />
@@ -82,8 +82,8 @@ export default function DOHVoucher() {
           "@type": "Product",
           "name": "DOH License Exam Vouchers",
           "description": "Exclusive DOH license exam vouchers with up to 50% discount. Available for Department of Health Abu Dhabi medical licensing exams.",
-          "url": "https://app.hiaraise.com/vouchers/doh-license-abu-dhabi",
-          "image": "https://app.hiaraise.com/Prometric-Logo.png",
+          "url": "https://hiaraise.com/vouchers/doh-license-abu-dhabi",
+          "image": "https://hiaraise.com/Prometric-Logo.png",
           "brand": {
             "@type": "Brand",
             "name": "Department of Health Abu Dhabi"

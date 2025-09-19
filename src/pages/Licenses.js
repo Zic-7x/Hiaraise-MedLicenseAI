@@ -60,9 +60,154 @@ export default function Licenses() {
   return (
     <>
       <Helmet>
-        <title>Medical Licenses | Hiaraise</title>
-        <meta name="description" content="Explore available medical licensing options for UAE, Qatar, and Saudi Arabia with Hiaraise." />
-        <meta name="keywords" content="medical license, DHA license, MOHAP license, QCHP license, SCFHS license, healthcare license Pakistan" />
+        <title>Medical Licenses - DHA, SCFHS, QCHP, MOHAP | Hiaraise MedLicense AI Portal</title>
+        <meta name="description" content="Get medical licenses for UAE, Qatar, and Saudi Arabia. DHA License (PKR 185,250), SCFHS License (PKR 270,250), QCHP License (PKR 197,500), MOHAP License (PKR 189,500). Expert guidance for Pakistani healthcare professionals." />
+        <meta name="keywords" content="medical license Pakistan, DHA license Dubai, SCFHS license Saudi Arabia, QCHP license Qatar, MOHAP license UAE, healthcare license cost, medical licensing services, Pakistani doctors Gulf, medical credentialing" />
+        
+        {/* Open Graph Meta Tags */}
+        <meta property="og:title" content="Medical Licenses - DHA, SCFHS, QCHP, MOHAP | Hiaraise" />
+        <meta property="og:description" content="Professional medical licensing services for UAE, Qatar, and Saudi Arabia. Competitive pricing and expert guidance for Pakistani healthcare professionals." />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://hiaraise.com/licenses" />
+        <meta property="og:image" content="https://hiaraise.com/logo.png" />
+        
+        {/* Twitter Card Meta Tags */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Medical Licenses - DHA, SCFHS, QCHP, MOHAP" />
+        <meta name="twitter:description" content="Professional medical licensing services for UAE, Qatar, and Saudi Arabia with competitive pricing." />
+        <meta name="twitter:image" content="https://hiaraise.com/logo.png" />
+        
+        {/* Additional SEO Meta Tags */}
+        <meta name="robots" content="index, follow" />
+        <meta name="author" content="Hiaraise" />
+        <link rel="canonical" href="https://hiaraise.com/licenses" />
+        
+        {/* Enhanced Structured Data */}
+        <script type="application/ld+json">{JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "WebPage",
+          "name": "Medical Licenses - DHA, SCFHS, QCHP, MOHAP | Hiaraise",
+          "description": "Comprehensive medical licensing services for UAE, Qatar, and Saudi Arabia with competitive pricing and expert guidance.",
+          "url": "https://hiaraise.com/licenses",
+          "breadcrumb": {
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+              { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://hiaraise.com/" },
+              { "@type": "ListItem", "position": 2, "name": "Medical Licenses", "item": "https://hiaraise.com/licenses" }
+            ]
+          },
+          "publisher": {
+            "@type": "Organization",
+            "name": "Hiaraise AI",
+            "url": "https://hiaraise.com/",
+            "logo": {
+              "@type": "ImageObject",
+              "url": "https://hiaraise.com/logo.png"
+            }
+          }
+        })}</script>
+        
+        <script type="application/ld+json">{JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "ItemList",
+          "name": "Medical License Options",
+          "description": "Available medical licensing services for Pakistani healthcare professionals",
+          "numberOfItems": 4,
+          "itemListElement": [
+            {
+              "@type": "ListItem",
+              "position": 1,
+              "item": {
+                "@type": "Service",
+                "name": "DHA License",
+                "description": "Dubai Health Authority license for healthcare professionals",
+                "provider": {
+                  "@type": "Organization",
+                  "name": "Hiaraise AI"
+                },
+                "offers": {
+                  "@type": "Offer",
+                  "price": "185250",
+                  "priceCurrency": "PKR",
+                  "description": "Complete DHA licensing service"
+                },
+                "areaServed": {
+                  "@type": "Country",
+                  "name": "United Arab Emirates"
+                }
+              }
+            },
+            {
+              "@type": "ListItem",
+              "position": 2,
+              "item": {
+                "@type": "Service",
+                "name": "SCFHS License",
+                "description": "Saudi Commission for Health Specialties license",
+                "provider": {
+                  "@type": "Organization",
+                  "name": "Hiaraise AI"
+                },
+                "offers": {
+                  "@type": "Offer",
+                  "price": "270250",
+                  "priceCurrency": "PKR",
+                  "description": "Complete SCFHS licensing service"
+                },
+                "areaServed": {
+                  "@type": "Country",
+                  "name": "Saudi Arabia"
+                }
+              }
+            },
+            {
+              "@type": "ListItem",
+              "position": 3,
+              "item": {
+                "@type": "Service",
+                "name": "QCHP License",
+                "description": "Qatar Council for Healthcare Practitioners license",
+                "provider": {
+                  "@type": "Organization",
+                  "name": "Hiaraise AI"
+                },
+                "offers": {
+                  "@type": "Offer",
+                  "price": "197500",
+                  "priceCurrency": "PKR",
+                  "description": "Complete QCHP licensing service"
+                },
+                "areaServed": {
+                  "@type": "Country",
+                  "name": "Qatar"
+                }
+              }
+            },
+            {
+              "@type": "ListItem",
+              "position": 4,
+              "item": {
+                "@type": "Service",
+                "name": "MOHAP License",
+                "description": "UAE Ministry of Health and Prevention license",
+                "provider": {
+                  "@type": "Organization",
+                  "name": "Hiaraise AI"
+                },
+                "offers": {
+                  "@type": "Offer",
+                  "price": "189500",
+                  "priceCurrency": "PKR",
+                  "description": "Complete MOHAP licensing service"
+                },
+                "areaServed": {
+                  "@type": "Country",
+                  "name": "United Arab Emirates"
+                }
+              }
+            }
+          ]
+        })}</script>
       </Helmet>
       <div className="min-h-screen py-12">
         <section className="text-center py-12 mb-10">

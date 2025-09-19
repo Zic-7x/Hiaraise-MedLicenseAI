@@ -55,21 +55,21 @@ export default function About() {
           "@type": "WebPage",
           "name": "About Hiaraise | Medical Licensing Platform",
           "description": "Learn about Hiaraise, our mission, and how we help medical professionals achieve licensing success globally with AI-powered tools and expert support.",
-          "url": "https://app.hiaraise.com/about",
+          "url": "https://hiaraise.com/about",
           "breadcrumb": {
             "@type": "BreadcrumbList",
             "itemListElement": [
-              { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://app.hiaraise.com/" },
-              { "@type": "ListItem", "position": 2, "name": "About", "item": "https://app.hiaraise.com/about" }
+              { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://hiaraise.com/" },
+              { "@type": "ListItem", "position": 2, "name": "About", "item": "https://hiaraise.com/about" }
             ]
           },
           "publisher": {
             "@type": "Organization",
             "name": "Hiaraise AI",
-            "url": "https://app.hiaraise.com/",
+            "url": "https://hiaraise.com/",
             "logo": {
               "@type": "ImageObject",
-              "url": "https://app.hiaraise.com/logo.png"
+              "url": "https://hiaraise.com/logo.png"
             }
           }
         })}</script>
@@ -77,7 +77,7 @@ export default function About() {
           "@context": "https://schema.org",
           "@type": "Organization",
           "name": "Hiaraise AI",
-          "url": "https://app.hiaraise.com/",
+          "url": "https://hiaraise.com/",
           "description": "AI-powered medical licensing platform for healthcare professionals",
           "foundingDate": "2024",
           "numberOfEmployees": "10-50",

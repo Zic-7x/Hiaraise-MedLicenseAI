@@ -14,11 +14,11 @@ export default function RefundPolicy() {
           "@type": "WebPage",
           "name": "Refund Policy | Hiaraise MedLicense",
           "description": "Comprehensive refund policy for Hiaraise MedLicense platform.",
-          "url": "https://app.hiaraise.com/refund-policy",
+          "url": "https://hiaraise.com/refund-policy",
           "publisher": {
             "@type": "Organization",
             "name": "Hiaraise AI",
-            "url": "https://app.hiaraise.com/"
+            "url": "https://hiaraise.com/"
           }
         })}</script>
       </Helmet>

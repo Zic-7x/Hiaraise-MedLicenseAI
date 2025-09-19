@@ -234,21 +234,21 @@ export default function EligibilityCheck() {
           "@type": "WebPage",
           "name": "Eligibility Check | Hiaraise",
           "description": "Check your eligibility for a medical license in Saudi Arabia, Qatar, or UAE. Instant results based on your field, qualification, and experience.",
-          "url": "https://app.hiaraise.com/eligibility-check",
+          "url": "https://hiaraise.com/eligibility-check",
           "breadcrumb": {
             "@type": "BreadcrumbList",
             "itemListElement": [
-              { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://app.hiaraise.com/" },
-              { "@type": "ListItem", "position": 2, "name": "Eligibility Check", "item": "https://app.hiaraise.com/eligibility-check" }
+              { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://hiaraise.com/" },
+              { "@type": "ListItem", "position": 2, "name": "Eligibility Check", "item": "https://hiaraise.com/eligibility-check" }
             ]
           },
           "publisher": {
             "@type": "Organization",
             "name": "Hiaraise AI",
-            "url": "https://app.hiaraise.com/",
+            "url": "https://hiaraise.com/",
             "logo": {
               "@type": "ImageObject",
-              "url": "https://app.hiaraise.com/logo.png"
+              "url": "https://hiaraise.com/logo.png"
             }
           }
         })}</script>

@@ -288,7 +288,7 @@ export default function MyVouchers() {
         <meta name="robots" content="noindex, nofollow" />
         <meta property="og:title" content="My Vouchers - Manage Your Exam Vouchers" />
         <meta property="og:description" content="View and manage your purchased exam vouchers. Track voucher status and access your exam booking history." />
-        <meta property="og:url" content="https://app.hiaraise.com/my-vouchers" />
+        <meta property="og:url" content="https://hiaraise.com/my-vouchers" />
         <meta property="og:type" content="website" />
       </Helmet>
       

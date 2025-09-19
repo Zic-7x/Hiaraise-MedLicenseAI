@@ -15,37 +15,93 @@ export default function VoucherSystem() {
         <title>Buy Prometric Exam Vouchers - Lowest Price Guaranteed | Up to 50% Discount | Hiaraise MedLicense</title>
         <meta name="description" content="Buy Prometric vouchers at lowest price! Save up to 50% on exam fees. Perfect for yourself, family, friends, or clients. Resell vouchers to earn money while helping others save on exam costs. Buy low, sell high!" />
         <meta name="keywords" content="buy Prometric voucher, Prometric exam voucher lowest price, Prometric voucher discount, Prometric exam voucher cheap, Prometric voucher resell, earn money Prometric voucher, Prometric voucher for clients, Prometric exam booking discount, Prometric medical license voucher cheap, Prometric voucher reselling, Prometric exam voucher buy" />
+        
+        {/* Open Graph Meta Tags */}
         <meta property="og:title" content="Prometric Exam Vouchers - Up to 50% Discount | Hiaraise MedLicense" />
         <meta property="og:description" content="Get exclusive Prometric exam vouchers with up to 50% discount. Secure your exam slot with flexible scheduling and instant delivery." />
-        <meta property="og:url" content="https://app.hiaraise.com/vouchers" />
+        <meta property="og:url" content="https://hiaraise.com/vouchers" />
         <meta property="og:type" content="website" />
+        <meta property="og:image" content="https://hiaraise.com/logo.png" />
+        
+        {/* Twitter Card Meta Tags */}
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="Prometric Exam Vouchers - Up to 50% Discount" />
         <meta name="twitter:description" content="Get exclusive Prometric exam vouchers with up to 50% discount. Secure your exam slot with flexible scheduling and instant delivery." />
+        <meta name="twitter:image" content="https://hiaraise.com/logo.png" />
+        
+        {/* Additional SEO Meta Tags */}
+        <meta name="robots" content="index, follow" />
+        <meta name="author" content="Hiaraise" />
+        <link rel="canonical" href="https://hiaraise.com/vouchers" />
+        
+        {/* Enhanced Structured Data */}
+        <script type="application/ld+json">{JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "WebPage",
+          "name": "Buy Prometric Exam Vouchers - Lowest Price Guaranteed | Hiaraise",
+          "description": "Buy Prometric vouchers at lowest price! Save up to 50% on exam fees. Perfect for yourself, family, friends, or clients.",
+          "url": "https://hiaraise.com/vouchers",
+          "breadcrumb": {
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+              { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://hiaraise.com/" },
+              { "@type": "ListItem", "position": 2, "name": "Vouchers", "item": "https://hiaraise.com/vouchers" }
+            ]
+          },
+          "publisher": {
+            "@type": "Organization",
+            "name": "Hiaraise AI",
+            "url": "https://hiaraise.com/",
+            "logo": {
+              "@type": "ImageObject",
+              "url": "https://hiaraise.com/logo.png"
+            }
+          }
+        })}</script>
+        
         <script type="application/ld+json">{JSON.stringify({
           "@context": "https://schema.org",
           "@type": "Product",
           "name": "Prometric Exam Vouchers",
-          "description": "Exclusive Prometric exam vouchers with up to 50% discount. Available for DHA, MOHAP, DOH, QCHP, and SCFHS medical licensing exams.",
-          "url": "https://app.hiaraise.com/vouchers",
-          "image": "https://app.hiaraise.com/Prometric-Logo.png",
+          "description": "Exclusive Prometric exam vouchers with up to 50% discount. Flexible scheduling and instant delivery.",
           "brand": {
             "@type": "Brand",
-            "name": "Hiaraise MedLicense"
+            "name": "Hiaraise AI"
+          },
+          "offers": {
+            "@type": "AggregateOffer",
+            "priceCurrency": "PKR",
+            "lowPrice": "5000",
+            "highPrice": "15000",
+            "offerCount": "Multiple",
+            "description": "Up to 50% discount on Prometric exam vouchers"
+          },
+          "category": "Medical Exam Vouchers",
+          "availability": "InStock"
+        })}</script>
+        
+        <script type="application/ld+json">{JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "Service",
+          "name": "Prometric Voucher Service",
+          "description": "Professional Prometric voucher purchasing service with exclusive discounts and flexible scheduling",
+          "provider": {
+            "@type": "Organization",
+            "name": "Hiaraise AI"
+          },
+          "serviceType": "Exam Voucher Service",
+          "areaServed": {
+            "@type": "Country",
+            "name": "Pakistan"
           },
           "offers": {
             "@type": "Offer",
-            "price": "240",
-            "priceCurrency": "USD",
-            "priceRange": "$240-$350",
-            "availability": "https://schema.org/InStock",
-            "validFrom": "2025-01-08",
-            "description": "Discounted exam vouchers with up to 50% savings"
-          },
-          "category": "Medical Licensing Exam Vouchers",
-          "audience": {
-            "@type": "Audience",
-            "audienceType": "Medical Professionals"
+            "description": "Up to 50% discount on Prometric exam vouchers",
+            "priceSpecification": {
+              "@type": "PriceSpecification",
+              "price": "Variable",
+              "priceCurrency": "PKR"
+            }
           }
         })}</script>
       </Helmet>

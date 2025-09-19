@@ -72,7 +72,7 @@ export default function DHAVoucher() {
         <meta name="keywords" content="buy DHA Prometric voucher, DHA Prometric exam voucher lowest price, Dubai Health Authority Prometric voucher discount, DHA Prometric license exam cheap, DHA Prometric exam voucher resell, earn money DHA Prometric voucher, DHA Prometric voucher for clients, DHA Prometric exam booking discount, Dubai medical license Prometric voucher cheap, buy DHA voucher, DHA exam voucher" />
         <meta property="og:title" content="DHA License Exam Vouchers - Up to 52% Discount" />
         <meta property="og:description" content="Get exclusive DHA license exam vouchers with up to 52% discount. Secure your Dubai Health Authority exam slot with flexible scheduling." />
-        <meta property="og:url" content="https://app.hiaraise.com/vouchers/dha-license-dubai" />
+        <meta property="og:url" content="https://hiaraise.com/vouchers/dha-license-dubai" />
         <meta property="og:type" content="website" />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="DHA License Exam Vouchers - Up to 52% Discount" />
@@ -82,8 +82,8 @@ export default function DHAVoucher() {
           "@type": "Product",
           "name": "DHA License Exam Vouchers",
           "description": "Exclusive DHA license exam vouchers with up to 52% discount. Available for Dubai Health Authority medical licensing exams.",
-          "url": "https://app.hiaraise.com/vouchers/dha-license-dubai",
-          "image": "https://app.hiaraise.com/Prometric-Logo.png",
+          "url": "https://hiaraise.com/vouchers/dha-license-dubai",
+          "image": "https://hiaraise.com/Prometric-Logo.png",
           "brand": {
             "@type": "Brand",
             "name": "Dubai Health Authority"

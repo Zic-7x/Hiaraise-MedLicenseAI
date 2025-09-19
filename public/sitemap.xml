@@ -6,7 +6,7 @@
   
   <!-- Home/Landing Page -->
   <url>
-    <loc>https://app.hiaraise.com/</loc>
+    <loc>https://hiaraise.com/</loc>
     <lastmod>2025-01-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
@@ -14,7 +14,7 @@
   
   <!-- Why to Get License Page -->
   <url>
-    <loc>https://app.hiaraise.com/start-license</loc>
+    <loc>https://hiaraise.com/start-license</loc>
     <lastmod>2025-01-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.85</priority>
@@ -22,7 +22,7 @@
 
   <!-- Eligibility Checker Page -->
   <url>
-    <loc>https://app.hiaraise.com/eligibility-check</loc>
+    <loc>https://hiaraise.com/eligibility-check</loc>
     <lastmod>2025-01-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.85</priority>
@@ -30,7 +30,7 @@
 
   <!-- Pricing Page -->
   <url>
-    <loc>https://app.hiaraise.com/pricing</loc>
+    <loc>https://hiaraise.com/pricing</loc>
     <lastmod>2025-01-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -38,7 +38,7 @@
   
   <!-- About Page -->
   <url>
-    <loc>https://app.hiaraise.com/about</loc>
+    <loc>https://hiaraise.com/about</loc>
     <lastmod>2025-01-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -46,7 +46,7 @@
   
   <!-- Contact Page -->
   <url>
-    <loc>https://app.hiaraise.com/contact</loc>
+    <loc>https://hiaraise.com/contact</loc>
     <lastmod>2025-01-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -54,7 +54,7 @@
 
   <!-- Licenses Main Page -->
   <url>
-    <loc>https://app.hiaraise.com/licenses</loc>
+    <loc>https://hiaraise.com/licenses</loc>
     <lastmod>2025-01-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
@@ -62,7 +62,7 @@
 
   <!-- DHA License Dubai Page -->
   <url>
-    <loc>https://app.hiaraise.com/licenses/dha-license-dubai</loc>
+    <loc>https://hiaraise.com/licenses/dha-license-dubai</loc>
     <lastmod>2025-01-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -70,7 +70,7 @@
 
   <!-- SCFHS License Saudi Page -->
   <url>
-    <loc>https://app.hiaraise.com/licenses/scfhs-license-saudi</loc>
+    <loc>https://hiaraise.com/licenses/scfhs-license-saudi</loc>
     <lastmod>2025-01-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -78,7 +78,7 @@
 
   <!-- QCHP License Qatar Page -->
   <url>
-    <loc>https://app.hiaraise.com/licenses/qchp-license-qatar</loc>
+    <loc>https://hiaraise.com/licenses/qchp-license-qatar</loc>
     <lastmod>2025-01-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -86,7 +86,7 @@
 
   <!-- MOH License UAE Page -->
   <url>
-    <loc>https://app.hiaraise.com/licenses/moh-license-uae</loc>
+    <loc>https://hiaraise.com/licenses/moh-license-uae</loc>
     <lastmod>2025-01-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -94,7 +94,7 @@
 
   <!-- Countries Page -->
   <url>
-    <loc>https://app.hiaraise.com/countries</loc>
+    <loc>https://hiaraise.com/countries</loc>
     <lastmod>2025-01-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -102,7 +102,7 @@
 
   <!-- Tools Page -->
   <url>
-    <loc>https://app.hiaraise.com/tools</loc>
+    <loc>https://hiaraise.com/tools</loc>
     <lastmod>2025-01-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -110,7 +110,7 @@
   
   <!-- Prometric Vouchers Page -->
   <url>
-    <loc>https://app.hiaraise.com/prometric-vouchers</loc>
+    <loc>https://hiaraise.com/prometric-vouchers</loc>
     <lastmod>2025-01-04</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
@@ -118,7 +118,7 @@
   
   <!-- Voucher System Page -->
   <url>
-    <loc>https://app.hiaraise.com/vouchers</loc>
+    <loc>https://hiaraise.com/vouchers</loc>
     <lastmod>2025-01-08</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
@@ -126,7 +126,7 @@
 
   <!-- My Vouchers Page -->
   <url>
-    <loc>https://app.hiaraise.com/my-vouchers</loc>
+    <loc>https://hiaraise.com/my-vouchers</loc>
     <lastmod>2025-01-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -134,7 +134,7 @@
 
   <!-- Voucher Terms Page -->
   <url>
-    <loc>https://app.hiaraise.com/voucher-terms</loc>
+    <loc>https://hiaraise.com/voucher-terms</loc>
     <lastmod>2025-01-08</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -142,7 +142,7 @@
 
   <!-- DHA Voucher Page -->
   <url>
-    <loc>https://app.hiaraise.com/vouchers/dha-license-dubai</loc>
+    <loc>https://hiaraise.com/vouchers/dha-license-dubai</loc>
     <lastmod>2025-01-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
@@ -150,7 +150,7 @@
 
   <!-- MOHAP Voucher Page -->
   <url>
-    <loc>https://app.hiaraise.com/vouchers/mohap-license-uae</loc>
+    <loc>https://hiaraise.com/vouchers/mohap-license-uae</loc>
     <lastmod>2025-01-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
@@ -158,7 +158,7 @@
 
   <!-- DOH Voucher Page -->
   <url>
-    <loc>https://app.hiaraise.com/vouchers/doh-license-abu-dhabi</loc>
+    <loc>https://hiaraise.com/vouchers/doh-license-abu-dhabi</loc>
     <lastmod>2025-01-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
@@ -166,7 +166,7 @@
 
   <!-- QCHP Voucher Page -->
   <url>
-    <loc>https://app.hiaraise.com/vouchers/qchp-license-qatar</loc>
+    <loc>https://hiaraise.com/vouchers/qchp-license-qatar</loc>
     <lastmod>2025-01-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
@@ -174,7 +174,7 @@
 
   <!-- SCFHS Voucher Page -->
   <url>
-    <loc>https://app.hiaraise.com/vouchers/scfhs-license-saudi</loc>
+    <loc>https://hiaraise.com/vouchers/scfhs-license-saudi</loc>
     <lastmod>2025-01-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
@@ -182,7 +182,7 @@
 
   <!-- Terms of Service Page -->
   <url>
-    <loc>https://app.hiaraise.com/terms</loc>
+    <loc>https://hiaraise.com/terms</loc>
     <lastmod>2025-01-02</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
@@ -190,7 +190,7 @@
 
   <!-- Refund Policy Page -->
   <url>
-    <loc>https://app.hiaraise.com/refund-policy</loc>
+    <loc>https://hiaraise.com/refund-policy</loc>
     <lastmod>2025-01-02</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
@@ -198,7 +198,7 @@
 
   <!-- Privacy Policy Page -->
   <url>
-    <loc>https://app.hiaraise.com/privacy</loc>
+    <loc>https://hiaraise.com/privacy</loc>
     <lastmod>2025-01-02</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
@@ -206,7 +206,7 @@
 
   <!-- Cookies Policy Page -->
   <url>
-    <loc>https://app.hiaraise.com/cookies</loc>
+    <loc>https://hiaraise.com/cookies</loc>
     <lastmod>2025-01-02</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
@@ -214,7 +214,7 @@
 
   <!-- Service Policy Page -->
   <url>
-    <loc>https://app.hiaraise.com/service-policy</loc>
+    <loc>https://hiaraise.com/service-policy</loc>
     <lastmod>2025-01-02</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>

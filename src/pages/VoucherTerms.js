@@ -14,11 +14,11 @@ export default function VoucherTerms() {
           "@type": "WebPage",
           "name": "Voucher Terms and Conditions | Hiaraise MedLicense",
           "description": "Comprehensive terms and conditions for exam vouchers.",
-          "url": "https://app.hiaraise.com/voucher-terms",
+          "url": "https://hiaraise.com/voucher-terms",
           "publisher": {
             "@type": "Organization",
             "name": "Hiaraise AI",
-            "url": "https://app.hiaraise.com/"
+            "url": "https://hiaraise.com/"
           }
         })}</script>
       </Helmet>

@@ -14,11 +14,11 @@ export default function Cookies() {
           "@type": "WebPage",
           "name": "Cookie Policy | Hiaraise MedLicense",
           "description": "Comprehensive cookie policy for Hiaraise MedLicense platform.",
-          "url": "https://app.hiaraise.com/cookies",
+          "url": "https://hiaraise.com/cookies",
           "publisher": {
             "@type": "Organization",
             "name": "Hiaraise AI",
-            "url": "https://app.hiaraise.com/"
+            "url": "https://hiaraise.com/"
           }
         })}</script>
       </Helmet>

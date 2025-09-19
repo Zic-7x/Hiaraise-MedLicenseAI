@@ -378,20 +378,20 @@ export default function Landing() {
         <meta property="og:title" content="Hiaraise MedLicense AI Portal | DHA, HAAD, MOH, SCFHS Medical Licensing" />
         <meta property="og:description" content="Professional medical licensing platform for Gulf & Middle East authorities. AI-powered processing for DHA, HAAD, MOH, SCFHS, MOPH, QCHP applications." />
         <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://app.hiaraise.com/" />
-        <meta property="og:image" content="https://app.hiaraise.com/logo.png" />
+        <meta property="og:url" content="https://hiaraise.com/" />
+        <meta property="og:image" content="https://hiaraise.com/logo.png" />
         <meta property="og:site_name" content="Hiaraise MedLicense AI Portal" />
         
         {/* Twitter Card Meta Tags */}
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="Hiaraise MedLicense AI Portal | DHA, HAAD, MOH, SCFHS Medical Licensing" />
         <meta name="twitter:description" content="Professional medical licensing platform for Gulf & Middle East authorities with AI-powered processing." />
-        <meta name="twitter:image" content="https://app.hiaraise.com/logo.png" />
+        <meta name="twitter:image" content="https://hiaraise.com/logo.png" />
         
         {/* Additional SEO Meta Tags */}
         <meta name="robots" content="index, follow" />
         <meta name="author" content="Hiaraise" />
-        <link rel="canonical" href="https://app.hiaraise.com/" />
+        <link rel="canonical" href="https://hiaraise.com/" />
         
         {/* Enhanced Structured Data for AI Understanding */}
         <script type="application/ld+json">{`
@@ -399,22 +399,122 @@ export default function Landing() {
             "@context": "https://schema.org",
             "@type": "WebSite",
             "name": "Hiaraise MedLicense AI Portal",
-            "url": "https://app.hiaraise.com",
+            "url": "https://hiaraise.com",
             "description": "Streamline your medical licensing for DHA, HAAD, MOH, SCFHS, and more Gulf authorities",
             "potentialAction": {
               "@type": "SearchAction",
-              "target": "https://app.hiaraise.com/search?q={search_term_string}",
+              "target": "https://hiaraise.com/search?q={search_term_string}",
               "query-input": "required name=search_term_string"
+            },
+            "mainEntity": {
+              "@type": "ItemList",
+              "name": "Medical Licensing Services",
+              "description": "Complete medical licensing solutions for Gulf countries",
+              "numberOfItems": 5,
+              "itemListElement": [
+                {
+                  "@type": "ListItem",
+                  "position": 1,
+                  "item": {
+                    "@type": "WebPage",
+                    "name": "Medical Licenses",
+                    "description": "DHA License (PKR 185,250), SCFHS License (PKR 270,250), QCHP License (PKR 197,500), MOHAP License (PKR 189,500)",
+                    "url": "https://hiaraise.com/licenses"
+                  }
+                },
+                {
+                  "@type": "ListItem",
+                  "position": 2,
+                  "item": {
+                    "@type": "WebPage",
+                    "name": "Prometric Vouchers",
+                    "description": "Buy Prometric vouchers at lowest price! Save up to 50% on exam fees with flexible scheduling",
+                    "url": "https://hiaraise.com/prometric-vouchers"
+                  }
+                },
+                {
+                  "@type": "ListItem",
+                  "position": 3,
+                  "item": {
+                    "@type": "WebPage",
+                    "name": "Eligibility Checker",
+                    "description": "Check your eligibility for medical licenses in Saudi Arabia, Qatar, or UAE. Instant results based on your qualifications",
+                    "url": "https://hiaraise.com/eligibility-check"
+                  }
+                },
+                {
+                  "@type": "ListItem",
+                  "position": 4,
+                  "item": {
+                    "@type": "WebPage",
+                    "name": "Pricing & Services",
+                    "description": "Transparent pricing for medical licensing services. Fast processing with expert guidance for Pakistani healthcare professionals",
+                    "url": "https://hiaraise.com/pricing"
+                  }
+                },
+                {
+                  "@type": "ListItem",
+                  "position": 5,
+                  "item": {
+                    "@type": "WebPage",
+                    "name": "Contact Support",
+                    "description": "Get expert medical licensing support, free consultation calls, and professional guidance for DHA, SCFHS, QCHP licensing",
+                    "url": "https://hiaraise.com/contact"
+                  }
+                }
+              ]
             }
           }
         `}</script>
+        
+        <script type="application/ld+json">{`
+          {
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            "mainEntity": [
+              {
+                "@type": "Question",
+                "name": "How much does a DHA license cost?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "DHA License costs PKR 185,250 with complete processing from Pakistan. This includes all fees, document verification, and expert guidance."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "How long does medical licensing take?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "DHA License: 8-13 weeks, SCFHS License: 12-16 weeks, QCHP License: 10-12 weeks, MOHAP License: 10-12 weeks. All processing can be done from Pakistan."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Can I get Prometric vouchers at discount?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Yes! We offer Prometric vouchers with up to 50% discount. Buy vouchers at lowest price with flexible scheduling and instant delivery."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "What is your success rate?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "We have a 98% success rate with over 1,200+ licenses processed. Our AI-powered platform and expert team ensure high success rates."
+                }
+              }
+            ]
+          }
+        `}</script>
+        
         <script type="application/ld+json">{`
           {
             "@context": "https://schema.org",
             "@type": "Organization",
             "name": "Hiaraise MedLicense AI",
-            "url": "https://app.hiaraise.com",
-            "logo": "https://app.hiaraise.com/logo.png",
+            "url": "https://hiaraise.com",
+            "logo": "https://hiaraise.com/logo.png",
             "description": "Medical licensing platform for Gulf and Middle East authorities",
             "contactPoint": {
               "@type": "ContactPoint",
@@ -505,19 +605,19 @@ export default function Landing() {
                 "@type": "HowToStep",
                 "name": "Register and Create Profile",
                 "text": "Begin by creating your secure account and completing your professional profile with essential information and qualifications.",
-                "url": "https://app.hiaraise.com/register"
+                "url": "https://hiaraise.com/register"
               },
               {
                 "@type": "HowToStep",
                 "name": "Document Submission",
                 "text": "Securely upload all necessary credentials and documents through our intuitive platform. Our AI assists in verification.",
-                "url": "https://app.hiaraise.com/start-license"
+                "url": "https://hiaraise.com/start-license"
               },
               {
                 "@type": "HowToStep",
                 "name": "Application & Tracking",
                 "text": "Submit your complete application to the chosen country. Track its real-time status and receive AI-powered insights on progress.",
-                "url": "https://app.hiaraise.com/eligibility-check"
+                "url": "https://hiaraise.com/eligibility-check"
               },
               {
                 "@type": "HowToStep",

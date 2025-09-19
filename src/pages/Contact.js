@@ -80,8 +80,117 @@ export default function Contact() {
   return (
     <>
       <Helmet>
-        <title>Contact Hiaraise | Get in Touch</title>
-        <meta name="description" content="Contact Hiaraise for support, questions, or partnership opportunities. Our team is here to help you with your medical licensing journey." />
+        <title>Contact Hiaraise - Medical Licensing Support & Consultation | Get Expert Help</title>
+        <meta name="description" content="Contact Hiaraise for medical licensing support, free consultation calls, and expert guidance. Book appointments, get pricing information, and connect with our team for DHA, SCFHS, QCHP licensing assistance." />
+        <meta name="keywords" content="contact Hiaraise, medical licensing support, free consultation, DHA license help, SCFHS support, QCHP assistance, medical licensing expert, healthcare licensing consultation" />
+        
+        {/* Open Graph Meta Tags */}
+        <meta property="og:title" content="Contact Hiaraise - Medical Licensing Support & Consultation" />
+        <meta property="og:description" content="Get expert medical licensing support, free consultation calls, and professional guidance for DHA, SCFHS, QCHP licensing from Pakistan." />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://hiaraise.com/contact" />
+        <meta property="og:image" content="https://hiaraise.com/logo.png" />
+        
+        {/* Twitter Card Meta Tags */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Contact Hiaraise - Medical Licensing Support" />
+        <meta name="twitter:description" content="Get expert medical licensing support, free consultation calls, and professional guidance." />
+        <meta name="twitter:image" content="https://hiaraise.com/logo.png" />
+        
+        {/* Additional SEO Meta Tags */}
+        <meta name="robots" content="index, follow" />
+        <meta name="author" content="Hiaraise" />
+        <link rel="canonical" href="https://hiaraise.com/contact" />
+        
+        {/* Enhanced Structured Data */}
+        <script type="application/ld+json">{JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "WebPage",
+          "name": "Contact Hiaraise - Medical Licensing Support & Consultation",
+          "description": "Contact Hiaraise for medical licensing support, free consultation calls, and expert guidance for Pakistani healthcare professionals.",
+          "url": "https://hiaraise.com/contact",
+          "breadcrumb": {
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+              { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://hiaraise.com/" },
+              { "@type": "ListItem", "position": 2, "name": "Contact", "item": "https://hiaraise.com/contact" }
+            ]
+          },
+          "publisher": {
+            "@type": "Organization",
+            "name": "Hiaraise AI",
+            "url": "https://hiaraise.com/",
+            "logo": {
+              "@type": "ImageObject",
+              "url": "https://hiaraise.com/logo.png"
+            }
+          }
+        })}</script>
+        
+        <script type="application/ld+json">{JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "ContactPage",
+          "name": "Contact Hiaraise",
+          "description": "Contact page for medical licensing support and consultation services",
+          "url": "https://hiaraise.com/contact",
+          "mainEntity": {
+            "@type": "Organization",
+            "name": "Hiaraise AI",
+            "contactPoint": [
+              {
+                "@type": "ContactPoint",
+                "contactType": "customer service",
+                "email": "support@hiaraise.com",
+                "telephone": "+92-309-727-3740",
+                "availableLanguage": ["English", "Arabic", "Urdu"],
+                "areaServed": "Pakistan",
+                "serviceType": "Medical Licensing Support"
+              },
+              {
+                "@type": "ContactPoint",
+                "contactType": "sales",
+                "email": "support@hiaraise.com",
+                "telephone": "+92-309-727-3740",
+                "availableLanguage": ["English", "Arabic", "Urdu"],
+                "areaServed": "Pakistan",
+                "serviceType": "Medical Licensing Consultation"
+              }
+            ],
+            "address": {
+              "@type": "PostalAddress",
+              "streetAddress": "Downtown Lake City C-31 Bella Vista",
+              "addressLocality": "Lahore",
+              "addressCountry": "Pakistan",
+              "postalCode": "54000"
+            },
+            "openingHours": "Mo-Fr 09:00-18:00",
+            "sameAs": [
+              "https://wa.me/923097273740"
+            ]
+          }
+        })}</script>
+        
+        <script type="application/ld+json">{JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "Service",
+          "name": "Free Medical Licensing Consultation",
+          "description": "Free 15-minute consultation call for medical licensing guidance",
+          "provider": {
+            "@type": "Organization",
+            "name": "Hiaraise AI"
+          },
+          "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "PKR",
+            "description": "Free consultation call"
+          },
+          "serviceType": "Medical Licensing Consultation",
+          "areaServed": {
+            "@type": "Country",
+            "name": "Pakistan"
+          }
+        })}</script>
       </Helmet>
       <div className="min-h-screen py-12">
         <section className="text-center py-12 mb-10">

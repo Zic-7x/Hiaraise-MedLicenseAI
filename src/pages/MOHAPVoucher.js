@@ -72,7 +72,7 @@ export default function MOHAPVoucher() {
         <meta name="keywords" content="buy MOHAP Prometric voucher, MOHAP Prometric exam voucher lowest price, Ministry of Health UAE Prometric voucher discount, MOHAP Prometric license exam cheap, MOHAP Prometric exam voucher resell, earn money MOHAP Prometric voucher, MOHAP Prometric voucher for clients, MOHAP Prometric exam booking discount, UAE medical license Prometric voucher cheap, buy MOHAP voucher, MOHAP exam voucher" />
         <meta property="og:title" content="MOHAP License Exam Vouchers - Up to 50% Discount" />
         <meta property="og:description" content="Get exclusive MOHAP license exam vouchers with up to 50% discount. Secure your Ministry of Health UAE exam slot with flexible scheduling." />
-        <meta property="og:url" content="https://app.hiaraise.com/vouchers/mohap-license-uae" />
+        <meta property="og:url" content="https://hiaraise.com/vouchers/mohap-license-uae" />
         <meta property="og:type" content="website" />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="MOHAP License Exam Vouchers - Up to 50% Discount" />
@@ -82,8 +82,8 @@ export default function MOHAPVoucher() {
           "@type": "Product",
           "name": "MOHAP License Exam Vouchers",
           "description": "Exclusive MOHAP license exam vouchers with up to 50% discount. Available for Ministry of Health UAE medical licensing exams.",
-          "url": "https://app.hiaraise.com/vouchers/mohap-license-uae",
-          "image": "https://app.hiaraise.com/Prometric-Logo.png",
+          "url": "https://hiaraise.com/vouchers/mohap-license-uae",
+          "image": "https://hiaraise.com/Prometric-Logo.png",
           "brand": {
             "@type": "Brand",
             "name": "Ministry of Health UAE"
