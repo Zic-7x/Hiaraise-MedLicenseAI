@@ -14,6 +14,7 @@ export default function VoucherCalendar({ onSlotSelect, session = null }) {
   const [slotsPerPage] = useState(6);
   const [showSlotModal, setShowSlotModal] = useState(false);
   const [selectedSlot, setSelectedSlot] = useState(null);
+  const [slotCountdowns, setSlotCountdowns] = useState({});
 
   // Fetch all available voucher slots
   const fetchSlots = async () => {
@@ -83,6 +84,41 @@ export default function VoucherCalendar({ onSlotSelect, session = null }) {
     fetchSlots();
   }, [examAuthorityFilter, dateFilter]);
 
+  // Countdown timer effect
+  useEffect(() => {
+    const updateCountdowns = () => {
+      const now = new Date();
+      const newCountdowns = {};
+      
+      availableSlots.forEach(slot => {
+        const slotEndTime = new Date(`${slot.exam_date}T${slot.end_time}`);
+        const timeUntilExpiry = slotEndTime.getTime() - now.getTime();
+        
+        if (timeUntilExpiry > 0) {
+          newCountdowns[slot.id] = {
+            timeLeft: timeUntilExpiry,
+            isExpired: false
+          };
+        } else {
+          newCountdowns[slot.id] = {
+            timeLeft: 0,
+            isExpired: true
+          };
+        }
+      });
+      
+      setSlotCountdowns(newCountdowns);
+    };
+
+    // Update countdowns immediately
+    updateCountdowns();
+    
+    // Update countdowns every second
+    const interval = setInterval(updateCountdowns, 1000);
+    
+    return () => clearInterval(interval);
+  }, [availableSlots]);
+
   // Set up real-time subscription for slot changes
   useEffect(() => {
     const subscription = supabase
@@ -114,11 +150,30 @@ export default function VoucherCalendar({ onSlotSelect, session = null }) {
     };
   }, [examAuthorityFilter, dateFilter]);
 
+  // Format countdown time
+  const formatCountdown = (timeLeft) => {
+    if (!timeLeft || timeLeft <= 0) return 'Expired';
+    
+    const days = Math.floor(timeLeft / (24 * 60 * 60 * 1000));
+    const hours = Math.floor((timeLeft % (24 * 60 * 60 * 1000)) / (60 * 60 * 1000));
+    const minutes = Math.floor((timeLeft % (60 * 60 * 1000)) / (60 * 1000));
+    const seconds = Math.floor((timeLeft % (60 * 1000)) / 1000);
+    
+    if (days > 0) {
+      return `${days}d ${hours}h ${minutes}m`;
+    } else if (hours > 0) {
+      return `${hours}h ${minutes}m ${seconds}s`;
+    } else if (minutes > 0) {
+      return `${minutes}m ${seconds}s`;
+    } else {
+      return `${seconds}s`;
+    }
+  };
+
   // Get slot status and pricing info
   const getSlotInfo = (slot) => {
-    const now = new Date();
-    const slotEndTime = new Date(`${slot.exam_date}T${slot.end_time}`);
-    const timeUntilExpiry = slotEndTime.getTime() - now.getTime();
+    const countdown = slotCountdowns[slot.id];
+    const timeUntilExpiry = countdown ? countdown.timeLeft : 0;
     const hoursUntilExpiry = timeUntilExpiry / (1000 * 60 * 60);
     
     let statusColor = 'text-green-400';
@@ -137,14 +192,20 @@ export default function VoucherCalendar({ onSlotSelect, session = null }) {
       statusText = 'Urgent';
     }
 
-    // No need for service fee calculation in simplified model
+    if (countdown && countdown.isExpired) {
+      statusColor = 'text-red-400';
+      bgColor = 'bg-red-500/20';
+      statusText = 'Expired';
+    }
 
     return {
       statusColor,
       bgColor,
       statusText,
       isUrgent: hoursUntilExpiry < 2,
-      isSoon: hoursUntilExpiry < 24
+      isSoon: hoursUntilExpiry < 24,
+      isExpired: countdown && countdown.isExpired,
+      countdownText: formatCountdown(timeUntilExpiry)
     };
   };
 
@@ -164,7 +225,17 @@ export default function VoucherCalendar({ onSlotSelect, session = null }) {
   const isSlotValid = (slot) => {
     const now = new Date();
     const slotEndTime = new Date(`${slot.exam_date}T${slot.end_time}`);
-    return isAfter(slotEndTime, now) && slot.is_available && slot.current_bookings < slot.max_capacity;
+    const countdown = slotCountdowns[slot.id];
+    
+    // Check if slot is expired based on countdown
+    if (countdown && countdown.isExpired) {
+      return false;
+    }
+    
+    // Check basic availability
+    return isAfter(slotEndTime, now) && 
+           slot.is_available && 
+           slot.current_bookings < slot.max_capacity;
   };
 
   // Pagination
@@ -343,38 +414,44 @@ export default function VoucherCalendar({ onSlotSelect, session = null }) {
                         </span>
                       </div>
 
-                      {/* Lifetime validity and timer indicator */}
-                      {slot.is_lifetime_valid && (
-                        <div className="text-xs text-green-200 font-bold flex items-center">
-                          <FiShield className="w-3 h-3 mr-1" />
-                          Lifetime Valid
+                      {/* Exam date validity and countdown timer */}
+                      <div className="text-xs text-blue-200 font-bold flex items-center mb-2">
+                        <FiCalendar className="w-3 h-3 mr-1" />
+                        Valid until exam date
+                      </div>
+                      
+                      {/* Countdown timer */}
+                      <div className={`text-xs font-bold flex items-center ${slotInfo.isExpired ? 'text-red-200' : slotInfo.isUrgent ? 'text-orange-200' : 'text-green-200'}`}>
+                        <FiClock className="w-3 h-3 mr-1" />
+                        {slotInfo.isExpired ? 'EXPIRED' : `Expires in: ${slotInfo.countdownText}`}
                         </div>
-                      )}
-                      {slot.booking_timer_minutes ? (
-                        <div className="text-xs text-amber-200 font-bold flex items-center">
+                      
+                      {/* Booking timer indicator */}
+                      {slot.booking_timer_minutes && (
+                        <div className="text-xs text-amber-200 font-bold flex items-center mt-1">
                           <FiClock className="w-3 h-3 mr-1" />
                           {(() => {
                             const minutes = slot.booking_timer_minutes;
-                            if (minutes < 60) return `${minutes}m timer`;
-                            if (minutes < 1440) return `${Math.floor(minutes / 60)}h timer`;
-                            if (minutes < 10080) return `${Math.floor(minutes / 1440)}d timer`;
-                            return `${Math.floor(minutes / 10080)}w timer`;
+                            if (minutes < 60) return `${minutes}m booking timer`;
+                            if (minutes < 1440) return `${Math.floor(minutes / 60)}h booking timer`;
+                            if (minutes < 10080) return `${Math.floor(minutes / 1440)}d booking timer`;
+                            return `${Math.floor(minutes / 10080)}w booking timer`;
                           })()}
-                        </div>
-                      ) : (
-                        <div className="text-xs text-blue-200 font-bold flex items-center">
-                          <FiShield className="w-3 h-3 mr-1" />
-                          No timer
                         </div>
                       )}
 
                       {/* Urgency indicators */}
-                      {slotInfo.isUrgent && (
+                      {slotInfo.isExpired && (
+                        <div className="text-xs text-red-200 font-bold">
+                          ❌ EXPIRED - No longer available
+                        </div>
+                      )}
+                      {slotInfo.isUrgent && !slotInfo.isExpired && (
                         <div className="text-xs text-orange-200 font-bold">
                           ⚡ URGENT - Expires Soon!
                         </div>
                       )}
-                      {slotInfo.isSoon && !slotInfo.isUrgent && (
+                      {slotInfo.isSoon && !slotInfo.isUrgent && !slotInfo.isExpired && (
                         <div className="text-xs text-yellow-200">
                           ⏰ Limited Time
                         </div>

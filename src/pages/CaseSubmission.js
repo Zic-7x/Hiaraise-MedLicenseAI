@@ -21,9 +21,42 @@ const THEME = {
 };
 
 const CASE_TYPES = [
-  { value: 'saudi', label: 'Saudi Arabia' },
-  { value: 'uae', label: 'UAE' },
-  { value: 'qatar', label: 'Qatar' },
+  { 
+    value: 'saudi_scfhs', 
+    label: 'SCFHS License - Saudi Arabia', 
+    description: 'Saudi Commission for Health Specialties license',
+    country: 'Saudi Arabia',
+    flag: '🇸🇦',
+    cost: 'PKR 270,250',
+    timeline: '12-16 weeks'
+  },
+  { 
+    value: 'uae_dha', 
+    label: 'DHA License - Dubai, UAE', 
+    description: 'Dubai Health Authority license',
+    country: 'UAE',
+    flag: '🇦🇪',
+    cost: 'PKR 185,250',
+    timeline: '8-13 weeks'
+  },
+  { 
+    value: 'uae_mohap', 
+    label: 'MOHAP License - UAE', 
+    description: 'UAE Ministry of Health and Prevention license',
+    country: 'UAE',
+    flag: '🇦🇪',
+    cost: 'PKR 189,500',
+    timeline: '10-12 weeks'
+  },
+  { 
+    value: 'qatar_qchp', 
+    label: 'QCHP License - Qatar', 
+    description: 'Qatar Council for Healthcare Practitioners license',
+    country: 'Qatar',
+    flag: '🇶🇦',
+    cost: 'PKR 197,500 - 199,500',
+    timeline: '10-12 weeks'
+  },
 ];
 
 const PATH_OPTIONS = [
@@ -626,24 +659,24 @@ export default function CaseSubmission() {
           
           <div className="space-y-3">
             <Link
-              to="/voucher-system"
+              to="/vouchers"
               className="block w-full bg-gradient-to-r from-green-500 to-emerald-600 text-white px-6 py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300 text-center"
             >
-              Go to Voucher System
+              Get Prometric Exam Vouchers
             </Link>
             
             <Link
-              to="/services"
+              to="/pricing"
               className="block w-full bg-gradient-to-r from-blue-500 to-indigo-600 text-white px-6 py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300 text-center"
             >
-              View Our Packages
+              View Services Fee
             </Link>
             
             <Link
-              to="/dashboard"
+              to="/licenses"
               className="block w-full bg-gradient-to-r from-purple-500 to-pink-600 text-white px-6 py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300 text-center"
             >
-              Go to Dashboard
+              Learn about Licenses
             </Link>
           </div>
         </motion.div>
@@ -744,7 +777,7 @@ export default function CaseSubmission() {
                       options={CASE_TYPES}
                       value={caseType}
                       onChange={setCaseType}
-                      placeholder="-- Select Country --"
+                      placeholder="-- Select License & Country --"
                       className="w-full"
                     />
                   </motion.div>

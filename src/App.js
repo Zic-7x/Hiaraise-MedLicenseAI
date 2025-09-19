@@ -118,31 +118,24 @@ function App() {
               <Route path="/register" element={<Register />} />
               <Route path="/forgot-password" element={<ForgotPassword />} />
               <Route path="/thank-you" element={<ThankYou />} />
-              <Route path="/start-license" element={<StartLicense />} />
-              <Route path="/eligibility-check" element={<EligibilityCheck />} />
+              <Route path="/terms" element={<Terms />} />
+              <Route path="/privacy" element={<Privacy />} />
+              <Route path="/refund-policy" element={<RefundPolicy />} />
+              <Route path="/cookies" element={<Cookies />} />
+              <Route path="/service-policy" element={<ServicePolicy />} />
+              <Route path="/voucher-terms" element={<VoucherTerms />} />
+              
+              {/* Hybrid Routes - accessible to both logged-in and non-logged-in users */}
               <Route path="/licenses" element={<Licenses />} />
               <Route path="/licenses/dha-license-dubai" element={<DHALicense />} />
               <Route path="/licenses/scfhs-license-saudi" element={<SCFHSLicense />} />
               <Route path="/licenses/qchp-license-qatar" element={<QCHPLicense />} />
               <Route path="/licenses/moh-license-uae" element={<MOHLicense />} />
-              <Route path="/countries" element={<Countries />} />
-              <Route path="/tools" element={<Tools />} />
               <Route path="/vouchers" element={<VoucherSystem />} />
               <Route path="/prometric-vouchers" element={<PrometricVouchers />} />
-              <Route path="/my-vouchers" element={<MyVouchers />} />
-              <Route path="/vouchers/dha-license-dubai" element={<DHAVoucher />} />
-              <Route path="/vouchers/mohap-license-uae" element={<MOHAPVoucher />} />
-              <Route path="/vouchers/doh-license-abu-dhabi" element={<DOHVoucher />} />
-              <Route path="/vouchers/qchp-license-qatar" element={<QCHPVoucher />} />
-              <Route path="/vouchers/scfhs-license-saudi" element={<SCFHSVoucher />} />
-              <Route path="/my-exams" element={<MyExams />} />
-              <Route path="/get-exam-pass" element={<GetExamPass />} />
-              <Route path="/terms" element={<Terms />} />
-              <Route path="/refund-policy" element={<RefundPolicy />} />
-              <Route path="/privacy" element={<Privacy />} />
-              <Route path="/cookies" element={<Cookies />} />
-              <Route path="/service-policy" element={<ServicePolicy />} />
-              <Route path="/voucher-terms" element={<VoucherTerms />} />
+              <Route path="/countries" element={<Countries />} />
+              <Route path="/tools" element={<Tools />} />
+              <Route path="/eligibility-check" element={<EligibilityCheck />} />
             </Route>
 
             {/* Protected Routes */}
@@ -152,39 +145,24 @@ function App() {
               <Route path="/dashboard/payments" element={<UserPaymentHistory />} />
               <Route path="/admin/users" element={<AdminUsers />} />
               <Route path="/admin/analytics" element={<AdminAnalytics />} />
+              <Route path="/admin/support-tickets" element={<AdminSupportTickets />} />
               <Route path="/profile" element={<Profile />} />
               <Route path="/submit-case" element={<CaseSubmission />} />
               <Route path="/my-cases" element={<CaseTracking />} />
               <Route path="/checkout" element={<Checkout />} />
               <Route path="/start-license" element={<StartLicense />} />
-              <Route path="/eligibility-check" element={<EligibilityCheck />} />
-              <Route path="/licenses" element={<Licenses />} />
-              <Route path="/licenses/dha-license-dubai" element={<DHALicense />} />
-              <Route path="/licenses/scfhs-license-saudi" element={<SCFHSLicense />} />
-              <Route path="/licenses/qchp-license-qatar" element={<QCHPLicense />} />
-              <Route path="/licenses/moh-license-uae" element={<MOHLicense />} />
-              <Route path="/countries" element={<Countries />} />
-            <Route path="/tools" element={<Tools />} />
-            <Route path="/vouchers" element={<VoucherSystem />} />
-            <Route path="/prometric-vouchers" element={<PrometricVouchers />} />
             <Route path="/my-vouchers" element={<MyVouchers />} />
+              <Route path="/my-exams" element={<MyExams />} />
+              <Route path="/get-exam-pass" element={<GetExamPass />} />
+              <Route path="/support-tickets" element={<SupportTickets />} />
+              <Route path="/appointments" element={<UserAppointmentHistory />} />
+              
+              {/* Protected Voucher Routes */}
             <Route path="/vouchers/dha-license-dubai" element={<DHAVoucher />} />
             <Route path="/vouchers/mohap-license-uae" element={<MOHAPVoucher />} />
             <Route path="/vouchers/doh-license-abu-dhabi" element={<DOHVoucher />} />
             <Route path="/vouchers/qchp-license-qatar" element={<QCHPVoucher />} />
             <Route path="/vouchers/scfhs-license-saudi" element={<SCFHSVoucher />} />
-            <Route path="/my-exams" element={<MyExams />} />
-            <Route path="/get-exam-pass" element={<GetExamPass />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/contact" element={<Contact />} />
-            <Route path="/terms" element={<Terms />} />
-            <Route path="/refund-policy" element={<RefundPolicy />} />
-            <Route path="/privacy" element={<Privacy />} />
-            <Route path="/cookies" element={<Cookies />} />
-            <Route path="/service-policy" element={<ServicePolicy />} />
-            <Route path="/support-tickets" element={<SupportTickets />} />
-              <Route path="/admin-support-tickets" element={<AdminSupportTickets />} />
-              <Route path="/appointments" element={<UserAppointmentHistory />} />
             </Route>
 
             {/* Default Redirect */}

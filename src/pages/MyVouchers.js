@@ -8,6 +8,7 @@ import VoucherSubmissionFlow from '../components/VoucherSubmissionFlow';
 
 export default function MyVouchers() {
   const [vouchers, setVouchers] = useState([]);
+  const [pendingVouchers, setPendingVouchers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState(null);
   const [profile, setProfile] = useState(null);
@@ -30,8 +31,8 @@ export default function MyVouchers() {
         .single();
       setProfile(profileData);
 
-      // Fetch vouchers
-      const { data, error } = await supabase
+      // Fetch approved vouchers
+      const { data: approvedData, error: approvedError } = await supabase
         .from('voucher_purchases')
         .select(`
           *,
@@ -44,12 +45,36 @@ export default function MyVouchers() {
           )
         `)
         .eq('user_id', user.id)
+        .in('status', ['approved', 'purchased']) // Only show approved or purchased vouchers
         .order('created_at', { ascending: false });
       
-      if (error) {
-        console.error('Error fetching vouchers:', error);
+      if (approvedError) {
+        console.error('Error fetching approved vouchers:', approvedError);
       } else {
-        setVouchers(data || []);
+        setVouchers(approvedData || []);
+      }
+
+      // Fetch pending vouchers
+      const { data: pendingData, error: pendingError } = await supabase
+        .from('voucher_purchases')
+        .select(`
+          *,
+          voucher_slots!voucher_purchases_slot_id_fkey(
+            exam_authority,
+            exam_date,
+            start_time,
+            end_time,
+            final_price
+          )
+        `)
+        .eq('user_id', user.id)
+        .eq('status', 'pending') // Only show pending vouchers
+        .order('created_at', { ascending: false });
+      
+      if (pendingError) {
+        console.error('Error fetching pending vouchers:', pendingError);
+      } else {
+        setPendingVouchers(pendingData || []);
       }
     }
     
@@ -81,6 +106,10 @@ export default function MyVouchers() {
           .header { text-align: center; margin-bottom: 30px; }
           .logos { display: flex; justify-content: center; align-items: center; gap: 20px; margin-bottom: 20px; }
           .logos img { height: 60px; }
+          .hiaraise-branding { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 15px; border-radius: 10px; margin-bottom: 20px; }
+          .hiaraise-branding h2 { margin: 0; font-size: 24px; font-weight: bold; }
+          .hiaraise-branding p { margin: 5px 0 0 0; font-size: 14px; opacity: 0.9; }
+          .hiaraise-branding a { color: white; text-decoration: none; font-weight: bold; }
           .voucher-code { background: linear-gradient(to right, #dcfce7, #dbeafe); border: 2px solid #22c55e; border-radius: 8px; padding: 20px; text-align: center; margin-bottom: 30px; }
           .voucher-code .label { font-size: 14px; color: #15803d; font-weight: 600; margin-bottom: 10px; }
           .voucher-code .code { font-size: 32px; font-weight: bold; font-family: monospace; margin-bottom: 10px; }
@@ -91,12 +120,17 @@ export default function MyVouchers() {
           .candidate-info { border-top: 1px solid #ddd; padding-top: 20px; margin-bottom: 20px; }
           .candidate-info h3 { font-size: 18px; font-weight: 600; margin-bottom: 15px; }
           .candidate-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; }
-          .instructions { background: #fef3c7; border: 1px solid #f59e0b; border-radius: 8px; padding: 20px; }
+          .instructions { background: #fef3c7; border: 1px solid #f59e0b; border-radius: 8px; padding: 20px; margin-bottom: 20px; }
           .instructions h3 { color: #92400e; margin-bottom: 15px; }
           .instructions ul { color: #b45309; }
           .instructions li { margin-bottom: 8px; }
+          .exam-day-instructions { background: #dbeafe; border: 1px solid #3b82f6; border-radius: 8px; padding: 20px; margin-bottom: 20px; }
+          .exam-day-instructions h3 { color: #1e40af; margin-bottom: 15px; }
+          .exam-day-instructions ul { color: #1e3a8a; }
+          .exam-day-instructions li { margin-bottom: 8px; }
           .footer { text-align: center; margin-top: 30px; padding-top: 20px; border-top: 1px solid #ddd; }
           .footer p { font-size: 14px; color: #666; margin: 5px 0; }
+          .footer a { color: #667eea; text-decoration: none; font-weight: bold; }
         </style>
       </head>
       <body>
@@ -108,6 +142,11 @@ export default function MyVouchers() {
           </div>
           <h1 style="font-size: 28px; font-weight: bold; margin-bottom: 10px;">Exam Voucher</h1>
           <p style="font-size: 16px; color: #666;">Official Exam Authorization Document</p>
+          
+          <div class="hiaraise-branding">
+            <h2>🎫 Hiaraise MedLicense</h2>
+            <p>Your trusted partner for medical licensing exams | <a href="https://hiaraise.com" target="_blank">hiaraise.com</a></p>
+          </div>
         </div>
 
         <div class="voucher-code">
@@ -171,19 +210,44 @@ export default function MyVouchers() {
         </div>
 
         <div class="instructions">
-          <h3>Important Instructions</h3>
+          <h3>📋 Step 1: Prepare Your Voucher</h3>
           <ul>
-            <li><strong>Arrive 30 minutes early</strong> - You must arrive at least 30 minutes before your scheduled exam time</li>
-            <li><strong>Bring valid ID</strong> - Government-issued photo identification is required</li>
-            <li><strong>Present this voucher</strong> - Show this document and voucher code at the exam center</li>
-            <li><strong>No rescheduling</strong> - This voucher is valid only for the selected date and time</li>
-            <li><strong>Keep safe</strong> - Print this voucher and keep it secure until your exam</li>
+            <li><strong>Print this voucher</strong> - Keep a physical copy as backup</li>
+            <li><strong>Save voucher code</strong> - Take a screenshot or write it down</li>
+            <li><strong>Verify exam details</strong> - Check date, time, and authority</li>
+            <li><strong>Prepare valid ID</strong> - Government-issued photo identification</li>
+            <li><strong>Review Hiaraise process</strong> - Understand our exam pass workflow</li>
+            <li><strong>Plan your submission</strong> - Allow time for Hiaraise processing</li>
+          </ul>
+        </div>
+
+        <div class="exam-day-instructions">
+          <h3>🎯 Step 2: Submit Through Hiaraise</h3>
+          <ul>
+            <li><strong>Visit hiaraise.com</strong> - Go to your dashboard</li>
+            <li><strong>Click "Submit for Exam"</strong> - Use the button on your voucher</li>
+            <li><strong>Follow Hiaraise workflow</strong> - Complete our submission process</li>
+            <li><strong>Upload required documents</strong> - Submit all necessary paperwork</li>
+            <li><strong>Pay processing fees</strong> - Complete Hiaraise service payment</li>
+            <li><strong>Track your progress</strong> - Monitor status in your dashboard</li>
+          </ul>
+        </div>
+
+        <div style="background: #dcfce7; border: 1px solid #22c55e; border-radius: 8px; padding: 20px; margin-bottom: 20px;">
+          <h3 style="color: #15803d; margin-bottom: 15px;">✅ Hiaraise Exam Pass Process</h3>
+          <ul style="color: #166534;">
+            <li><strong>Hiaraise handles everything</strong> - We manage all exam registration and scheduling</li>
+            <li><strong>We coordinate with exam centers</strong> - Working on your behalf</li>
+            <li><strong>You receive exam pass confirmation</strong> - Via email when ready</li>
+            <li><strong>Track your application status</strong> - Real-time updates in dashboard</li>
+            <li><strong>Get support throughout</strong> - Our team is here to help</li>
           </ul>
         </div>
 
         <div class="footer">
-          <p>This voucher is valid only until the selected exam date and time. No extensions or rescheduling allowed.</p>
-          <p style="font-size: 12px; color: #999;">Generated by Hiaraise • ${new Date().toISOString()}</p>
+          <p>This voucher is valid only until the selected exam date and time. Submit through Hiaraise before expiration to get your exam pass.</p>
+          <p style="font-size: 12px; color: #999;">Generated by <a href="https://hiaraise.com" target="_blank">Hiaraise MedLicense</a> • ${new Date().toISOString()}</p>
+          <p style="font-size: 12px; color: #999;">Visit us at <a href="https://hiaraise.com" target="_blank">hiaraise.com</a> to submit your voucher and get your exam pass</p>
         </div>
       </body>
       </html>
@@ -261,12 +325,17 @@ export default function MyVouchers() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.1 }}
-            className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12"
+            className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-12"
           >
             <div className="bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl p-6 text-center">
               <FiGift className="w-8 h-8 text-purple-400 mx-auto mb-3" />
               <h3 className="text-2xl font-bold text-white mb-1">{vouchers.length}</h3>
-              <p className="text-gray-300">Total Vouchers</p>
+              <p className="text-gray-300">Approved Vouchers</p>
+            </div>
+            <div className="bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl p-6 text-center">
+              <FiClock className="w-8 h-8 text-yellow-400 mx-auto mb-3" />
+              <h3 className="text-2xl font-bold text-white mb-1">{pendingVouchers.length}</h3>
+              <p className="text-gray-300">Pending Approval</p>
             </div>
             <div className="bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl p-6 text-center">
               <FiCheckCircle className="w-8 h-8 text-green-400 mx-auto mb-3" />
@@ -284,27 +353,139 @@ export default function MyVouchers() {
             </div>
           </motion.div>
 
-          {/* Vouchers List */}
+          {/* Pending Vouchers Section */}
+          {pendingVouchers.length > 0 && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              className="mb-12"
+            >
+              <h2 className="text-2xl font-bold text-white mb-6 flex items-center">
+                <FiClock className="w-6 h-6 text-yellow-400 mr-3" />
+                Pending Approval ({pendingVouchers.length})
+              </h2>
+              <div className="space-y-4">
+                {pendingVouchers.map((voucher, index) => (
+                  <motion.div
+                    key={voucher.id}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, delay: index * 0.1 }}
+                    className="bg-gradient-to-r from-yellow-900/20 to-orange-900/20 border border-yellow-400/30 rounded-2xl p-6"
+                  >
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center space-x-4">
+                        <div className="w-12 h-12 bg-gradient-to-r from-yellow-500 to-orange-500 rounded-xl flex items-center justify-center">
+                          <FiClock className="w-6 h-6 text-white" />
+                        </div>
+                        <div>
+                          <h3 className="text-lg font-semibold text-white">
+                            {voucher.voucher_slots.exam_authority} Exam Voucher
+                          </h3>
+                          <p className="text-yellow-300 text-sm">
+                            Submitted on {new Date(voucher.created_at).toLocaleDateString('en-US', { 
+                              year: 'numeric', 
+                              month: 'long', 
+                              day: 'numeric' 
+                            })}
+                          </p>
+                        </div>
+                      </div>
+                      <div className="text-right">
+                        <div className="text-yellow-300 font-semibold mb-1">Payment Verification</div>
+                        <div className="text-yellow-400 text-sm">Admin reviewing your payment</div>
+                      </div>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+            </motion.div>
+          )}
+
+          {/* Voucher Instructions */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
+            transition={{ duration: 0.6, delay: 0.25 }}
+            className="bg-gradient-to-r from-blue-900/20 to-purple-900/20 border border-blue-400/30 rounded-2xl p-6 mb-8"
+          >
+            <h2 className="text-xl font-bold text-white mb-4 flex items-center">
+              <FiFileText className="w-6 h-6 text-blue-400 mr-3" />
+              How to Get Your Exam Pass Using This Voucher
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <h3 className="text-lg font-semibold text-blue-300 mb-3">📋 Step 1: Prepare Your Voucher</h3>
+                <ul className="text-blue-200 text-sm space-y-2">
+                  <li>• <strong>Print your voucher</strong> - Keep a physical copy as backup</li>
+                  <li>• <strong>Save voucher code</strong> - Take a screenshot or write it down</li>
+                  <li>• <strong>Verify exam details</strong> - Check date, time, and authority</li>
+                  <li>• <strong>Prepare valid ID</strong> - Government-issued photo identification</li>
+                  <li>• <strong>Review Hiaraise process</strong> - Understand our exam pass workflow</li>
+                </ul>
+              </div>
+              <div>
+                <h3 className="text-lg font-semibold text-purple-300 mb-3">🎯 Step 2: Submit Through Hiaraise</h3>
+                <ul className="text-purple-200 text-sm space-y-2">
+                  <li>• <strong>Click "Submit for Exam"</strong> - Use the button on this voucher</li>
+                  <li>• <strong>Follow Hiaraise workflow</strong> - Complete our submission process</li>
+                  <li>• <strong>Upload required documents</strong> - Submit all necessary paperwork</li>
+                  <li>• <strong>Pay processing fees</strong> - Complete Hiaraise service payment</li>
+                  <li>• <strong>Track your progress</strong> - Monitor status in your dashboard</li>
+                </ul>
+              </div>
+            </div>
+            <div className="mt-4 p-4 bg-green-900/20 border border-green-400/30 rounded-lg">
+              <h4 className="text-green-300 font-semibold mb-2">✅ Hiaraise Exam Pass Process</h4>
+              <ul className="text-green-200 text-sm space-y-1">
+                <li>• Hiaraise handles all exam registration and scheduling</li>
+                <li>• We coordinate with exam centers on your behalf</li>
+                <li>• You receive exam pass confirmation via email</li>
+                <li>• Track your application status in real-time</li>
+                <li>• Get support throughout the entire process</li>
+              </ul>
+            </div>
+            <div className="mt-4 p-4 bg-amber-900/20 border border-amber-400/30 rounded-lg">
+              <h4 className="text-amber-300 font-semibold mb-2">⚠️ Important Reminders</h4>
+              <ul className="text-amber-200 text-sm space-y-1">
+                <li>• Vouchers are valid only for the specific date and time selected</li>
+                <li>• Submit through Hiaraise before voucher expiration</li>
+                <li>• Voucher codes are unique and cannot be transferred after use</li>
+                <li>• Contact Hiaraise support for any questions or issues</li>
+                <li>• Keep this page bookmarked for easy access to your vouchers</li>
+              </ul>
+            </div>
+          </motion.div>
+
+          {/* Approved Vouchers List */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.3 }}
             className="space-y-6"
           >
             {vouchers.length === 0 ? (
               <div className="bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl p-12 text-center">
                 <FiGift className="w-16 h-16 text-gray-500 mx-auto mb-6" />
-                <h3 className="text-2xl font-semibold text-white mb-4">No Vouchers Yet</h3>
+                <h3 className="text-2xl font-semibold text-white mb-4">
+                  {pendingVouchers.length > 0 ? 'No Approved Vouchers Yet' : 'No Vouchers Yet'}
+                </h3>
                 <p className="text-gray-300 mb-8 max-w-md mx-auto">
-                  You haven't purchased any exam vouchers yet. Browse our available slots and start saving on your exam fees.
+                  {pendingVouchers.length > 0 
+                    ? 'You have pending voucher requests awaiting admin approval. Once approved, they will appear here.'
+                    : 'You haven\'t purchased any exam vouchers yet. Browse our available slots and start saving on your exam fees.'
+                  }
                 </p>
-                <Link
-                  to="/vouchers"
-                  className="inline-flex items-center space-x-2 px-8 py-4 rounded-xl font-semibold text-white bg-gradient-to-r from-purple-500 to-pink-600 hover:from-purple-600 hover:to-pink-700 shadow-lg transition-all duration-300 transform hover:scale-105"
-                >
-                  <FiPlus className="w-5 h-5" />
-                  <span>Browse Vouchers</span>
-                </Link>
+                {pendingVouchers.length === 0 && (
+                  <Link
+                    to="/vouchers"
+                    className="inline-flex items-center space-x-2 px-8 py-4 rounded-xl font-semibold text-white bg-gradient-to-r from-purple-500 to-pink-600 hover:from-purple-600 hover:to-pink-700 shadow-lg transition-all duration-300 transform hover:scale-105"
+                  >
+                    <FiPlus className="w-5 h-5" />
+                    <span>Browse Vouchers</span>
+                  </Link>
+                )}
               </div>
             ) : (
               vouchers.map((voucher, index) => {

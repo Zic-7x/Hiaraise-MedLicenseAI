@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { FiCheck, FiGift, FiCalendar, FiDownload, FiShare2 } from 'react-icons/fi';
+import { FiCheck, FiGift, FiCalendar, FiDownload, FiShare2, FiClock } from 'react-icons/fi';
 import { trackMetaPixelPayment, trackMetaPixelButtonClick } from '../utils/metaPixel';
 import { trackEvent, trackButtonClick, trackPageView, trackPayment } from '../utils/analytics';
 import { useAnalytics } from '../utils/useAnalytics';
@@ -14,12 +14,22 @@ export default function ThankYou() {
 
   // Only show if navigated with state.success === true
   useEffect(() => {
+    // Debug logging for ThankYou page
+    console.log('ThankYou page loaded with state:', location.state);
+    
     if (!location.state || !location.state.success) {
       // If not coming from a successful purchase, redirect to home
+      console.log('No success state found, redirecting to home');
       navigate('/', { replace: true });
     } else {
       // Track successful purchase conversion
       const amount = location.state.amount || 0;
+      console.log('ThankYou page - successful purchase detected:', {
+        isVoucherPurchase: location.state.voucherPurchase,
+        voucherCode: location.state.voucherCode,
+        examAuthority: location.state.examAuthority
+      });
+      
       trackPageView('/thank-you');
       trackEvent('page_viewed', 'engagement', 'thank_you_page');
       trackEvent('purchase_completed', 'business', 'thank_you_page', amount);
@@ -72,12 +82,15 @@ Please arrive 30 minutes early and bring your voucher code and valid ID.`;
 
   // Check if this is a voucher purchase
   const isVoucherPurchase = location.state?.voucherPurchase;
+  const isPendingApproval = location.state?.status === 'pending';
   const voucherData = isVoucherPurchase ? {
     voucherCode: location.state.voucherCode,
     examAuthority: location.state.examAuthority,
     examDate: location.state.examDate,
     examTime: location.state.examTime,
-    finalPrice: location.state.finalPrice
+    finalPrice: location.state.finalPrice,
+    status: location.state.status,
+    paymentId: location.state.paymentId
   } : null;
 
   return (
@@ -90,30 +103,67 @@ Please arrive 30 minutes early and bring your voucher code and valid ID.`;
       </div>
       <div className="relative z-10 w-full flex items-center justify-center">
         {isVoucherPurchase ? (
-          // Voucher Purchase Success
+          // Voucher Purchase Status
           <div className="bg-white/10 backdrop-blur-xl border border-white/30 rounded-2xl p-4 sm:p-6 shadow-2xl text-center w-full max-w-2xl mx-auto">
-            <div className="w-16 h-16 bg-gradient-to-br from-green-400 to-emerald-500 rounded-full flex items-center justify-center mx-auto mb-4 border-2 border-green-400/30 shadow">
-              <FiGift className="text-white text-3xl" />
-            </div>
-            <h2 className="text-2xl font-display font-bold bg-gradient-to-r from-green-400 via-white to-emerald-400 bg-clip-text text-transparent mb-2">
-              🎉 Voucher Purchase Successful!
-            </h2>
-            <p className="text-sm text-gray-300 mb-6 leading-relaxed">
-              Your {voucherData.examAuthority} exam voucher has been purchased successfully. 
-              <span className="block mt-2 text-red-300 font-semibold">
-                ⚠️ Important: This voucher is valid only until {voucherData.examDate} at {voucherData.examTime.split(' - ')[1]}
-              </span>
-            </p>
+            {isPendingApproval ? (
+              // Pending Approval
+              <>
+                <div className="w-16 h-16 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-full flex items-center justify-center mx-auto mb-4 border-2 border-yellow-400/30 shadow">
+                  <FiClock className="text-white text-3xl" />
+                </div>
+                <h2 className="text-2xl font-display font-bold bg-gradient-to-r from-yellow-400 via-white to-orange-400 bg-clip-text text-transparent mb-2">
+                  ⏳ Payment Verification in Progress
+                </h2>
+                <p className="text-sm text-gray-300 mb-6 leading-relaxed">
+                  Your {voucherData.examAuthority} voucher request has been submitted successfully! 
+                  <span className="block mt-2 text-yellow-300 font-semibold">
+                    🔍 Our admin team is verifying your payment. Your voucher code will be issued once approved (usually takes a few seconds to a few minutes).
+                  </span>
+                </p>
+              </>
+            ) : (
+              // Approved Voucher
+              <>
+                <div className="w-16 h-16 bg-gradient-to-br from-green-400 to-emerald-500 rounded-full flex items-center justify-center mx-auto mb-4 border-2 border-green-400/30 shadow">
+                  <FiGift className="text-white text-3xl" />
+                </div>
+                <h2 className="text-2xl font-display font-bold bg-gradient-to-r from-green-400 via-white to-emerald-400 bg-clip-text text-transparent mb-2">
+                  🎉 Voucher Purchase Successful!
+                </h2>
+                <p className="text-sm text-gray-300 mb-6 leading-relaxed">
+                  Your {voucherData.examAuthority} exam voucher has been purchased successfully. 
+                  <span className="block mt-2 text-red-300 font-semibold">
+                    ⚠️ Important: This voucher is valid only until {voucherData.examDate} at {voucherData.examTime.split(' - ')[1]}
+                  </span>
+                </p>
+              </>
+            )}
             
             {/* Voucher Details */}
-            <div className="bg-gradient-to-r from-green-900/20 to-emerald-900/20 border border-green-400/30 rounded-xl p-4 mb-6">
-              <div className="text-center mb-4">
-                <div className="text-sm text-green-300 mb-2 font-semibold">VOUCHER CODE</div>
-                <div className="text-3xl font-bold text-white font-mono tracking-wider mb-2">
-                  {voucherData.voucherCode}
+            <div className={`rounded-xl p-4 mb-6 ${
+              isPendingApproval 
+                ? 'bg-gradient-to-r from-yellow-900/20 to-orange-900/20 border border-yellow-400/30' 
+                : 'bg-gradient-to-r from-green-900/20 to-emerald-900/20 border border-green-400/30'
+            }`}>
+              {isPendingApproval ? (
+                // Pending Approval Details
+                <div className="text-center mb-4">
+                  <div className="text-sm text-yellow-300 mb-2 font-semibold">PAYMENT STATUS</div>
+                  <div className="text-2xl font-bold text-white mb-2">
+                    ⏳ Pending Verification
+                  </div>
+                  <div className="text-sm text-yellow-400">Your payment is being reviewed by our admin team</div>
                 </div>
-                <div className="text-sm text-green-400">Present this code at the exam center</div>
-              </div>
+              ) : (
+                // Approved Voucher Details
+                <div className="text-center mb-4">
+                  <div className="text-sm text-green-300 mb-2 font-semibold">VOUCHER CODE</div>
+                  <div className="text-3xl font-bold text-white font-mono tracking-wider mb-2">
+                    {voucherData.voucherCode}
+                  </div>
+                  <div className="text-sm text-green-400">Present this code at the exam center</div>
+                </div>
+              )}
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-left">
                 <div>
@@ -137,32 +187,76 @@ Please arrive 30 minutes early and bring your voucher code and valid ID.`;
             </div>
 
             {/* Action Buttons */}
-            <div className="flex flex-col sm:flex-row gap-3 justify-center mb-4">
-              <button
-                onClick={handlePrintVoucher}
-                className="inline-flex items-center justify-center space-x-2 px-4 py-2 bg-gradient-to-r from-blue-500 to-indigo-600 text-white rounded-xl font-semibold shadow hover:shadow-lg transition-all duration-300 text-sm"
-              >
-                <FiDownload className="w-4 h-4" />
-                <span>Print Voucher</span>
-              </button>
-              
-              <button
-                onClick={handleAddToCalendar}
-                className="inline-flex items-center justify-center space-x-2 px-4 py-2 bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-xl font-semibold shadow hover:shadow-lg transition-all duration-300 text-sm"
-              >
-                <FiCalendar className="w-4 h-4" />
-                <span>Add to Calendar</span>
-              </button>
-            </div>
+            {isPendingApproval ? (
+              // Pending Approval Actions
+              <div className="flex flex-col sm:flex-row gap-3 justify-center mb-4">
+                <button
+                  onClick={() => window.location.reload()}
+                  className="inline-flex items-center justify-center space-x-2 px-4 py-2 bg-gradient-to-r from-yellow-500 to-orange-600 text-white rounded-xl font-semibold shadow hover:shadow-lg transition-all duration-300 text-sm"
+                >
+                  <FiClock className="w-4 h-4" />
+                  <span>Refresh Status</span>
+                </button>
+                
+                <button
+                  onClick={handleAddToCalendar}
+                  className="inline-flex items-center justify-center space-x-2 px-4 py-2 bg-gradient-to-r from-blue-500 to-indigo-600 text-white rounded-xl font-semibold shadow hover:shadow-lg transition-all duration-300 text-sm"
+                >
+                  <FiCalendar className="w-4 h-4" />
+                  <span>Add to Calendar</span>
+                </button>
+              </div>
+            ) : (
+              // Approved Voucher Actions
+              <div className="flex flex-col sm:flex-row gap-3 justify-center mb-4">
+                <button
+                  onClick={handlePrintVoucher}
+                  className="inline-flex items-center justify-center space-x-2 px-4 py-2 bg-gradient-to-r from-blue-500 to-indigo-600 text-white rounded-xl font-semibold shadow hover:shadow-lg transition-all duration-300 text-sm"
+                >
+                  <FiDownload className="w-4 h-4" />
+                  <span>Print Voucher</span>
+                </button>
+                
+                <button
+                  onClick={handleAddToCalendar}
+                  className="inline-flex items-center justify-center space-x-2 px-4 py-2 bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-xl font-semibold shadow hover:shadow-lg transition-all duration-300 text-sm"
+                >
+                  <FiCalendar className="w-4 h-4" />
+                  <span>Add to Calendar</span>
+                </button>
+              </div>
+            )}
 
             {/* Important Instructions */}
-            <div className="bg-amber-900/20 border border-amber-400/30 rounded-lg p-3 mb-4">
-              <h5 className="text-amber-300 font-semibold mb-2 text-sm">📋 Important Instructions:</h5>
-              <ul className="text-xs text-amber-200 space-y-1 text-left">
-                <li>• Arrive 30 minutes before your exam time</li>
-                <li>• Bring a valid government-issued ID</li>
-                <li>• Present your voucher code at the exam center</li>
-                <li>• Keep this confirmation as backup</li>
+            <div className={`rounded-lg p-3 mb-4 ${
+              isPendingApproval 
+                ? 'bg-yellow-900/20 border border-yellow-400/30' 
+                : 'bg-amber-900/20 border border-amber-400/30'
+            }`}>
+              <h5 className={`font-semibold mb-2 text-sm ${
+                isPendingApproval ? 'text-yellow-300' : 'text-amber-300'
+              }`}>
+                {isPendingApproval ? '⏳ Payment Verification Status:' : '📋 Important Instructions:'}
+              </h5>
+              <ul className={`text-xs space-y-1 text-left ${
+                isPendingApproval ? 'text-yellow-200' : 'text-amber-200'
+              }`}>
+                {isPendingApproval ? (
+                  <>
+                    <li>• Your payment is being verified by our admin team</li>
+                    <li>• Voucher code will be issued once payment is approved</li>
+                    <li>• You will receive an email notification when approved</li>
+                    <li>• Usually takes a few seconds to a few minutes</li>
+                    <li>• Check your dashboard for status updates</li>
+                  </>
+                ) : (
+                  <>
+                    <li>• Arrive 30 minutes before your exam time</li>
+                    <li>• Bring a valid government-issued ID</li>
+                    <li>• Present your voucher code at the exam center</li>
+                    <li>• Keep this confirmation as backup</li>
+                  </>
+                )}
               </ul>
             </div>
 

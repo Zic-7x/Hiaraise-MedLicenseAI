@@ -109,8 +109,15 @@ export default function CustomSelect({
         whileTap={{ scale: 0.98 }}
         className={`flex items-center justify-between px-3 py-2.5 rounded-xl text-white transition-all duration-200 bg-white/10 backdrop-blur-md border border-white/20 w-full min-w-[120px]`}
       >
-        <span className="truncate text-left flex-1">
-          {selectedOption ? selectedOption.label : <span className="text-gray-400">{placeholder}</span>}
+        <span className="truncate text-left flex-1 flex items-center space-x-2">
+          {selectedOption ? (
+            <>
+              {selectedOption.flag && <span className="text-lg">{selectedOption.flag}</span>}
+              <span>{selectedOption.label}</span>
+            </>
+          ) : (
+            <span className="text-gray-400">{placeholder}</span>
+          )}
         </span>
         <motion.div animate={{ rotate: showDropdown ? 180 : 0 }} transition={{ duration: 0.2 }}>
           <FiChevronDown className="w-4 h-4 text-gray-400 ml-2" />
@@ -149,11 +156,35 @@ export default function CustomSelect({
                     type="button"
                     onClick={() => handleOptionSelect(option)}
                     onMouseEnter={() => setFocusedIndex(index)}
-                    className={`w-full px-4 py-3 text-left transition-all duration-200 flex items-center rounded-lg ${focusedIndex === index ? 'bg-blue-500/20 border-l-4 border-blue-500' : 'hover:bg-white/10'} focus:outline-none`}
+                    className={`w-full px-4 py-3 text-left transition-all duration-200 rounded-lg ${focusedIndex === index ? 'bg-blue-500/20 border-l-4 border-blue-500' : 'hover:bg-white/10'} focus:outline-none`}
                     whileHover={{ x: 4 }}
                     whileTap={{ scale: 0.98 }}
                   >
-                    <span className="truncate text-white text-base">{option.label}</span>
+                    <div className="flex items-start space-x-3">
+                      {option.flag && (
+                        <span className="text-lg flex-shrink-0 mt-0.5">{option.flag}</span>
+                      )}
+                      <div className="flex-1 min-w-0">
+                        <div className="text-white text-base font-medium truncate">{option.label}</div>
+                        {option.description && (
+                          <div className="text-gray-300 text-sm mt-1 truncate">{option.description}</div>
+                        )}
+                        {(option.cost || option.timeline) && (
+                          <div className="flex items-center space-x-3 mt-2 text-xs text-gray-400">
+                            {option.cost && (
+                              <span className="bg-green-500/20 text-green-300 px-2 py-1 rounded-full">
+                                {option.cost}
+                              </span>
+                            )}
+                            {option.timeline && (
+                              <span className="bg-blue-500/20 text-blue-300 px-2 py-1 rounded-full">
+                                {option.timeline}
+                              </span>
+                            )}
+                          </div>
+                        )}
+                      </div>
+                    </div>
                   </motion.button>
                 ))
               ) : (

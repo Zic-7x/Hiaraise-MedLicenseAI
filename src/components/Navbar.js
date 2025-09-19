@@ -129,25 +129,25 @@ const MobileMenu = ({ isOpen, onClose, user, handleSignOut, userProfile, mobileM
                     </NavLink>
                   </motion.div>
                   
-                  <motion.div
-                    initial={{ x: 20, opacity: 0 }}
-                    animate={{ x: 0, opacity: 1 }}
-                    transition={{ delay: 0.15 }}
-                  >
-                    <NavLink to="/my-cases" icon={FileText} onClick={onClose} className="block px-4 py-3 rounded-xl text-base font-medium text-gray-200 hover:text-cyan-400 hover:bg-white/10 focus:outline-none focus:text-cyan-400 focus:bg-white/10 transition-all duration-300 backdrop-blur-sm border border-white/10 hover:border-cyan-400/30">
-                      My Cases
-                    </NavLink>
-                  </motion.div>
-                  
-                  <motion.div
-                    initial={{ x: 20, opacity: 0 }}
-                    animate={{ x: 0, opacity: 1 }}
-                    transition={{ delay: 0.2 }}
-                  >
-                    <NavLink to="/submit-case" icon={Sparkles} onClick={onClose} className="block px-4 py-3 rounded-xl text-base font-medium text-gray-200 hover:text-cyan-400 hover:bg-white/10 focus:outline-none focus:text-cyan-400 focus:bg-white/10 transition-all duration-300 backdrop-blur-sm border border-white/10 hover:border-cyan-400/30">
-                      Submit Case
-                    </NavLink>
-                  </motion.div>
+                  {/* Get License Section (mobile dropdown) */}
+                  <div className="pt-2">
+                    <details className="group">
+                      <summary className="list-none cursor-pointer block px-4 py-3 rounded-xl text-base font-medium text-gray-200 hover:text-cyan-400 hover:bg-white/10 transition-all duration-300 border border-white/10 group-open:border-cyan-400/30">
+                        <span className="inline-flex items-center space-x-2">
+                          <Sparkles className="w-4 h-4" />
+                          <span>Get License</span>
+                        </span>
+                      </summary>
+                      <div className="pl-4 pt-2 space-y-2">
+                        <NavLink to="/submit-case" icon={Sparkles} onClick={onClose} className="block px-3 py-2 rounded-lg text-gray-200 hover:text-cyan-400 hover:bg-white/10 border border-white/10">
+                          Submit Case
+                        </NavLink>
+                        <NavLink to="/my-cases" icon={FileText} onClick={onClose} className="block px-3 py-2 rounded-lg text-gray-200 hover:text-cyan-400 hover:bg-white/10 border border-white/10">
+                          My Cases
+                        </NavLink>
+                      </div>
+                    </details>
+                  </div>
                   
                   {/* Licenses Section (mobile dropdown) */}
                   <div className="pt-2">
@@ -161,6 +161,9 @@ const MobileMenu = ({ isOpen, onClose, user, handleSignOut, userProfile, mobileM
                           <div className="pl-4 pt-2 space-y-2">
                             <NavLink to="/licenses" icon={FileText} onClick={onClose} className="block px-3 py-2 rounded-lg text-gray-200 hover:text-cyan-400 hover:bg-white/10 border border-white/10">
                               All Licenses
+                            </NavLink>
+                            <NavLink to="/start-license" icon={Sparkles} onClick={onClose} className="block px-3 py-2 rounded-lg text-gray-200 hover:text-cyan-400 hover:bg-white/10 border border-white/10">
+                              Why to Get License
                             </NavLink>
                             <NavLink to="/licenses/dha-license-dubai" icon={FileText} onClick={onClose} className="block px-3 py-2 rounded-lg text-gray-200 hover:text-cyan-400 hover:bg-white/10 border border-white/10">
                               DHA License (Dubai)
@@ -188,12 +191,18 @@ const MobileMenu = ({ isOpen, onClose, user, handleSignOut, userProfile, mobileM
                         </span>
                       </summary>
                       <div className="pl-4 pt-2 space-y-2">
-                        <NavLink to="/eligibility-check" icon={Brain} onClick={onClose} className="block px-3 py-2 rounded-lg text-gray-200 hover:text-cyan-400 hover:bg-white/10 border border-white/10">
-                          Eligibility Checker
-                        </NavLink>
-                        <NavLink to="/start-license" icon={Sparkles} onClick={onClose} className="block px-3 py-2 rounded-lg text-gray-200 hover:text-cyan-400 hover:bg-white/10 border border-white/10">
-                          Why to Get License
-                        </NavLink>
+                        {/* Tools Section */}
+                        <div className="space-y-2">
+                          <div className="text-xs uppercase tracking-wider text-cyan-300 font-bold px-3">Tools</div>
+                          <Link
+                            to="/eligibility-check"
+                            onClick={onClose}
+                            className="block w-full px-3 py-3 text-sm text-center bg-gradient-to-r from-purple-600 to-indigo-700 text-white rounded-lg hover:from-purple-700 hover:to-indigo-800 transition-all duration-300 flex items-center justify-center space-x-2 shadow-lg hover:shadow-xl transform hover:scale-105"
+                          >
+                            <Brain className="w-4 h-4" />
+                            <span>Eligibility Checker</span>
+                          </Link>
+                        </div>
                         
                         {/* Vouchers Section */}
                         <div className="pt-3 space-y-2">
@@ -445,6 +454,7 @@ export default function Navbar() {
   const [showLicensesDropdown, setShowLicensesDropdown] = useState(false);
   const [showToolsDropdown, setShowToolsDropdown] = useState(false);
   const [showExamsDropdown, setShowExamsDropdown] = useState(false);
+  const [showGetLicenseDropdown, setShowGetLicenseDropdown] = useState(false);
   const [showAppointmentModal, setShowAppointmentModal] = useState(false);
 
   const notificationsRef = useRef(null);
@@ -453,6 +463,7 @@ export default function Navbar() {
   const licensesDropdownRef = useRef(null);
   const toolsDropdownRef = useRef(null);
   const examsDropdownRef = useRef(null);
+  const getLicenseDropdownRef = useRef(null);
   const mobileMenuRef = useRef(null);
 
   // Fetch user profile when user changes
@@ -505,6 +516,9 @@ export default function Navbar() {
       }
       if (toolsDropdownRef.current && !toolsDropdownRef.current.contains(event.target)) {
         setShowToolsDropdown(false);
+      }
+      if (getLicenseDropdownRef.current && !getLicenseDropdownRef.current.contains(event.target)) {
+        setShowGetLicenseDropdown(false);
       }
       // Close mobile menu when clicking outside
       if (mobileMenuRef.current && !mobileMenuRef.current.contains(event.target)) {
@@ -648,8 +662,47 @@ export default function Navbar() {
               {!loading && user && (
                 <>
                   <NavLink to="/dashboard/user" icon={User}>Dashboard</NavLink>
-                  <NavLink to="/my-cases" icon={FileText}>My Cases</NavLink>
-                  <NavLink to="/submit-case" icon={Sparkles}>Submit Case</NavLink>
+                  
+                  {/* Get License Dropdown */}
+                  <div className="relative" ref={getLicenseDropdownRef}>
+                    <button
+                      onClick={() => setShowGetLicenseDropdown(v => !v)}
+                      className="flex items-center space-x-1 px-3 py-2 rounded-lg text-gray-300 hover:text-white hover:bg-white/10 transition-all duration-300 border border-transparent hover:border-white/20 group whitespace-nowrap"
+                      onBlur={() => setTimeout(() => setShowGetLicenseDropdown(false), 200)}
+                    >
+                      <Sparkles className="text-base transition-colors duration-300 group-hover:text-cyan-300" />
+                      <span className="font-medium text-sm">Get License</span>
+                      <FiChevronDown className={`transition-transform duration-300 ${showGetLicenseDropdown ? 'rotate-180' : ''} group-hover:text-cyan-300 text-sm`} />
+                    </button>
+                    <AnimatePresence>
+                      {showGetLicenseDropdown && (
+                        <motion.div
+                          initial={{ opacity: 0, y: 10 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0, y: 10 }}
+                          transition={{ duration: 0.2 }}
+                          className="absolute right-0 mt-2 w-48 bg-gray-900/95 backdrop-blur-xl border border-white/20 rounded-xl shadow-xl z-50 overflow-hidden"
+                        >
+                          <Link
+                            to="/submit-case"
+                            className="flex items-center space-x-3 px-4 py-3 text-gray-200 hover:text-white hover:bg-gray-800/80 transition-colors duration-200"
+                            onClick={() => setShowGetLicenseDropdown(false)}
+                          >
+                            <Sparkles className="w-4 h-4" />
+                            <span>Submit Case</span>
+                          </Link>
+                          <Link
+                            to="/my-cases"
+                            className="flex items-center space-x-3 px-4 py-3 text-gray-200 hover:text-white hover:bg-gray-800/80 transition-colors duration-200"
+                            onClick={() => setShowGetLicenseDropdown(false)}
+                          >
+                            <FileText className="w-4 h-4" />
+                            <span>My Cases</span>
+                          </Link>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
                   
               {/* Exams Dropdown */}
               <div className="relative" ref={examsDropdownRef}>
@@ -723,20 +776,18 @@ export default function Navbar() {
                       transition={{ duration: 0.2 }}
                       className="absolute right-0 mt-2 w-64 bg-gray-900/95 backdrop-blur-xl border border-white/20 rounded-xl shadow-xl z-50 overflow-hidden"
                     >
-                      <Link
-                        to="/eligibility-check"
-                        className="block px-6 py-3 text-gray-200 hover:text-white hover:bg-gray-800/80 transition-colors duration-200"
-                        onClick={() => setShowServicesDropdown(false)}
-                      >
-                        Eligibility Checker
-                      </Link>
-                      <Link
-                        to="/start-license"
-                        className="block px-6 py-3 text-gray-200 hover:text-white hover:bg-gray-800/80 transition-colors duration-200"
-                        onClick={() => setShowServicesDropdown(false)}
-                      >
-                        Why to Get License
-                      </Link>
+                      {/* Eligibility Checker Section */}
+                      <div className="px-6 py-2">
+                        <div className="text-xs uppercase tracking-wider text-cyan-300 font-bold mb-2">Tools</div>
+                        <Link
+                          to="/eligibility-check"
+                          className="block w-full px-4 py-3 text-sm text-center bg-gradient-to-r from-purple-600 to-indigo-700 text-white rounded-lg hover:from-purple-700 hover:to-indigo-800 transition-all duration-300 flex items-center justify-center space-x-2 shadow-lg hover:shadow-xl transform hover:scale-105"
+                          onClick={() => setShowServicesDropdown(false)}
+                        >
+                          <Brain className="w-4 h-4" />
+                          <span>Eligibility Checker</span>
+                        </Link>
+                      </div>
                       
                       {/* Vouchers Section */}
                       <div className="border-t border-white/10 my-2"></div>
@@ -822,6 +873,13 @@ export default function Navbar() {
                         onClick={() => setShowLicensesDropdown(false)}
                       >
                         All Licenses
+                      </Link>
+                      <Link
+                        to="/start-license"
+                        className="block px-6 py-3 text-gray-200 hover:text-white hover:bg-gray-800/80 transition-colors duration-200"
+                        onClick={() => setShowLicensesDropdown(false)}
+                      >
+                        Why to Get License
                       </Link>
                       <Link
                         to="/licenses/dha-license-dubai"

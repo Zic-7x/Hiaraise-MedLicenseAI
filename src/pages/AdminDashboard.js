@@ -12,9 +12,14 @@ import AdminVoucherPurchaseDashboard from '../components/admin/AdminVoucherPurch
 import AdminExamBookingDashboard from '../components/admin/AdminExamBookingDashboard';
 
 const CASE_TYPE_LABELS = {
-  saudi: 'Saudi Arabia',
-  uae: 'UAE',
-  qatar: 'Qatar',
+  saudi_scfhs: 'SCFHS License - Saudi Arabia',
+  uae_dha: 'DHA License - Dubai, UAE',
+  uae_mohap: 'MOHAP License - UAE',
+  qatar_qchp: 'QCHP License - Qatar',
+  // Legacy support for old values (if any exist in database)
+  saudi: 'Saudi Arabia (Legacy)',
+  uae: 'UAE (Legacy)',
+  qatar: 'Qatar (Legacy)',
 };
 const STATUS_OPTIONS = [
   'pending',

@@ -105,6 +105,13 @@ export default function PublicNavbar() {
                       All Licenses
                     </Link>
                     <Link
+                      to="/start-license"
+                      className="block px-6 py-3 text-gray-200 hover:text-white hover:bg-gray-800/80 transition-colors duration-200"
+                      onClick={() => setShowLicensesDropdown(false)}
+                    >
+                      Why to Get License
+                    </Link>
+                    <Link
                       to="/licenses/dha-license-dubai"
                       className="block px-6 py-3 text-gray-200 hover:text-white hover:bg-gray-800/80 transition-colors duration-200"
                       onClick={() => setShowLicensesDropdown(false)}
@@ -155,20 +162,18 @@ export default function PublicNavbar() {
                     transition={{ duration: 0.2 }}
                     className="absolute right-0 mt-2 w-64 bg-gray-900/95 backdrop-blur-xl border border-white/20 rounded-xl shadow-xl z-50 overflow-hidden"
                           >
+                      {/* Eligibility Checker Section */}
+                      <div className="px-6 py-2">
+                        <div className="text-xs uppercase tracking-wider text-cyan-300 font-bold mb-2">Tools</div>
                               <Link
                       to="/eligibility-check"
-                                className="block px-6 py-3 text-gray-200 hover:text-white hover:bg-gray-800/80 transition-colors duration-200"
+                          className="block w-full px-4 py-3 text-sm text-center bg-gradient-to-r from-purple-600 to-indigo-700 text-white rounded-lg hover:from-purple-700 hover:to-indigo-800 transition-all duration-300 flex items-center justify-center space-x-2 shadow-lg hover:shadow-xl transform hover:scale-105"
                       onClick={() => setShowServicesDropdown(false)}
                     >
-                      Eligibility Checker
+                          <Brain className="w-4 h-4" />
+                          <span>Eligibility Checker</span>
                               </Link>
-                    <Link
-                      to="/start-license"
-                      className="block px-6 py-3 text-gray-200 hover:text-white hover:bg-gray-800/80 transition-colors duration-200"
-                      onClick={() => setShowServicesDropdown(false)}
-                    >
-                      Why to Get License
-                    </Link>
+                      </div>
                     
                     {/* Vouchers Section */}
                     <div className="border-t border-white/10 my-2"></div>
@@ -318,6 +323,7 @@ export default function PublicNavbar() {
                         <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} exit={{ opacity: 0, height: 0 }}>
                           <div className="pl-3">
                           <NavLink to="/licenses" icon={FiFileText} onClick={toggleMenu}>All Licenses</NavLink>
+                          <NavLink to="/start-license" icon={Sparkles} onClick={toggleMenu}>Why to Get License</NavLink>
                           <NavLink to="/licenses/dha-license-dubai" icon={FiFileText} onClick={toggleMenu}>DHA License (Dubai)</NavLink>
                           <NavLink to="/licenses/scfhs-license-saudi" icon={FiFileText} onClick={toggleMenu}>SCFHS License (Saudi Arabia)</NavLink>
                           <NavLink to="/licenses/qchp-license-qatar" icon={FiFileText} onClick={toggleMenu}>QCHP License (Qatar)</NavLink>
@@ -344,8 +350,18 @@ export default function PublicNavbar() {
                     {mobileServicesOpen && (
                       <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} exit={{ opacity: 0, height: 0 }}>
                         <div className="pl-3">
-                          <NavLink to="/eligibility-check" icon={Brain} onClick={toggleMenu}>Eligibility Checker</NavLink>
-                          <NavLink to="/start-license" icon={Sparkles} onClick={toggleMenu}>Why to Get License</NavLink>
+                          {/* Tools Section */}
+                          <div className="space-y-2">
+                            <div className="text-xs uppercase tracking-wider text-cyan-300 font-bold px-3">Tools</div>
+                            <Link
+                              to="/eligibility-check"
+                              onClick={toggleMenu}
+                              className="block w-full px-3 py-3 text-sm text-center bg-gradient-to-r from-purple-600 to-indigo-700 text-white rounded-lg hover:from-purple-700 hover:to-indigo-800 transition-all duration-300 flex items-center justify-center space-x-2 shadow-lg hover:shadow-xl transform hover:scale-105"
+                            >
+                              <Brain className="w-4 h-4" />
+                              <span>Eligibility Checker</span>
+                            </Link>
+                          </div>
                           
                           {/* Vouchers Section */}
                           <div className="pt-3 space-y-2">

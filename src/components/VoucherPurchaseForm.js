@@ -21,6 +21,7 @@ export default function VoucherPurchaseForm({ session }) {
   const [calendarSuccess, setCalendarSuccess] = useState(false);
   const [timeLeft, setTimeLeft] = useState(null);
   const [slotExpired, setSlotExpired] = useState(false);
+  const [examCountdown, setExamCountdown] = useState(null);
 
   const handleSlotSelect = (slot) => {
     setSelectedSlot(slot);
@@ -32,6 +33,12 @@ export default function VoucherPurchaseForm({ session }) {
     } else {
       setTimeLeft(null); // No timer
     }
+    
+    // Calculate exam countdown
+    const examEndTime = new Date(`${slot.exam_date}T${slot.end_time}`);
+    const now = new Date();
+    const examTimeLeft = examEndTime.getTime() - now.getTime();
+    setExamCountdown(examTimeLeft > 0 ? examTimeLeft : 0);
   };
 
   // Success callback for auth modal
@@ -47,7 +54,7 @@ export default function VoucherPurchaseForm({ session }) {
     }, 3000);
   };
 
-  // Timer effect for slot booking expiration
+  // Timer effect for slot booking expiration and exam countdown
   useEffect(() => {
     if (timeLeft && timeLeft > 0 && selectedSlot) {
       const timer = setTimeout(() => {
@@ -61,8 +68,41 @@ export default function VoucherPurchaseForm({ session }) {
     }
   }, [timeLeft, selectedSlot]);
 
+  // Exam countdown timer effect
+  useEffect(() => {
+    if (examCountdown !== null && selectedSlot) {
+      const timer = setTimeout(() => {
+        const now = new Date();
+        const examEndTime = new Date(`${selectedSlot.exam_date}T${selectedSlot.end_time}`);
+        const newExamCountdown = examEndTime.getTime() - now.getTime();
+        setExamCountdown(newExamCountdown > 0 ? newExamCountdown : 0);
+      }, 1000);
+      return () => clearTimeout(timer);
+    }
+  }, [examCountdown, selectedSlot]);
+
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
+  };
+
+  // Format countdown time
+  const formatCountdown = (timeLeft) => {
+    if (!timeLeft || timeLeft <= 0) return 'Expired';
+    
+    const days = Math.floor(timeLeft / (24 * 60 * 60 * 1000));
+    const hours = Math.floor((timeLeft % (24 * 60 * 60 * 1000)) / (60 * 60 * 1000));
+    const minutes = Math.floor((timeLeft % (60 * 60 * 1000)) / (60 * 1000));
+    const seconds = Math.floor((timeLeft % (60 * 1000)) / 1000);
+    
+    if (days > 0) {
+      return `${days}d ${hours}h ${minutes}m`;
+    } else if (hours > 0) {
+      return `${hours}h ${minutes}m ${seconds}s`;
+    } else if (minutes > 0) {
+      return `${minutes}m ${seconds}s`;
+    } else {
+      return `${seconds}s`;
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -543,12 +583,17 @@ Please arrive 30 minutes early and bring your voucher code and valid ID.`;
                         <div className="text-green-400 text-sm">${selectedSlot.final_price} USD (Rate: 297)</div>
                       </div>
                     </div>
-                    {selectedSlot.is_lifetime_valid && (
                       <div className="flex items-center justify-between">
                         <span className="text-green-300 font-semibold">Validity:</span>
-                        <span className="text-green-300 font-bold">✅ Lifetime Valid</span>
+                      <div className="text-right">
+                        <div className="text-blue-300 font-bold">Valid until exam date</div>
+                        {examCountdown !== null && (
+                          <div className={`text-xs font-bold ${examCountdown <= 0 ? 'text-red-400' : examCountdown < 24 * 60 * 60 * 1000 ? 'text-orange-400' : 'text-green-400'}`}>
+                            {examCountdown <= 0 ? 'EXPIRED' : `Expires in: ${formatCountdown(examCountdown)}`}
                       </div>
                     )}
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
