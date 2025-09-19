@@ -126,4 +126,4 @@ supabase db push
 
 ## Support
 
-For support, email [your-email] or create an issue in the repository. 
+For support, email [your-email] or create an issue in the repository.

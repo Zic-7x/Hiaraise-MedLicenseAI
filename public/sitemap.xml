@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
+        http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
+  
+  <!-- Home/Landing Page -->
+  <url>
+    <loc>https://hiaraise.com/</loc>
+    <lastmod>2024-12-28</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+  </url>
+  
+  <!-- About Page -->
+  <url>
+    <loc>https://hiaraise.com/about</loc>
+    <lastmod>2024-12-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <!-- Services Page -->
+  <url>
+    <loc>https://hiaraise.com/services</loc>
+    <lastmod>2024-12-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <!-- Contact Page -->
+  <url>
+    <loc>https://hiaraise.com/contact</loc>
+    <lastmod>2024-12-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  
+  <!-- Login Page -->
+  <url>
+    <loc>https://hiaraise.com/login</loc>
+    <lastmod>2024-12-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <!-- Register Page -->
+  <url>
+    <loc>https://hiaraise.com/register</loc>
+    <lastmod>2024-12-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <!-- Forgot Password Page -->
+  <url>
+    <loc>https://hiaraise.com/forgot-password</loc>
+    <lastmod>2024-12-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.4</priority>
+  </url>
+  
+  <!-- User Dashboard (Protected) -->
+  <url>
+    <loc>https://hiaraise.com/dashboard</loc>
+    <lastmod>2024-12-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <!-- Case Submission (Protected) -->
+  <url>
+    <loc>https://hiaraise.com/case-submission</loc>
+    <lastmod>2024-12-28</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  
+  <!-- Case Tracking (Protected) -->
+  <url>
+    <loc>https://hiaraise.com/case-tracking</loc>
+    <lastmod>2024-12-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <!-- Profile (Protected) -->
+  <url>
+    <loc>https://hiaraise.com/profile</loc>
+    <lastmod>2024-12-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <!-- Payment History (Protected) -->
+  <url>
+    <loc>https://hiaraise.com/payment-history</loc>
+    <lastmod>2024-12-28</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.4</priority>
+  </url>
+  
+  <!-- Checkout (Protected) -->
+  <url>
+    <loc>https://hiaraise.com/checkout</loc>
+    <lastmod>2024-12-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <!-- Thank You Page -->
+  <url>
+    <loc>https://hiaraise.com/thank-you</loc>
+    <lastmod>2024-12-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  
+  <!-- Admin Dashboard (Protected)
+  <url>
+    <loc>https://hiaraise.com/admin</loc>
+    <lastmod>2024-12-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.3</priority>
+  </url>
+  
+  <!-- Admin Analytics (Protected) -->
+  <url>
+    <loc>https://hiaraise.com/admin/analytics</loc>
+    <lastmod>2024-12-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.3</priority>
+  </url>
+  
+  <!-- Admin Users (Protected) -->
+  <url>
+    <loc>https://hiaraise.com/admin/users</loc>
+    <lastmod>2024-12-28</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.3</priority>
+  </url> -->
+  
+</urlset> 

@@ -125,4 +125,4 @@ temp/
 *.pfx
 
 # Local development
-.local/ 
+.local/
