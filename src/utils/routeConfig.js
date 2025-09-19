@@ -16,6 +16,7 @@ export const ROUTE_CONFIG = {
     '/cookies': { component: 'Cookies', title: 'Cookies' },
     '/service-policy': { component: 'ServicePolicy', title: 'Service Policy' },
     '/voucher-terms': { component: 'VoucherTerms', title: 'Voucher Terms' },
+    '/start-license': { component: 'StartLicense', title: 'Start License' },
   },
 
   // Hybrid routes - accessible to both logged-in and non-logged-in users
@@ -43,7 +44,6 @@ export const ROUTE_CONFIG = {
     '/submit-case': { component: 'CaseSubmission', title: 'Submit Case', roles: ['user', 'admin'] },
     '/my-cases': { component: 'CaseTracking', title: 'My Cases', roles: ['user', 'admin'] },
     '/checkout': { component: 'Checkout', title: 'Checkout', roles: ['user', 'admin'] },
-    '/start-license': { component: 'StartLicense', title: 'Start License', roles: ['user', 'admin'] },
     '/my-vouchers': { component: 'MyVouchers', title: 'My Vouchers', roles: ['user', 'admin'] },
     '/my-exams': { component: 'MyExams', title: 'My Exams', roles: ['user', 'admin'] },
     '/get-exam-pass': { component: 'GetExamPass', title: 'Get Exam Pass', roles: ['user', 'admin'] },

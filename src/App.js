@@ -124,6 +124,7 @@ function App() {
               <Route path="/cookies" element={<Cookies />} />
               <Route path="/service-policy" element={<ServicePolicy />} />
               <Route path="/voucher-terms" element={<VoucherTerms />} />
+              <Route path="/start-license" element={<StartLicense />} />
               
               {/* Hybrid Routes - accessible to both logged-in and non-logged-in users */}
               <Route path="/licenses" element={<Licenses />} />
@@ -150,7 +151,6 @@ function App() {
               <Route path="/submit-case" element={<CaseSubmission />} />
               <Route path="/my-cases" element={<CaseTracking />} />
               <Route path="/checkout" element={<Checkout />} />
-              <Route path="/start-license" element={<StartLicense />} />
             <Route path="/my-vouchers" element={<MyVouchers />} />
               <Route path="/my-exams" element={<MyExams />} />
               <Route path="/get-exam-pass" element={<GetExamPass />} />
