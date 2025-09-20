@@ -1,3 +1,5 @@
+import Footer from '../components/Footer';
+
 export default function MainLayout({ children }) {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 relative overflow-hidden">
@@ -24,8 +26,12 @@ export default function MainLayout({ children }) {
         ))}
       </div>
 
-      <div className="relative z-10 max-w-6xl mx-auto px-4 py-8">
+      <div className="relative z-10 w-full px-4 py-8">
         {children}
+      </div>
+
+      <div className="relative z-10">
+        <Footer />
       </div>
     </div>
   );

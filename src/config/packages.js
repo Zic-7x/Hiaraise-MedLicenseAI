@@ -2,8 +2,8 @@ export const packages = [
   {
     id: 'saudi',
     country: 'Saudi Arabia',
-    price: 30000,
-    displayPrice: 'PKR 30,000',
+    price: 14999,
+    displayPrice: 'PKR 14,999',
     description: 'Comprehensive support for Saudi medical licensing, including document review, application submission, and case tracking.',
     timeline: [
       'Document verification (2-3 days)',
@@ -15,8 +15,8 @@ export const packages = [
   {
     id: 'uae',
     country: 'UAE',
-    price: 25000,
-    displayPrice: 'PKR 25,000',
+    price: 11999,
+    displayPrice: 'PKR 11,999',
     description: 'End-to-end assistance for UAE licensing, with expert guidance and secure document handling.',
     timeline: [
       'Document verification (2-3 days)',
@@ -28,8 +28,8 @@ export const packages = [
   {
     id: 'qatar',
     country: 'Qatar',
-    price: 23000,
-    displayPrice: 'PKR 23,000',
+    price: 9999,
+    displayPrice: 'PKR 9,999',
     description: 'Streamlined process for Qatar licensing, including all paperwork and case management.',
     timeline: [
       'Document verification (2-3 days)',

@@ -1,9 +1,9 @@
 // src/pages/Register.js
 import { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { supabase } from '../supabaseClient';
-import { FiMail, FiLock, FiUser, FiAlertCircle, FiCheckCircle } from 'react-icons/fi';
+import { FiMail, FiLock, FiUser, FiAlertCircle, FiCheckCircle, FiGift } from 'react-icons/fi';
 import { detectUserCountry } from '../utils/countryDetection';
 import PhoneInput from '../components/PhoneInput';
 import { trackEvent, trackFormSubmission, trackButtonClick, trackRegistration, trackPageView } from '../utils/analytics';
@@ -24,11 +24,22 @@ export default function Register() {
   const [detectingCountry, setDetectingCountry] = useState(true);
   const [selectedCountry, setSelectedCountry] = useState(null);
   const [formInteracted, setFormInteracted] = useState(false);
+  const [promotionCode, setPromotionCode] = useState(null);
   const navigate = useNavigate();
+  const searchParams = useSearchParams()[0];
   
   // Enable automatic page tracking
   useAnalytics();
   const { trackFormStart, trackFormFieldInteraction } = useFormAnalytics('register_form');
+
+  // Detect promotion code from URL
+  useEffect(() => {
+    const promotion = searchParams.get('promotion');
+    if (promotion) {
+      setPromotionCode(promotion);
+      trackEvent('promotion_code_detected', 'engagement', promotion);
+    }
+  }, [searchParams]);
 
   // Detect user's country based on IP address
   useEffect(() => {
@@ -150,10 +161,10 @@ export default function Register() {
           <span>Registration successful! Please check your email to verify your account.</span>
         `;
         document.getElementById('toast-container').appendChild(toast);
-        setTimeout(() => toast.remove(), 5000);
+        setTimeout(() => toast.remove(), 10000); // Extended from 5s to 10s
 
-        // Redirect to login after a delay
-        setTimeout(() => navigate('/login'), 3000);
+        // Redirect to login after a longer delay
+        setTimeout(() => navigate('/login'), 8000); // Extended from 3s to 8s
         return;
       }
 
@@ -191,10 +202,10 @@ export default function Register() {
         <span>Registration successful! Please check your email to verify your account.</span>
       `;
       document.getElementById('toast-container').appendChild(toast);
-      setTimeout(() => toast.remove(), 5000);
+      setTimeout(() => toast.remove(), 10000); // Extended from 5s to 10s
 
-      // Redirect to login after a delay
-      setTimeout(() => navigate('/login'), 3000);
+      // Redirect to login after a longer delay
+      setTimeout(() => navigate('/login'), 8000); // Extended from 3s to 8s
     } catch (error) {
       setError(error.message);
       // Track registration error
@@ -230,6 +241,25 @@ export default function Register() {
           <p className="mt-2 text-secondary-400">
             Join our platform to streamline your medical license application
           </p>
+          
+          {/* Promotion Code Display */}
+          {promotionCode && (
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              className="mt-4 bg-gradient-to-r from-green-500/20 to-emerald-500/20 border border-green-500/30 rounded-lg p-3"
+            >
+              <div className="flex items-center justify-center space-x-2">
+                <FiGift className="w-4 h-4 text-green-400" />
+                <span className="text-green-300 text-sm font-medium">
+                  Welcome Discount Applied: <span className="font-mono font-bold text-green-400">{promotionCode}</span>
+                </span>
+              </div>
+              <p className="text-green-200 text-xs mt-1">
+                Your discount will be available after registration!
+              </p>
+            </motion.div>
+          )}
         </div>
 
         <div className="bg-secondary-800/50 backdrop-blur-sm border border-secondary-700/50 rounded-xl p-8 shadow-glass">
@@ -246,7 +276,7 @@ export default function Register() {
                 Registration Successful!
               </h3>
               <p className="text-secondary-400">
-                Please check your email to verify your account. You will be redirected to the login page shortly.
+                Please check your email to verify your account. You will be redirected to the login page in 8 seconds.
               </p>
             </motion.div>
           ) : (

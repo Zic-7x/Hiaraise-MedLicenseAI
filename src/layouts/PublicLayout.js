@@ -1,17 +1,16 @@
-// src/layouts/PublicLayout.js
+// Improved PublicLayout with better access control
 import { Outlet, Navigate, useLocation } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { supabase } from '../supabaseClient';
 import MainLayout from './MainLayout';
 import PublicNavbar from '../components/PublicNavbar';
-import { Link } from 'react-router-dom';
-
-// List of public routes that should be accessible even when logged in
-const PUBLIC_ACCESSIBLE_ROUTES = ['/services', '/about', '/contact'];
+import Navbar from '../components/Navbar';
+import { isPublicRoute, isHybridRoute, canAccessRoute } from '../utils/routeConfig';
 
 export default function PublicLayout() {
   const [checking, setChecking] = useState(true);
   const [session, setSession] = useState(null);
+  const [userRole, setUserRole] = useState(null);
   const location = useLocation();
 
   useEffect(() => {
@@ -31,30 +30,67 @@ export default function PublicLayout() {
     };
   }, []);
 
+  // Load user role when session changes
+  useEffect(() => {
+    if (!session) {
+      setUserRole(null);
+      return;
+    }
+
+    const loadUserRole = async () => {
+      try {
+        const { data, error } = await supabase
+          .from("profiles")
+          .select("role")
+          .eq("id", session.user.id)
+          .single();
+
+        if (error) throw error;
+        setUserRole(data.role);
+      } catch (error) {
+        console.error("Error loading user role:", error);
+        setUserRole('user'); // Default fallback
+      }
+    };
+
+    loadUserRole();
+  }, [session]);
+
   if (checking) {
-    return <div className="text-center p-8">Checking authentication…</div>;
-  }
-
-  // If user is logged in and trying to access a non-public route, redirect to dashboard
-  if (session && !PUBLIC_ACCESSIBLE_ROUTES.includes(location.pathname)) {
-    return <Navigate to="/dashboard/user" replace />;
-  }
-
-  // Render the public routes with appropriate navbar
-  return (
-    <MainLayout>
-      {session ? (
-        // Use the authenticated navbar for logged-in users accessing public pages
-        <div className="bg-blue-700 text-white px-4 md:px-6 py-3 shadow-lg rounded-lg mt-2 mb-6">
-          <div className="flex flex-wrap justify-center gap-4 md:gap-6">
-            <Link to="/services" className="hover:text-teal-200 focus:text-teal-300 transition-colors font-semibold">Services</Link>
-            <Link to="/about" className="hover:text-teal-200 focus:text-teal-300 transition-colors font-semibold">About Us</Link>
-            <Link to="/contact" className="hover:text-teal-200 focus:text-teal-300 transition-colors font-semibold">Contact</Link>
-            <Link to="/dashboard/user" className="hover:text-teal-200 focus:text-teal-300 transition-colors font-semibold">Dashboard</Link>
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-secondary-900 via-secondary-800 to-secondary-900 flex items-center justify-center">
+        <div className="relative">
+          <div className="w-16 h-16 border-4 border-primary-500/20 border-t-primary-500 rounded-full animate-spin" />
+          <div className="absolute inset-0 flex items-center justify-center">
+            <div className="w-8 h-8 border-4 border-accent-500/20 border-t-accent-500 rounded-full animate-spin" style={{ animationDirection: 'reverse' }} />
           </div>
         </div>
+      </div>
+    );
+  }
+
+  const currentPath = location.pathname;
+
+  // PublicLayout should only handle public and hybrid routes
+  // If this is a protected route, don't interfere - let ProtectedLayout handle it
+  if (!isPublicRoute(currentPath) && !isHybridRoute(currentPath)) {
+    // This is a protected route - don't render anything, let React Router handle the transition
+    return null;
+  }
+
+  // For public/hybrid routes, check access only if user is not logged in
+  if (!session && !canAccessRoute(currentPath, null)) {
+    return <Navigate to="/login" replace />;
+  }
+
+  // Determine which navbar to show
+  const showAuthenticatedNavbar = session && (isHybridRoute(currentPath) || isPublicRoute(currentPath));
+
+  return (
+    <MainLayout>
+      {showAuthenticatedNavbar ? (
+        <Navbar />
       ) : (
-        // Use the public navbar for non-authenticated users
         <PublicNavbar />
       )}
       <Outlet />
