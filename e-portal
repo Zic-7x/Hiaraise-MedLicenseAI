@@ -1,0 +1,5 @@
+[33m9e3f238[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m Fix frontend directory structure - move package.json and config files back to frontend folder
+[33md299858[m Fix frontend directory structure - restore frontend folder instead of file
+[33m538d195[m Clean main branch: Remove backend and other non-frontend files, keep only frontend
+[33mfe058b4[m Complete project upload: Add backend, supabase migrations, and all project files
+[33m881cb22[m Add frontend directory with latest changes
