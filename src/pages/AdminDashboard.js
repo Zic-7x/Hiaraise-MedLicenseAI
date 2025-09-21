@@ -143,7 +143,6 @@ export default function AdminDashboard() {
 
   // Debug: Log payments state changes
   useEffect(() => {
-    console.log('Payments state updated:', payments.length, 'payments');
   }, [payments]);
 
   const fetchAdminId = async () => {
@@ -154,7 +153,6 @@ export default function AdminDashboard() {
   const fetchCases = async () => {
     setLoading(true);
     setMessage('');
-    console.log('[AdminDashboard] Fetching cases with filter:', filter);
     let query = supabase
       .from('cases')
       .select(`
@@ -190,7 +188,6 @@ export default function AdminDashboard() {
       setMessage('Failed to load cases.');
       setCases([]);
     } else {
-      console.log('[AdminDashboard] Successfully fetched cases:', data);
       const sortedCases = data.map(caseItem => ({
         ...caseItem,
         milestones: caseItem.milestones.map(milestone => ({
@@ -217,7 +214,6 @@ export default function AdminDashboard() {
         .from('payments')
         .select('id', { count: 'exact', head: true });
       
-      console.log('Total payments in database:', countData?.length || 0);
       
       if (countError) {
         console.error('Error counting payments:', countError);
@@ -250,11 +246,9 @@ export default function AdminDashboard() {
           console.error('Error fetching payments (fallback):', fallbackError);
           setPayments([]);
         } else {
-          console.log('Payments fetched successfully (fallback):', fallbackData);
           setPayments(fallbackData || []);
         }
       } else {
-        console.log('Payments fetched successfully:', data);
         setPayments(data || []);
       }
     } catch (err) {
@@ -1768,7 +1762,6 @@ function StatusHistory({ history, theme }) {
 
 function PaymentsTable({ payments, loading, onApprove, onReject }) {
   const handleRefreshPayments = async () => {
-    console.log('Manual refresh triggered');
     // This will trigger the parent component to refetch payments
     window.location.reload();
   };
@@ -1858,15 +1851,6 @@ function PaymentsTable({ payments, loading, onApprove, onReject }) {
                   serviceDetails = 'General Package';
                 }
                 
-                // Debug logging for each payment
-                console.log(`Payment ${p.id}:`, {
-                  serviceType,
-                  serviceDetails,
-                  voucher_slot_id: p.voucher_slot_id,
-                  appointment_slot_id: p.appointment_slot_id,
-                  package_type: p.package_type,
-                  case_id: p.case_id
-                });
                 
                 return (
                   <tr key={p.id} className="hover:bg-gray-800/50 transition-colors duration-200">

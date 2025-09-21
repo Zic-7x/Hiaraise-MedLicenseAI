@@ -338,17 +338,13 @@ export default function UserDashboard() {
     trackButtonClick('ai_assistant', 'user_dashboard');
     trackMetaPixelButtonClick('AI Assistant', 'User Dashboard');
     
-    console.log('AI Assistant button clicked');
     
     // Try multiple methods to open the chat widget
     if (window.openAgentiveChat) {
-      console.log('Opening chat via openAgentiveChat');
       window.openAgentiveChat();
     } else if (window.myChatWidget && typeof window.myChatWidget.open === 'function') {
-      console.log('Opening chat via myChatWidget.open');
       window.myChatWidget.open();
     } else {
-      console.log('Chat widget not available, trying to find and click floating button...');
       
       // Try to find the floating chat button with multiple selectors
       const selectors = [
@@ -368,13 +364,11 @@ export default function UserDashboard() {
       for (const selector of selectors) {
         floatingButton = document.querySelector(selector);
         if (floatingButton) {
-          console.log(`Found chat button with selector: ${selector}`);
           break;
         }
       }
       
       if (floatingButton) {
-        console.log('Clicking floating chat button');
         floatingButton.click();
       } else {
         console.warn('Chat widget floating button not found. Trying to initialize...');
@@ -390,7 +384,6 @@ export default function UserDashboard() {
           // Try to open after a short delay
           setTimeout(() => {
             if (window.myChatWidget && typeof window.myChatWidget.open === 'function') {
-              console.log('Opening chat after initialization');
               window.myChatWidget.open();
             } else {
               // Try to find and click the button again
@@ -398,7 +391,6 @@ export default function UserDashboard() {
                 for (const selector of selectors) {
                   const button = document.querySelector(selector);
                   if (button) {
-                    console.log(`Found and clicking chat button after delay with selector: ${selector}`);
                     button.click();
                     return;
                   }

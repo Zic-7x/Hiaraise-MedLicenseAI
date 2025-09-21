@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { FiCheck, FiGift, FiCalendar, FiDownload, FiShare2, FiClock } from 'react-icons/fi';
+import { FiCheck, FiGift, FiCalendar, FiDownload, FiClock } from 'react-icons/fi';
 import { trackMetaPixelPayment, trackMetaPixelButtonClick } from '../utils/metaPixel';
 import { trackEvent, trackButtonClick, trackPageView, trackPayment } from '../utils/analytics';
 import { useAnalytics } from '../utils/useAnalytics';
@@ -15,20 +15,13 @@ export default function ThankYou() {
   // Only show if navigated with state.success === true
   useEffect(() => {
     // Debug logging for ThankYou page
-    console.log('ThankYou page loaded with state:', location.state);
     
     if (!location.state || !location.state.success) {
       // If not coming from a successful purchase, redirect to home
-      console.log('No success state found, redirecting to home');
       navigate('/', { replace: true });
     } else {
       // Track successful purchase conversion
       const amount = location.state.amount || 0;
-      console.log('ThankYou page - successful purchase detected:', {
-        isVoucherPurchase: location.state.voucherPurchase,
-        voucherCode: location.state.voucherCode,
-        examAuthority: location.state.examAuthority
-      });
       
       trackPageView('/thank-you');
       trackEvent('page_viewed', 'engagement', 'thank_you_page');

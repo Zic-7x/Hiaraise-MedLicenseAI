@@ -38,19 +38,10 @@ export default function Login() {
     const refreshToken = urlParams.get('refresh_token') || hashParams.get('refresh_token');
     const message = urlParams.get('message') || hashParams.get('message');
 
-    console.log('URL parameters:', { 
-      type, 
-      accessToken: !!accessToken, 
-      refreshToken: !!refreshToken, 
-      message,
-      hash: location.hash,
-      search: location.search
-    });
 
     // Handle email verification redirect with access tokens
     const handleEmailVerification = async () => {
       if (accessToken && refreshToken) {
-        console.log('Processing email verification with tokens');
         try {
           // Set the session using the tokens from URL
           const { data, error } = await supabase.auth.setSession({
@@ -66,11 +57,9 @@ export default function Login() {
           }
 
           if (data.session && data.session.user.email_confirmed_at) {
-            console.log('Email verified successfully, redirecting to dashboard');
             // Clear URL parameters and redirect to dashboard
             navigate('/dashboard/user', { replace: true });
           } else {
-            console.log('Session established but email not confirmed yet');
             setMessage('Email verification in progress. Please wait...');
             setMessageType('success');
           }
@@ -84,7 +73,6 @@ export default function Login() {
         const checkSessionForVerification = async () => {
           const { data: { session }, error } = await supabase.auth.getSession();
           if (session && session.user.email_confirmed_at) {
-            console.log('Existing verified session found, redirecting to dashboard');
             navigate('/dashboard/user', { replace: true });
           } else if (error) {
             console.error('Error checking session:', error);

@@ -4,7 +4,6 @@ import { supabase } from '../supabaseClient';
 import { packages } from '../config/packages';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FiCreditCard, FiUpload, FiCheck, FiAlertCircle, FiFile, FiX, FiArrowRight, FiArrowLeft, FiCopy, FiChevronDown, FiChevronUp, FiShield, FiInfo, FiGift, FiHome, FiDollarSign, FiCalendar } from 'react-icons/fi';
-import { Link } from 'react-router-dom';
 import { DOCUMENT_STEPS } from './CaseSubmission';
 
 // Helper function to format time
@@ -819,7 +818,6 @@ const UploadProof = ({ onSubmit, onBack, loading, error, screenshot, onScreensho
 
   const handleFileSelect = (e) => {
     // Debug logging for mobile file upload issues
-    console.log('File input change event triggered:', e.target.files);
     
     const file = e.target.files[0];
     if (!file) {
@@ -829,7 +827,6 @@ const UploadProof = ({ onSubmit, onBack, loading, error, screenshot, onScreensho
       return;
     }
 
-    console.log('Selected file:', file.name, file.type, file.size);
 
     setIsProcessingFile(true);
     setFileError('');
@@ -1362,9 +1359,7 @@ export default function Checkout() {
       setTimeout(async () => {
         try {
           await onApplyCoupon();
-          console.log('Promotion coupon applied successfully:', promotionCode);
         } catch (error) {
-          console.error('Failed to apply promotion coupon:', error);
         }
       }, 1500);
     }
@@ -1582,15 +1577,6 @@ export default function Checkout() {
         // Clear voucher checkout data from localStorage
         localStorage.removeItem('voucher_checkout_data');
         
-        // Debug logging for voucher purchase completion
-        console.log('Voucher purchase completed successfully:', {
-          voucherId: voucher.id,
-          examAuthority: voucherSlot.exam_authority,
-          examDate: voucherSlot.exam_date,
-          examTime: `${voucherSlot.start_time.slice(0,5)} - ${voucherSlot.end_time.slice(0,5)}`,
-          finalPrice: voucherSlot.final_price,
-          status: 'purchased'
-        });
         
         setSubmitted(true);
         setMessage(`✅ Voucher Purchase Successful! Your ${voucherSlot.exam_authority} voucher has been purchased and the slot is now reserved for you. Your voucher code will be generated after admin approval. Redirecting to confirmation page...`);

@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { supabase } from '../supabaseClient';
 import VoucherCalendar from './VoucherCalendar';
 import CountrySelector from './CountrySelector';
-import { FiCalendar, FiCheck, FiDownload, FiShare2, FiClock, FiUser, FiMail, FiPhone, FiAlertCircle, FiInfo, FiDollarSign, FiPercent, FiMapPin, FiGift, FiShield, FiLogIn, FiArrowRight } from 'react-icons/fi';
+import { FiCalendar, FiCheck, FiDownload, FiShare2, FiClock, FiUser, FiMail, FiPhone, FiAlertCircle, FiInfo, FiPercent, FiGift, FiShield, FiLogIn, FiArrowRight } from 'react-icons/fi';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAuthModal } from '../contexts/AuthModalContext';
 import { Link } from 'react-router-dom';
@@ -45,7 +45,6 @@ export default function VoucherPurchaseForm({ session }) {
   const handleAuthSuccess = () => {
     // After successful login/register, the session will be updated automatically
     // The component will re-render with the new session and show the purchase button
-    console.log('Authentication successful, user can now complete purchase');
     
     // Show a brief success message
     setStatus('auth_success');

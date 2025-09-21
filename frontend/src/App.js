@@ -72,7 +72,6 @@ function App() {
         if (error) {
           console.error('Error fetching user:', error.message);
         } else {
-          console.log('Current user:', data.user);
           setUser(data.user);
         }
       } catch (error) {

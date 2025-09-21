@@ -61,7 +61,6 @@ export default function UserPromotionSection({ userId }) {
 
   const fetchClaimedPromotions = async () => {
     try {
-      console.log('Fetching claimed promotions for user:', userId);
       
       // First, get all promotion modal views for this user where they applied a coupon
       const { data: modalViews, error: modalError } = await supabase
@@ -75,10 +74,8 @@ export default function UserPromotionSection({ userId }) {
         return;
       }
 
-      console.log('Modal views found:', modalViews);
 
       if (!modalViews || modalViews.length === 0) {
-        console.log('No modal views found for user');
         setClaimedPromotions([]);
         setLoading(false);
         return;
@@ -100,7 +97,6 @@ export default function UserPromotionSection({ userId }) {
         return;
       }
 
-      console.log('Coupons found:', coupons);
 
       // Get user's successful payments to filter out used coupons
       const { data: userPayments } = await supabase
@@ -109,12 +105,10 @@ export default function UserPromotionSection({ userId }) {
         .eq('user_id', userId)
         .eq('status', 'approved');
 
-      console.log('User payments:', userPayments);
 
       const usedCoupons = userPayments?.map(p => p.coupon_code) || [];
       const availablePromotions = coupons?.filter(p => !usedCoupons.includes(p.code)) || [];
 
-      console.log('Available promotions:', availablePromotions);
       setClaimedPromotions(availablePromotions);
     } catch (error) {
       console.error('Error fetching claimed promotions:', error);

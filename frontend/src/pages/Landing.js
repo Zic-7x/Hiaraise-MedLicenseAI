@@ -241,12 +241,10 @@ export default function Landing() {
 
     // Listen for auth changes with more detailed logging
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
-      console.log('Auth state changed:', event, session?.user?.email);
       setUser(session?.user || null);
       
       // If user just signed in and we're on the landing page, redirect to dashboard
       if (event === 'SIGNED_IN' && session?.user && window.location.pathname === '/') {
-        console.log('User signed in on landing page, redirecting to dashboard');
         navigate('/dashboard/user');
       }
     });

@@ -121,7 +121,6 @@ const packages = [
 ];
 
 const UploadBox = ({ onUpload, label, required, acceptedFile, onRemove }) => {
-  console.log(`[UploadBox Render] Rendering ${label}. acceptedFile:`, acceptedFile);
   const [isUploading, setIsUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
   const [error, setError] = useState('');
@@ -443,10 +442,8 @@ export default function CaseSubmission() {
 
     const { data: publicUrlData } = supabase.storage.from('case-documents').getPublicUrl(data.path);
     
-    console.log(`[handleDocumentUpload] Successfully uploaded ${key}. Updating documents state.`);
     setDocuments(prev => {
       const newState = { ...prev, [key]: file };
-      console.log(`[handleDocumentUpload] Documents state updated for ${key}:`, newState);
       return newState;
     });
 
@@ -852,7 +849,6 @@ export default function CaseSubmission() {
                       </div>
                     ) : (
                       DOCUMENT_STEPS[currentStep].documents.map(doc => {
-                         console.log(`[CaseSubmission Render] Passing acceptedFile for ${doc.key}:`, documents[doc.key]);
                         return (
                         <UploadBox
                           key={doc.key}

@@ -127,7 +127,6 @@ export default function ChatWidget() {
             // Add tooltip to chat button
             chatButton.appendChild(tooltip);
             
-            console.log('Chat widget tooltip added successfully');
           } else if (!chatButton) {
             // Retry after a short delay if button not found
             setTimeout(addTooltipToChatButton, 1000);

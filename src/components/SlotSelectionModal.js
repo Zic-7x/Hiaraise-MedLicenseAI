@@ -309,7 +309,7 @@ export default function SlotSelectionModal({
           </button>
           
           {!session ? (
-            <div className="flex-1 flex gap-2">
+            <div className="flex-1 flex flex-col gap-2">
               <button
                 onClick={() => {
                   const onAuthSuccess = async () => {
@@ -317,7 +317,7 @@ export default function SlotSelectionModal({
                   };
                   openAuthModal('login', onAuthSuccess);
                 }}
-                className="flex-1 px-4 py-4 rounded-2xl font-bold text-white bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 transition-all duration-200 flex items-center justify-center space-x-2 shadow-lg hover:shadow-xl transform hover:scale-105"
+                className="w-full px-4 py-3 rounded-2xl font-bold text-white bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 transition-all duration-200 flex items-center justify-center space-x-2 shadow-lg hover:shadow-xl transform hover:scale-105"
               >
                 <FiLogIn className="w-5 h-5" />
                 <span>Login & Continue</span>
@@ -329,7 +329,7 @@ export default function SlotSelectionModal({
                   };
                   openAuthModal('register', onAuthSuccess);
                 }}
-                className="flex-1 px-4 py-4 rounded-2xl font-bold text-white bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 transition-all duration-200 flex items-center justify-center space-x-2 shadow-lg hover:shadow-xl transform hover:scale-105"
+                className="w-full px-4 py-3 rounded-2xl font-bold text-white bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 transition-all duration-200 flex items-center justify-center space-x-2 shadow-lg hover:shadow-xl transform hover:scale-105"
               >
                 <FiUser className="w-5 h-5" />
                 <span>Register & Continue</span>

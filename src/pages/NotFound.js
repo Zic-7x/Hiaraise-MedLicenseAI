@@ -8,7 +8,6 @@ export default function NotFound() {
   // Track 404 errors for analytics
   useEffect(() => {
     // Log 404 error for debugging
-    console.warn('404 Error - Page not found:', location.pathname);
     
     // Track 404 error in analytics (if you have analytics setup)
     if (window.gtag) {
@@ -211,7 +210,6 @@ export default function NotFound() {
                 onKeyPress={(e) => {
                   if (e.key === 'Enter') {
                     // You can implement search functionality here
-                    console.log('Search for:', e.target.value);
                   }
                 }}
               />

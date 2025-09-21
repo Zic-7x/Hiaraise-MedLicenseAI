@@ -477,12 +477,10 @@ export default function Navbar() {
             .eq('id', user.id)
             .single();
           if (error) {
-            console.error('Error fetching profile:', error);
           } else {
             setUserProfile(profile);
           }
         } catch (error) {
-          console.error('Error fetching profile:', error);
         }
       } else {
         setUserProfile(null);
@@ -546,7 +544,6 @@ export default function Navbar() {
           .limit(10);
 
         if (error) {
-          console.error('Error fetching notifications:', error);
         } else {
           setNotifications(data);
           setUnreadNotifications(data.filter(n => !n.read).length);
@@ -560,7 +557,6 @@ export default function Navbar() {
         .on('postgres_changes',
           { event: 'INSERT', schema: 'public', table: 'notifications', filter: `user_id=eq.${user.id}` },
           (payload) => {
-            console.log('New notification:', payload.new);
             setNotifications((prev) => [payload.new, ...prev].slice(0, 10));
             setUnreadNotifications((prev) => prev + 1);
           }
@@ -580,7 +576,6 @@ export default function Navbar() {
       .eq('id', notificationId);
 
     if (error) {
-      console.error('Error marking notification as read:', error);
     } else {
       // Update local state to reflect the change
       setNotifications((prevNotifications) =>
@@ -601,7 +596,6 @@ export default function Navbar() {
         .in('id', unreadIds);
 
       if (error) {
-        console.error('Error marking all notifications as read:', error);
       } else {
         setNotifications((prevNotifications) =>
           prevNotifications.map((n) => ({ ...n, read: true }))

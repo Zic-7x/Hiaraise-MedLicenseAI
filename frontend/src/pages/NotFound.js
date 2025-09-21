@@ -211,7 +211,6 @@ export default function NotFound() {
                 onKeyPress={(e) => {
                   if (e.key === 'Enter') {
                     // You can implement search functionality here
-                    console.log('Search for:', e.target.value);
                   }
                 }}
               />

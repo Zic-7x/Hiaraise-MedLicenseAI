@@ -70,13 +70,10 @@ function App() {
       try {
         const { data, error } = await supabase.auth.getUser();
         if (error) {
-          console.error('Error fetching user:', error.message);
         } else {
-          console.log('Current user:', data.user);
           setUser(data.user);
         }
       } catch (error) {
-        console.error('Error in getUser:', error);
       } finally {
         setLoading(false);
       }
