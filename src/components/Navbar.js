@@ -254,28 +254,28 @@ const MobileMenu = ({ isOpen, onClose, user, handleSignOut, userProfile, mobileM
                         <div className="pt-3 space-y-2">
                           <div className="text-xs uppercase tracking-wider text-cyan-300 font-bold px-3">Get License</div>
                           <Link
-                            to="/case-submit"
+                            to="/submit-case"
                             onClick={onClose}
                             className="block w-full px-3 py-2 text-sm text-center bg-gradient-to-r from-blue-600 to-indigo-700 text-white rounded-lg hover:from-blue-700 hover:to-indigo-800 transition-all duration-300"
                           >
                             Get Dubai License
                           </Link>
                           <Link
-                            to="/case-submit"
+                            to="/submit-case"
                             onClick={onClose}
                             className="block w-full px-3 py-2 text-sm text-center bg-gradient-to-r from-green-600 to-emerald-700 text-white rounded-lg hover:from-green-700 hover:to-emerald-800 transition-all duration-300"
                           >
                             Get Saudi Arabia License
                           </Link>
                           <Link
-                            to="/case-submit"
+                            to="/submit-case"
                             onClick={onClose}
                             className="block w-full px-3 py-2 text-sm text-center bg-gradient-to-r from-purple-600 to-violet-700 text-white rounded-lg hover:from-purple-700 hover:to-violet-800 transition-all duration-300"
                           >
                             Get Qatar License
                           </Link>
                           <Link
-                            to="/case-submit"
+                            to="/submit-case"
                             onClick={onClose}
                             className="block w-full px-3 py-2 text-sm text-center bg-gradient-to-r from-orange-600 to-red-700 text-white rounded-lg hover:from-orange-700 hover:to-red-800 transition-all duration-300"
                           >
@@ -815,28 +815,28 @@ export default function Navbar() {
                         <div className="text-xs uppercase tracking-wider text-cyan-300 font-bold mb-2">Get License</div>
                         <div className="space-y-2">
                           <Link
-                            to="/case-submit"
+                            to="/submit-case"
                             className="block w-full px-4 py-2 text-sm text-center bg-gradient-to-r from-blue-600 to-indigo-700 text-white rounded-lg hover:from-blue-700 hover:to-indigo-800 transition-all duration-300"
                             onClick={() => setShowServicesDropdown(false)}
                           >
                             Get Dubai License
                           </Link>
                           <Link
-                            to="/case-submit"
+                            to="/submit-case"
                             className="block w-full px-4 py-2 text-sm text-center bg-gradient-to-r from-green-600 to-emerald-700 text-white rounded-lg hover:from-green-700 hover:to-emerald-800 transition-all duration-300"
                             onClick={() => setShowServicesDropdown(false)}
                           >
                             Get Saudi Arabia License
                           </Link>
                           <Link
-                            to="/case-submit"
+                            to="/submit-case"
                             className="block w-full px-4 py-2 text-sm text-center bg-gradient-to-r from-purple-600 to-violet-700 text-white rounded-lg hover:from-purple-700 hover:to-violet-800 transition-all duration-300"
                             onClick={() => setShowServicesDropdown(false)}
                           >
                             Get Qatar License
                           </Link>
                           <Link
-                            to="/case-submit"
+                            to="/submit-case"
                             className="block w-full px-4 py-2 text-sm text-center bg-gradient-to-r from-orange-600 to-red-700 text-white rounded-lg hover:from-orange-700 hover:to-red-800 transition-all duration-300"
                             onClick={() => setShowServicesDropdown(false)}
                           >

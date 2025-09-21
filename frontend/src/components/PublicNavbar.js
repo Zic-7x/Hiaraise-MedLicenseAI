@@ -43,11 +43,11 @@ export default function PublicNavbar() {
   const handleGetLicenseClick = useCallback((country) => {
     if (user) {
       // User is logged in, redirect to submit page
-      navigate('/case-submit');
+      navigate('/submit-case');
     } else {
       // User is not logged in, open auth modal
       openAuthModal('login', () => {
-        navigate('/case-submit');
+        navigate('/submit-case');
       });
     }
   }, [user, navigate, openAuthModal]);
