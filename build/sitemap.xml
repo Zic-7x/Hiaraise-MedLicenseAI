@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
+        http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
+  
+  <!-- Home/Landing Page -->
+  <url>
+    <loc>https://hiaraise.com/</loc>
+    <lastmod>2025-01-02</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+  </url>
+  
+  <!-- Why to Get License Page -->
+  <url>
+    <loc>https://hiaraise.com/start-license</loc>
+    <lastmod>2025-01-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+
+  <!-- Eligibility Checker Page -->
+  <url>
+    <loc>https://hiaraise.com/eligibility-check</loc>
+    <lastmod>2025-01-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+
+  <!-- Pricing Page -->
+  <url>
+    <loc>https://hiaraise.com/pricing</loc>
+    <lastmod>2025-01-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <!-- About Page -->
+  <url>
+    <loc>https://hiaraise.com/about</loc>
+    <lastmod>2025-01-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <!-- Contact Page -->
+  <url>
+    <loc>https://hiaraise.com/contact</loc>
+    <lastmod>2025-01-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <!-- Licenses Main Page -->
+  <url>
+    <loc>https://hiaraise.com/licenses</loc>
+    <lastmod>2025-01-02</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <!-- DHA License Dubai Page -->
+  <url>
+    <loc>https://hiaraise.com/licenses/dha-license-dubai</loc>
+    <lastmod>2025-01-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- SCFHS License Saudi Page -->
+  <url>
+    <loc>https://hiaraise.com/licenses/scfhs-license-saudi</loc>
+    <lastmod>2025-01-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- QCHP License Qatar Page -->
+  <url>
+    <loc>https://hiaraise.com/licenses/qchp-license-qatar</loc>
+    <lastmod>2025-01-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- MOH License UAE Page -->
+  <url>
+    <loc>https://hiaraise.com/licenses/moh-license-uae</loc>
+    <lastmod>2025-01-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- Countries Page -->
+  <url>
+    <loc>https://hiaraise.com/countries</loc>
+    <lastmod>2025-01-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <!-- Tools Page -->
+  <url>
+    <loc>https://hiaraise.com/tools</loc>
+    <lastmod>2025-01-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  
+  <!-- Prometric Vouchers Page -->
+  <url>
+    <loc>https://hiaraise.com/prometric-vouchers</loc>
+    <lastmod>2025-01-04</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  
+  <!-- Voucher System Page -->
+  <url>
+    <loc>https://hiaraise.com/vouchers</loc>
+    <lastmod>2025-01-08</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <!-- My Vouchers Page -->
+  <url>
+    <loc>https://hiaraise.com/my-vouchers</loc>
+    <lastmod>2025-01-08</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <!-- Voucher Terms Page -->
+  <url>
+    <loc>https://hiaraise.com/voucher-terms</loc>
+    <lastmod>2025-01-08</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+
+  <!-- DHA Voucher Page -->
+  <url>
+    <loc>https://hiaraise.com/vouchers/dha-license-dubai</loc>
+    <lastmod>2025-01-08</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+  </url>
+
+  <!-- MOHAP Voucher Page -->
+  <url>
+    <loc>https://hiaraise.com/vouchers/mohap-license-uae</loc>
+    <lastmod>2025-01-08</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+  </url>
+
+  <!-- DOH Voucher Page -->
+  <url>
+    <loc>https://hiaraise.com/vouchers/doh-license-abu-dhabi</loc>
+    <lastmod>2025-01-08</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+  </url>
+
+  <!-- QCHP Voucher Page -->
+  <url>
+    <loc>https://hiaraise.com/vouchers/qchp-license-qatar</loc>
+    <lastmod>2025-01-08</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+  </url>
+
+  <!-- SCFHS Voucher Page -->
+  <url>
+    <loc>https://hiaraise.com/vouchers/scfhs-license-saudi</loc>
+    <lastmod>2025-01-08</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+  </url>
+
+  <!-- Terms of Service Page -->
+  <url>
+    <loc>https://hiaraise.com/terms</loc>
+    <lastmod>2025-01-02</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+
+  <!-- Refund Policy Page -->
+  <url>
+    <loc>https://hiaraise.com/refund-policy</loc>
+    <lastmod>2025-01-02</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+
+  <!-- Privacy Policy Page -->
+  <url>
+    <loc>https://hiaraise.com/privacy</loc>
+    <lastmod>2025-01-02</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+
+  <!-- Cookies Policy Page -->
+  <url>
+    <loc>https://hiaraise.com/cookies</loc>
+    <lastmod>2025-01-02</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+
+  <!-- Service Policy Page -->
+  <url>
+    <loc>https://hiaraise.com/service-policy</loc>
+    <lastmod>2025-01-02</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+
+</urlset> 
