@@ -1,9 +1,10 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion'; // Import motion for animations
 import { FiMenu, FiX, FiUser, FiLogOut, FiHome, FiFileText, FiCreditCard, FiSettings, FiChevronDown, FiDollarSign, FiInfo, FiMail, FiLogIn } from 'react-icons/fi'; // Import necessary icons
 import { Brain, Sparkles, Globe } from 'lucide-react';
-import { useState, useRef, useEffect } from 'react'; // Import useState and useRef
+import { useState, useRef, useEffect, useCallback } from 'react'; // Import useState and useRef
 import { useAuthModal } from '../contexts/AuthModalContext';
+import { useAuth } from '../hooks/useAuth';
 
 const NavLink = ({ to, children, icon: Icon, onClick }) => {
   // NavLink component for consistent styling and potential future animations
@@ -25,6 +26,8 @@ export default function PublicNavbar() {
   const [showLicensesDropdown, setShowLicensesDropdown] = useState(false);
   const [showToolsDropdown, setShowToolsDropdown] = useState(false);
   const { openAuthModal } = useAuthModal();
+  const { user } = useAuth();
+  const navigate = useNavigate();
   const servicesDropdownRef = useRef(null);
   const licensesDropdownRef = useRef(null);
   const toolsDropdownRef = useRef(null);
@@ -36,6 +39,18 @@ export default function PublicNavbar() {
   const toggleMenu = () => {
     setIsOpen(!isOpen);
   };
+
+  const handleGetLicenseClick = useCallback((country) => {
+    if (user) {
+      // User is logged in, redirect to submit page
+      navigate('/case-submit');
+    } else {
+      // User is not logged in, open auth modal
+      openAuthModal('login', () => {
+        navigate('/case-submit');
+      });
+    }
+  }, [user, navigate, openAuthModal]);
 
   // Handle outside click for dropdowns and mobile menu
   useEffect(() => {
@@ -200,34 +215,42 @@ export default function PublicNavbar() {
                     <div className="px-6 py-2">
                       <div className="text-xs uppercase tracking-wider text-cyan-300 font-bold mb-2">Get License</div>
                       <div className="space-y-2">
-                        <Link
-                          to="/case-submit"
+                        <button
+                          onClick={() => {
+                            handleGetLicenseClick('Dubai');
+                            setShowServicesDropdown(false);
+                          }}
                           className="block w-full px-4 py-2 text-sm text-center bg-gradient-to-r from-blue-600 to-indigo-700 text-white rounded-lg hover:from-blue-700 hover:to-indigo-800 transition-all duration-300"
-                          onClick={() => setShowServicesDropdown(false)}
                         >
                           Get Dubai License
-                        </Link>
-                        <Link
-                          to="/case-submit"
+                        </button>
+                        <button
+                          onClick={() => {
+                            handleGetLicenseClick('Saudi Arabia');
+                            setShowServicesDropdown(false);
+                          }}
                           className="block w-full px-4 py-2 text-sm text-center bg-gradient-to-r from-green-600 to-emerald-700 text-white rounded-lg hover:from-green-700 hover:to-emerald-800 transition-all duration-300"
-                          onClick={() => setShowServicesDropdown(false)}
                         >
                           Get Saudi Arabia License
-                        </Link>
-                        <Link
-                          to="/case-submit"
+                        </button>
+                        <button
+                          onClick={() => {
+                            handleGetLicenseClick('Qatar');
+                            setShowServicesDropdown(false);
+                          }}
                           className="block w-full px-4 py-2 text-sm text-center bg-gradient-to-r from-purple-600 to-violet-700 text-white rounded-lg hover:from-purple-700 hover:to-violet-800 transition-all duration-300"
-                          onClick={() => setShowServicesDropdown(false)}
                         >
                           Get Qatar License
-                        </Link>
-                        <Link
-                          to="/case-submit"
+                        </button>
+                        <button
+                          onClick={() => {
+                            handleGetLicenseClick('UAE');
+                            setShowServicesDropdown(false);
+                          }}
                           className="block w-full px-4 py-2 text-sm text-center bg-gradient-to-r from-orange-600 to-red-700 text-white rounded-lg hover:from-orange-700 hover:to-red-800 transition-all duration-300"
-                          onClick={() => setShowServicesDropdown(false)}
                         >
                           Get UAE License
-                        </Link>
+                        </button>
                       </div>
                     </div>
                   </motion.div>
@@ -383,34 +406,42 @@ export default function PublicNavbar() {
                           {/* Get License Buttons */}
                           <div className="pt-3 space-y-2">
                             <div className="text-xs uppercase tracking-wider text-cyan-300 font-bold px-3">Get License</div>
-                            <Link
-                              to="/case-submit"
-                              onClick={toggleMenu}
+                            <button
+                              onClick={() => {
+                                handleGetLicenseClick('Dubai');
+                                toggleMenu();
+                              }}
                               className="block w-full px-3 py-2 text-sm text-center bg-gradient-to-r from-blue-600 to-indigo-700 text-white rounded-lg hover:from-blue-700 hover:to-indigo-800 transition-all duration-300"
                             >
                               Get Dubai License
-                            </Link>
-                            <Link
-                              to="/case-submit"
-                              onClick={toggleMenu}
+                            </button>
+                            <button
+                              onClick={() => {
+                                handleGetLicenseClick('Saudi Arabia');
+                                toggleMenu();
+                              }}
                               className="block w-full px-3 py-2 text-sm text-center bg-gradient-to-r from-green-600 to-emerald-700 text-white rounded-lg hover:from-green-700 hover:to-emerald-800 transition-all duration-300"
                             >
                               Get Saudi Arabia License
-                            </Link>
-                            <Link
-                              to="/case-submit"
-                              onClick={toggleMenu}
+                            </button>
+                            <button
+                              onClick={() => {
+                                handleGetLicenseClick('Qatar');
+                                toggleMenu();
+                              }}
                               className="block w-full px-3 py-2 text-sm text-center bg-gradient-to-r from-purple-600 to-violet-700 text-white rounded-lg hover:from-purple-700 hover:to-violet-800 transition-all duration-300"
                             >
                               Get Qatar License
-                            </Link>
-                            <Link
-                              to="/case-submit"
-                              onClick={toggleMenu}
+                            </button>
+                            <button
+                              onClick={() => {
+                                handleGetLicenseClick('UAE');
+                                toggleMenu();
+                              }}
                               className="block w-full px-3 py-2 text-sm text-center bg-gradient-to-r from-orange-600 to-red-700 text-white rounded-lg hover:from-orange-700 hover:to-red-800 transition-all duration-300"
                             >
                               Get UAE License
-                            </Link>
+                            </button>
                             </div>
                         </div>
                       </motion.div>

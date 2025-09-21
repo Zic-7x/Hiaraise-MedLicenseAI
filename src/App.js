@@ -52,6 +52,7 @@ import QCHPVoucher from './pages/QCHPVoucher';
 import SCFHSVoucher from './pages/SCFHSVoucher';
 import MyExams from './pages/MyExams';
 import GetExamPass from './pages/GetExamPass';
+import NotFound from './pages/NotFound';
 
 // Analytics component to track page views
 function AnalyticsTracker() {
@@ -166,7 +167,7 @@ function App() {
             </Route>
 
             {/* Default Redirect */}
-            <Route path="*" element={<Navigate to="/" />} />
+            <Route path="*" element={<NotFound />} />
           </Routes>
 
           {/* Global loading indicator */}

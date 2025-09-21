@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <link rel="icon" href="%PUBLIC_URL%/favicon-h.svg?v=2" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
     <meta name="theme-color" content="#1e40af" />
     
     <!-- SEO Meta Tags -->
@@ -49,32 +49,290 @@
     <!-- Canonical URL -->
     <link rel="canonical" href="https://hiaraise.com" />
     
-    <!-- Favicon and App Icons - Updated with New Logo (Transparent Background) -->
-    <!-- Standard favicon.ico for maximum compatibility -->
-    <link rel="icon" type="image/x-icon" href="%PUBLIC_URL%/favicon.ico" />
-    <link rel="shortcut icon" type="image/x-icon" href="%PUBLIC_URL%/favicon.ico" />
+    <!-- Comprehensive Structured Data for Enhanced Search Appearance -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Hiaraise MedLicense AI Portal",
+      "alternateName": "Hiaraise",
+      "url": "https://hiaraise.com",
+      "logo": "https://hiaraise.com/logo.png",
+      "description": "AI-powered medical licensing platform for Gulf countries including DHA, HAAD, MOHAP, MOPH, QCHP, DHP, SLE, SMLE, SCFHS, and more.",
+      "foundingDate": "2023",
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "contactType": "customer service",
+        "url": "https://hiaraise.com/contact"
+      },
+      "sameAs": [
+        "https://hiaraise.com"
+      ],
+      "serviceArea": {
+        "@type": "GeoCircle",
+        "geoMidpoint": {
+          "@type": "GeoCoordinates",
+          "latitude": "25.2048",
+          "longitude": "55.2708"
+        },
+        "geoRadius": "2000000"
+      },
+      "areaServed": [
+        "United Arab Emirates",
+        "Saudi Arabia", 
+        "Qatar",
+        "Kuwait",
+        "Bahrain",
+        "Oman"
+      ],
+      "knowsAbout": [
+        "Medical Licensing",
+        "DHA License",
+        "HAAD License", 
+        "MOHAP License",
+        "SCFHS License",
+        "QCHP License",
+        "Healthcare Credentials"
+      ],
+      "hasOfferCatalog": {
+        "@type": "OfferCatalog",
+        "name": "Medical Licensing Services",
+        "itemListElement": [
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "DHA License Dubai",
+              "url": "https://hiaraise.com/licenses/dha-license-dubai",
+              "description": "Dubai Health Authority medical licensing service"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "SCFHS License Saudi",
+              "url": "https://hiaraise.com/licenses/scfhs-license-saudi",
+              "description": "Saudi Commission for Health Specialties licensing"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "QCHP License Qatar",
+              "url": "https://hiaraise.com/licenses/qchp-license-qatar",
+              "description": "Qatar Council for Healthcare Practitioners licensing"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "MOH License UAE",
+              "url": "https://hiaraise.com/licenses/moh-license-uae",
+              "description": "Ministry of Health UAE medical licensing"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Exam Vouchers",
+              "url": "https://hiaraise.com/vouchers",
+              "description": "Medical exam vouchers for Gulf countries"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Eligibility Check",
+              "url": "https://hiaraise.com/eligibility-check",
+              "description": "Check your eligibility for medical licensing"
+            }
+          }
+        ]
+      }
+    }
+    </script>
+
+    <!-- Website Structured Data for Site Links -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "Hiaraise MedLicense AI Portal",
+      "url": "https://hiaraise.com",
+      "description": "Professional medical licensing platform for Gulf & Middle East authorities",
+      "publisher": {
+        "@type": "Organization",
+        "name": "Hiaraise AI",
+        "logo": "https://hiaraise.com/logo.png"
+      },
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": "https://hiaraise.com/search?q={search_term_string}",
+        "query-input": "required name=search_term_string"
+      },
+      "mainEntity": {
+        "@type": "ItemList",
+        "name": "Main Navigation",
+        "itemListElement": [
+          {
+            "@type": "SiteNavigationElement",
+            "name": "Home",
+            "url": "https://hiaraise.com/"
+          },
+          {
+            "@type": "SiteNavigationElement",
+            "name": "Medical Licenses",
+            "url": "https://hiaraise.com/licenses",
+            "hasPart": [
+              {
+                "@type": "SiteNavigationElement",
+                "name": "DHA License Dubai",
+                "url": "https://hiaraise.com/licenses/dha-license-dubai"
+              },
+              {
+                "@type": "SiteNavigationElement",
+                "name": "SCFHS License Saudi",
+                "url": "https://hiaraise.com/licenses/scfhs-license-saudi"
+              },
+              {
+                "@type": "SiteNavigationElement",
+                "name": "QCHP License Qatar",
+                "url": "https://hiaraise.com/licenses/qchp-license-qatar"
+              },
+              {
+                "@type": "SiteNavigationElement",
+                "name": "MOH License UAE",
+                "url": "https://hiaraise.com/licenses/moh-license-uae"
+              }
+            ]
+          },
+          {
+            "@type": "SiteNavigationElement",
+            "name": "Exam Vouchers",
+            "url": "https://hiaraise.com/vouchers",
+            "hasPart": [
+              {
+                "@type": "SiteNavigationElement",
+                "name": "DHA Voucher",
+                "url": "https://hiaraise.com/vouchers/dha-license-dubai"
+              },
+              {
+                "@type": "SiteNavigationElement",
+                "name": "MOHAP Voucher",
+                "url": "https://hiaraise.com/vouchers/mohap-license-uae"
+              },
+              {
+                "@type": "SiteNavigationElement",
+                "name": "DOH Voucher",
+                "url": "https://hiaraise.com/vouchers/doh-license-abu-dhabi"
+              },
+              {
+                "@type": "SiteNavigationElement",
+                "name": "QCHP Voucher",
+                "url": "https://hiaraise.com/vouchers/qchp-license-qatar"
+              },
+              {
+                "@type": "SiteNavigationElement",
+                "name": "SCFHS Voucher",
+                "url": "https://hiaraise.com/vouchers/scfhs-license-saudi"
+              }
+            ]
+          },
+          {
+            "@type": "SiteNavigationElement",
+            "name": "Tools",
+            "url": "https://hiaraise.com/tools"
+          },
+          {
+            "@type": "SiteNavigationElement",
+            "name": "Eligibility Check",
+            "url": "https://hiaraise.com/eligibility-check"
+          },
+          {
+            "@type": "SiteNavigationElement",
+            "name": "About",
+            "url": "https://hiaraise.com/about"
+          },
+          {
+            "@type": "SiteNavigationElement",
+            "name": "Contact",
+            "url": "https://hiaraise.com/contact"
+          }
+        ]
+      }
+    }
+    </script>
+
+    <!-- Breadcrumb Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://hiaraise.com/"
+        }
+      ]
+    }
+    </script>
     
-    <!-- PNG favicons with new logo for better Google Search support (transparent background) -->
-    <link rel="icon" type="image/png" sizes="16x16" href="%PUBLIC_URL%/favicon-16x16.png" />
-    <link rel="icon" type="image/png" sizes="32x32" href="%PUBLIC_URL%/favicon-32x32.png" />
-    <link rel="icon" type="image/png" sizes="48x48" href="%PUBLIC_URL%/favicon-48x48.png" />
-    <link rel="icon" type="image/png" sizes="64x64" href="%PUBLIC_URL%/favicon-64x64.png" />
-    <link rel="icon" type="image/png" sizes="96x96" href="%PUBLIC_URL%/favicon-96x96.png" />
-    <link rel="icon" type="image/png" sizes="128x128" href="%PUBLIC_URL%/favicon-128x128.png" />
-    <link rel="icon" type="image/png" sizes="256x256" href="%PUBLIC_URL%/favicon-256x256.png" />
-    <link rel="icon" type="image/png" sizes="192x192" href="%PUBLIC_URL%/android-chrome-192x192.png" />
-    <link rel="icon" type="image/png" sizes="512x512" href="%PUBLIC_URL%/android-chrome-512x512.png" />
+    <!-- Favicon and App Icons - Complete Coverage for All Devices & Browsers -->
+    <!-- Primary favicon for Google Search and legacy browsers -->
+    <link rel="icon" href="https://hiaraise.com/favicon.ico" />
+    <link rel="shortcut icon" href="https://hiaraise.com/favicon.ico" />
     
-    <!-- Apple Touch Icons with new logo (transparent background) -->
-    <link rel="apple-touch-icon" sizes="180x180" href="%PUBLIC_URL%/apple-touch-icon.png" />
+    <!-- Standard PNG favicons for all sizes -->
+    <link rel="icon" type="image/png" sizes="16x16" href="https://hiaraise.com/favicon-16x16.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="https://hiaraise.com/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="48x48" href="https://hiaraise.com/favicon-48x48.png" />
+    <link rel="icon" type="image/png" sizes="64x64" href="https://hiaraise.com/favicon-64x64.png" />
+    <link rel="icon" type="image/png" sizes="96x96" href="https://hiaraise.com/favicon-96x96.png" />
+    <link rel="icon" type="image/png" sizes="128x128" href="https://hiaraise.com/favicon-128x128.png" />
+    <link rel="icon" type="image/png" sizes="256x256" href="https://hiaraise.com/favicon-256x256.png" />
     
-    <!-- SVG favicon as fallback (transparent background) -->
-    <link rel="icon" type="image/svg+xml" href="%PUBLIC_URL%/favicon.svg" />
+    <!-- Android Chrome icons -->
+    <link rel="icon" type="image/png" sizes="192x192" href="https://hiaraise.com/android-chrome-192x192.png" />
+    <link rel="icon" type="image/png" sizes="512x512" href="https://hiaraise.com/android-chrome-512x512.png" />
     
-    <!-- Microsoft Tiles with new logo and transparent background -->
+    <!-- Apple Touch Icons for iOS devices -->
+    <link rel="apple-touch-icon" sizes="57x57" href="https://hiaraise.com/apple-touch-icon.png" />
+    <link rel="apple-touch-icon" sizes="60x60" href="https://hiaraise.com/apple-touch-icon.png" />
+    <link rel="apple-touch-icon" sizes="72x72" href="https://hiaraise.com/apple-touch-icon.png" />
+    <link rel="apple-touch-icon" sizes="76x76" href="https://hiaraise.com/apple-touch-icon.png" />
+    <link rel="apple-touch-icon" sizes="114x114" href="https://hiaraise.com/apple-touch-icon.png" />
+    <link rel="apple-touch-icon" sizes="120x120" href="https://hiaraise.com/apple-touch-icon.png" />
+    <link rel="apple-touch-icon" sizes="144x144" href="https://hiaraise.com/apple-touch-icon.png" />
+    <link rel="apple-touch-icon" sizes="152x152" href="https://hiaraise.com/apple-touch-icon.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="https://hiaraise.com/apple-touch-icon.png" />
+    
+    <!-- SVG favicon for modern browsers -->
+    <link rel="icon" type="image/svg+xml" href="https://hiaraise.com/favicon.svg" />
+    <link rel="icon" type="image/svg+xml" href="https://hiaraise.com/favicon-h.svg" />
+    
+    <!-- Microsoft Tiles for Windows -->
     <meta name="msapplication-TileColor" content="#1e40af" />
-    <meta name="msapplication-TileImage" content="%PUBLIC_URL%/mstile-144x144.png" />
-    <meta name="msapplication-config" content="%PUBLIC_URL%/browserconfig.xml" />
+    <meta name="msapplication-TileImage" content="https://hiaraise.com/mstile-144x144.png" />
+    <meta name="msapplication-square70x70logo" content="https://hiaraise.com/mstile-144x144.png" />
+    <meta name="msapplication-square150x150logo" content="https://hiaraise.com/mstile-144x144.png" />
+    <meta name="msapplication-wide310x150logo" content="https://hiaraise.com/mstile-144x144.png" />
+    <meta name="msapplication-square310x310logo" content="https://hiaraise.com/mstile-144x144.png" />
+    <meta name="msapplication-config" content="https://hiaraise.com/browserconfig.xml" />
+    
+    <!-- Web App Manifest icons -->
+    <link rel="manifest" href="https://hiaraise.com/manifest.json" />
+    <link rel="manifest" href="https://hiaraise.com/site.webmanifest" />
+    
+    <!-- Additional logo meta tags for search engines -->
+    <meta name="logo" content="https://hiaraise.com/logo.png" />
+    <meta name="image" content="https://hiaraise.com/logo.png" />
     
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-BFD5H9R73Z"></script>
