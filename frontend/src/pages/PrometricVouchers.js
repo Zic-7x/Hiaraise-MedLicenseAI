@@ -164,32 +164,32 @@ export default function PrometricVouchers() {
 
   const pricingExamples = [
     {
-      examType: "USMLE Step 1",
-      originalPrice: 645,
-      discountPrice: 387,
-      savings: 258,
-      savingsPercent: 40
-    },
-    {
-      examType: "USMLE Step 2 CK",
-      originalPrice: 645,
-      discountPrice: 387,
-      savings: 258,
-      savingsPercent: 40
-    },
-    {
-      examType: "USMLE Step 3",
-      originalPrice: 895,
-      discountPrice: 537,
-      savings: 358,
-      savingsPercent: 40
-    },
-    {
-      examType: "PLAB Part 1",
-      originalPrice: 250,
+      examType: "DHA License Exam",
+      originalPrice: 300,
       discountPrice: 150,
-      savings: 100,
+      savings: 150,
+      savingsPercent: 50
+    },
+    {
+      examType: "MOHAP License Exam",
+      originalPrice: 280,
+      discountPrice: 150,
+      savings: 130,
+      savingsPercent: 46
+    },
+    {
+      examType: "QCHP License Exam",
+      originalPrice: 300,
+      discountPrice: 180,
+      savings: 120,
       savingsPercent: 40
+    },
+    {
+      examType: "SCFHS License Exam",
+      originalPrice: 240,
+      discountPrice: 150,
+      savings: 90,
+      savingsPercent: 38
     }
   ];
 
@@ -257,7 +257,7 @@ export default function PrometricVouchers() {
               transition={{ duration: 0.6, delay: 0.1 }}
               className="text-5xl md:text-6xl font-bold bg-gradient-to-r from-white to-cyan-400 bg-clip-text text-transparent mb-6"
             >
-              🎫 Prometric Exam Vouchers
+              Book Your Prometric Exam for Only $150
             </motion.h1>
             
             <motion.p
@@ -266,36 +266,35 @@ export default function PrometricVouchers() {
               transition={{ duration: 0.6, delay: 0.2 }}
               className="text-xl text-gray-300 mb-8 max-w-4xl mx-auto"
             >
-              Buy Prometric vouchers at the lowest price! Save up to 50% on exam fees. 
-              Perfect for yourself, family, friends, or clients. Resell vouchers to earn money while helping others save on exam costs.
+              Required for licensing with QCHP (Qatar), SCFHS (Saudi Arabia), DHA (Dubai), HAAD (Abu Dhabi), and MOHAP (UAE). 
+              Official Prometric exam cost is $240–$300, while Hiaraise provides bookings for only $150–$200. 
+              Save money on your exam or resell to colleagues at official cost and earn profit!
             </motion.p>
 
-            {/* Money-Making Marketing Section */}
+            {/* Price Comparison Section */}
             <motion.div 
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.25 }}
-              className="bg-gradient-to-r from-yellow-500/20 to-orange-500/20 border border-yellow-400/30 rounded-xl p-6 mb-8 max-w-5xl mx-auto"
+              className="bg-gradient-to-r from-green-500/20 to-blue-500/20 border border-green-400/30 rounded-xl p-6 mb-8 max-w-5xl mx-auto"
             >
               <div className="text-center">
-                <h3 className="text-2xl font-bold text-yellow-300 mb-4">💰 Earn Money by Reselling Prometric Vouchers!</h3>
-                <div className="grid grid-cols-1 md:grid-cols-4 gap-4 text-sm">
+                <h3 className="text-2xl font-bold text-green-300 mb-4">💡 Official vs Hiaraise Pricing</h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-sm">
                   <div className="bg-white/10 rounded-lg p-4">
-                    <h4 className="font-semibold text-white mb-2">Buy Low, Sell High</h4>
-                    <p className="text-gray-300">Purchase at $240-300, resell at $400-500+ and earn $100-200+ profit per voucher</p>
+                    <h4 className="font-semibold text-white mb-2">Official Prometric Cost</h4>
+                    <p className="text-gray-300 text-lg font-bold">$240 - $300</p>
+                    <p className="text-gray-300">Direct booking through Prometric centers</p>
                   </div>
                   <div className="bg-white/10 rounded-lg p-4">
-                    <h4 className="font-semibold text-white mb-2">Help Others Save</h4>
-                    <p className="text-gray-300">Clients still save 20-30% compared to regular exam fees</p>
+                    <h4 className="font-semibold text-white mb-2">Hiaraise Booking Cost</h4>
+                    <p className="text-green-300 text-lg font-bold">$150 - $200</p>
+                    <p className="text-gray-300">Same exam, significant savings</p>
                   </div>
-                  <div className="bg-white/10 rounded-lg p-4">
-                    <h4 className="font-semibold text-white mb-2">High Demand</h4>
-                    <p className="text-gray-300">Medical exams are in high demand - easy to find buyers</p>
                   </div>
-                  <div className="bg-white/10 rounded-lg p-4">
-                    <h4 className="font-semibold text-white mb-2">Multiple Authorities</h4>
-                    <p className="text-gray-300">DHA, MOHAP, DOH, QCHP, SCFHS - all available for reselling</p>
-                  </div>
+                <div className="mt-4 bg-yellow-500/20 rounded-lg p-4">
+                  <h4 className="font-semibold text-yellow-300 mb-2">💰 Reselling Opportunity</h4>
+                  <p className="text-gray-300">Buy at $150-200, resell to colleagues at $240-300 official cost. Earn $90-150 profit per voucher while still offering value!</p>
                 </div>
               </div>
             </motion.div>

@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '../supabaseClient';
-import { FiX, FiClock, FiCalendar, FiDollarSign, FiMapPin, FiCheck, FiAlertCircle } from 'react-icons/fi';
+import { FiX, FiClock, FiCalendar, FiDollarSign, FiMapPin, FiCheck, FiAlertCircle, FiLogIn, FiUser } from 'react-icons/fi';
 import { motion } from 'framer-motion';
 import { format, parseISO } from 'date-fns';
+import { useAuthModal } from '../contexts/AuthModalContext';
 
 export default function SlotSelectionModal({ 
   open, 
@@ -13,6 +14,7 @@ export default function SlotSelectionModal({
   session = null 
 }) {
   const navigate = useNavigate();
+  const { openAuthModal } = useAuthModal();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
@@ -22,6 +24,32 @@ export default function SlotSelectionModal({
     setLoading(true);
     setError('');
 
+    try {
+      // Check if user is authenticated
+      const { data: { user } } = await supabase.auth.getUser();
+      
+      if (!user) {
+        // User is not authenticated, open auth modal with success callback
+        const onAuthSuccess = async () => {
+          // After successful authentication, proceed with checkout
+          await proceedWithCheckout();
+        };
+        
+        openAuthModal('login', onAuthSuccess);
+        setLoading(false);
+        return;
+      }
+
+      // User is authenticated, proceed with checkout
+      await proceedWithCheckout();
+    } catch (error) {
+      console.error('Error proceeding to checkout:', error);
+      setError('Failed to proceed to checkout. Please try again.');
+      setLoading(false);
+    }
+  };
+
+  const proceedWithCheckout = async () => {
     try {
       // Verify slot availability before proceeding
       let tableName, idField;
@@ -279,32 +307,67 @@ export default function SlotSelectionModal({
           >
             Cancel
           </button>
-          <button
-            onClick={handleProceedToCheckout}
-            disabled={loading}
-            className={`flex-1 px-6 py-4 rounded-2xl font-bold text-white bg-gradient-to-r from-${slotInfo.color}-500 to-${slotInfo.color}-600 hover:from-${slotInfo.color}-600 hover:to-${slotInfo.color}-700 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2 shadow-lg hover:shadow-xl transform hover:scale-105`}
-          >
-            {loading ? (
-              <>
-                <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                <span>Processing...</span>
-              </>
-            ) : (
-              <>
-                <span>Proceed to Checkout</span>
-                <FiCheck className="w-5 h-5" />
-              </>
-            )}
-          </button>
+          
+          {!session ? (
+            <div className="flex-1 flex gap-2">
+              <button
+                onClick={() => {
+                  const onAuthSuccess = async () => {
+                    await proceedWithCheckout();
+                  };
+                  openAuthModal('login', onAuthSuccess);
+                }}
+                className="flex-1 px-4 py-4 rounded-2xl font-bold text-white bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 transition-all duration-200 flex items-center justify-center space-x-2 shadow-lg hover:shadow-xl transform hover:scale-105"
+              >
+                <FiLogIn className="w-5 h-5" />
+                <span>Login & Continue</span>
+              </button>
+              <button
+                onClick={() => {
+                  const onAuthSuccess = async () => {
+                    await proceedWithCheckout();
+                  };
+                  openAuthModal('register', onAuthSuccess);
+                }}
+                className="flex-1 px-4 py-4 rounded-2xl font-bold text-white bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 transition-all duration-200 flex items-center justify-center space-x-2 shadow-lg hover:shadow-xl transform hover:scale-105"
+              >
+                <FiUser className="w-5 h-5" />
+                <span>Register & Continue</span>
+              </button>
+            </div>
+          ) : (
+            <button
+              onClick={handleProceedToCheckout}
+              disabled={loading}
+              className={`flex-1 px-6 py-4 rounded-2xl font-bold text-white bg-gradient-to-r from-${slotInfo.color}-500 to-${slotInfo.color}-600 hover:from-${slotInfo.color}-600 hover:to-${slotInfo.color}-700 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2 shadow-lg hover:shadow-xl transform hover:scale-105`}
+            >
+              {loading ? (
+                <>
+                  <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                  <span>Processing...</span>
+                </>
+              ) : (
+                <>
+                  <span>Proceed to Checkout</span>
+                  <FiCheck className="w-5 h-5" />
+                </>
+              )}
+            </button>
+          )}
         </div>
 
         {/* Additional Info */}
         <div className="mt-4 text-center">
           <p className="text-gray-400 text-xs">
-            {slotType === 'voucher' 
-              ? 'Voucher will be delivered instantly after payment'
-              : 'You will receive a confirmation email after booking'
-            }
+            {!session ? (
+              slotType === 'voucher' 
+                ? 'Login or register to continue with your voucher purchase'
+                : 'Login or register to continue with your booking'
+            ) : (
+              slotType === 'voucher' 
+                ? 'Voucher will be delivered instantly after payment'
+                : 'You will receive a confirmation email after booking'
+            )}
           </p>
         </div>
       </motion.div>

@@ -12,21 +12,21 @@ export default function VoucherSystem() {
   return (
     <>
       <Helmet>
-        <title>Buy Prometric Exam Vouchers - Lowest Price Guaranteed | Up to 50% Discount | Hiaraise MedLicense</title>
-        <meta name="description" content="Buy Prometric vouchers at lowest price! Save up to 50% on exam fees. Perfect for yourself, family, friends, or clients. Resell vouchers to earn money while helping others save on exam costs. Buy low, sell high!" />
-        <meta name="keywords" content="buy Prometric voucher, Prometric exam voucher lowest price, Prometric voucher discount, Prometric exam voucher cheap, Prometric voucher resell, earn money Prometric voucher, Prometric voucher for clients, Prometric exam booking discount, Prometric medical license voucher cheap, Prometric voucher reselling, Prometric exam voucher buy" />
+        <title>Book Prometric Exam for Only $150 - Healthcare Licensing Required | Hiaraise MedLicense</title>
+        <meta name="description" content="Book your Prometric exam for only $150-200! Official cost is $240-300. Required for QCHP, SCFHS, DHA, HAAD, MOHAP licensing. Save money or resell to colleagues at official cost and earn profit." />
+        <meta name="keywords" content="Prometric exam booking $150, healthcare licensing exam discount, QCHP SCFHS DHA HAAD MOHAP exam booking, medical license exam cheap, Prometric voucher resell profit, healthcare professional exam savings" />
         
         {/* Open Graph Meta Tags */}
-        <meta property="og:title" content="Prometric Exam Vouchers - Up to 50% Discount | Hiaraise MedLicense" />
-        <meta property="og:description" content="Get exclusive Prometric exam vouchers with up to 50% discount. Secure your exam slot with flexible scheduling and instant delivery." />
+        <meta property="og:title" content="Book Prometric Exam for Only $150 - Healthcare Licensing" />
+        <meta property="og:description" content="Official Prometric exam cost is $240-300, Hiaraise provides bookings for only $150-200. Required for QCHP, SCFHS, DHA, HAAD, MOHAP licensing." />
         <meta property="og:url" content="https://hiaraise.com/vouchers" />
         <meta property="og:type" content="website" />
         <meta property="og:image" content="https://hiaraise.com/logo.png" />
         
         {/* Twitter Card Meta Tags */}
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="Prometric Exam Vouchers - Up to 50% Discount" />
-        <meta name="twitter:description" content="Get exclusive Prometric exam vouchers with up to 50% discount. Secure your exam slot with flexible scheduling and instant delivery." />
+        <meta name="twitter:title" content="Book Prometric Exam for Only $150" />
+        <meta name="twitter:description" content="Official cost $240-300, Hiaraise cost $150-200. Required for healthcare licensing with QCHP, SCFHS, DHA, HAAD, MOHAP." />
         <meta name="twitter:image" content="https://hiaraise.com/logo.png" />
         
         {/* Additional SEO Meta Tags */}
@@ -38,8 +38,8 @@ export default function VoucherSystem() {
         <script type="application/ld+json">{JSON.stringify({
           "@context": "https://schema.org",
           "@type": "WebPage",
-          "name": "Buy Prometric Exam Vouchers - Lowest Price Guaranteed | Hiaraise",
-          "description": "Buy Prometric vouchers at lowest price! Save up to 50% on exam fees. Perfect for yourself, family, friends, or clients.",
+          "name": "Prometric Exam Booking Service",
+          "description": "Book Prometric exams for only $150-200. Official cost is $240-300. Required for healthcare licensing with QCHP, SCFHS, DHA, HAAD, MOHAP.",
           "url": "https://hiaraise.com/vouchers",
           "breadcrumb": {
             "@type": "BreadcrumbList",
@@ -62,45 +62,45 @@ export default function VoucherSystem() {
         <script type="application/ld+json">{JSON.stringify({
           "@context": "https://schema.org",
           "@type": "Product",
-          "name": "Prometric Exam Vouchers",
-          "description": "Exclusive Prometric exam vouchers with up to 50% discount. Flexible scheduling and instant delivery.",
+          "name": "Prometric Exam Booking Service",
+          "description": "Book Prometric exams for only $150-200. Official cost is $240-300. Required for healthcare licensing.",
           "brand": {
             "@type": "Brand",
             "name": "Hiaraise AI"
           },
           "offers": {
             "@type": "AggregateOffer",
-            "priceCurrency": "PKR",
-            "lowPrice": "5000",
-            "highPrice": "15000",
+            "priceCurrency": "USD",
+            "lowPrice": "150",
+            "highPrice": "200",
             "offerCount": "Multiple",
-            "description": "Up to 50% discount on Prometric exam vouchers"
+            "description": "Save $90-150 per exam compared to official pricing"
           },
-          "category": "Medical Exam Vouchers",
+          "category": "Healthcare Exam Booking",
           "availability": "InStock"
         })}</script>
         
         <script type="application/ld+json">{JSON.stringify({
           "@context": "https://schema.org",
           "@type": "Service",
-          "name": "Prometric Voucher Service",
-          "description": "Professional Prometric voucher purchasing service with exclusive discounts and flexible scheduling",
+          "name": "Prometric Exam Booking Service",
+          "description": "Professional Prometric exam booking service with exclusive discounts for healthcare professionals",
           "provider": {
             "@type": "Organization",
             "name": "Hiaraise AI"
           },
-          "serviceType": "Exam Voucher Service",
+          "serviceType": "Healthcare Exam Booking Service",
           "areaServed": {
             "@type": "Country",
-            "name": "Pakistan"
+            "name": "UAE"
           },
           "offers": {
             "@type": "Offer",
-            "description": "Up to 50% discount on Prometric exam vouchers",
+            "description": "Save $90-150 per exam compared to official pricing",
             "priceSpecification": {
               "@type": "PriceSpecification",
-              "price": "Variable",
-              "priceCurrency": "PKR"
+              "price": "150-200",
+              "priceCurrency": "USD"
             }
           }
         })}</script>
@@ -122,34 +122,33 @@ export default function VoucherSystem() {
               />
             </div>
             <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-white to-cyan-400 bg-clip-text text-transparent mb-4">
-              🎫 Prometric Exam Vouchers
+              Book Your Prometric Exam for Only $150
             </h1>
             <p className="text-xl text-gray-300 mb-8 max-w-3xl mx-auto">
-              Buy Prometric vouchers at the lowest price! Save up to 50% on exam fees. 
-              Perfect for yourself, family, friends, or clients. Resell vouchers to earn money while helping others save on exam costs.
+              Required for licensing with QCHP (Qatar), SCFHS (Saudi Arabia), DHA (Dubai), HAAD (Abu Dhabi), and MOHAP (UAE). 
+              Official Prometric exam cost is $240–$300, while Hiaraise provides bookings for only $150–$200. 
+              Save money on your exam or resell to colleagues at official cost and earn profit!
             </p>
 
-            {/* Money-Making Marketing Section */}
-            <div className="bg-gradient-to-r from-yellow-500/20 to-orange-500/20 border border-yellow-400/30 rounded-xl p-6 mb-8 max-w-5xl mx-auto">
+            {/* Price Comparison Section */}
+            <div className="bg-gradient-to-r from-green-500/20 to-blue-500/20 border border-green-400/30 rounded-xl p-6 mb-8 max-w-5xl mx-auto">
               <div className="text-center">
-                <h3 className="text-2xl font-bold text-yellow-300 mb-4">💰 Earn Money by Reselling Prometric Vouchers!</h3>
-                <div className="grid grid-cols-1 md:grid-cols-4 gap-4 text-sm">
+                <h3 className="text-2xl font-bold text-green-300 mb-4">💡 Official vs Hiaraise Pricing</h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-sm">
                   <div className="bg-white/10 rounded-lg p-4">
-                    <h4 className="font-semibold text-white mb-2">Buy Low, Sell High</h4>
-                    <p className="text-gray-300">Purchase at $240-300, resell at $400-500+ and earn $100-200+ profit per voucher</p>
+                    <h4 className="font-semibold text-white mb-2">Official Prometric Cost</h4>
+                    <p className="text-gray-300 text-lg font-bold">$240 - $300</p>
+                    <p className="text-gray-300">Direct booking through Prometric centers</p>
                   </div>
                   <div className="bg-white/10 rounded-lg p-4">
-                    <h4 className="font-semibold text-white mb-2">Help Others Save</h4>
-                    <p className="text-gray-300">Clients still save 20-30% compared to regular exam fees</p>
+                    <h4 className="font-semibold text-white mb-2">Hiaraise Booking Cost</h4>
+                    <p className="text-green-300 text-lg font-bold">$150 - $200</p>
+                    <p className="text-gray-300">Same exam, significant savings</p>
                   </div>
-                  <div className="bg-white/10 rounded-lg p-4">
-                    <h4 className="font-semibold text-white mb-2">High Demand</h4>
-                    <p className="text-gray-300">Medical exams are in high demand - easy to find buyers</p>
                   </div>
-                  <div className="bg-white/10 rounded-lg p-4">
-                    <h4 className="font-semibold text-white mb-2">Multiple Authorities</h4>
-                    <p className="text-gray-300">DHA, MOHAP, DOH, QCHP, SCFHS - all available for reselling</p>
-                  </div>
+                <div className="mt-4 bg-yellow-500/20 rounded-lg p-4">
+                  <h4 className="font-semibold text-yellow-300 mb-2">💰 Reselling Opportunity</h4>
+                  <p className="text-gray-300">Buy at $150-200, resell to colleagues at $240-300 official cost. Earn $90-150 profit per voucher while still offering value!</p>
                 </div>
               </div>
             </div>
@@ -206,30 +205,30 @@ export default function VoucherSystem() {
           </div>
         </div>
 
-        {/* Benefits Section */}
-        <div className="bg-gradient-to-r from-green-900/20 to-blue-900/20 border border-green-400/30 rounded-2xl shadow-xl p-8 mb-8">
-          <h2 className="text-2xl font-bold text-white mb-6 text-center">Why Choose Our Vouchers?</h2>
+        {/* Healthcare Professional Focus */}
+        <div className="bg-gradient-to-r from-green-500/10 to-blue-500/10 border border-green-400/30 rounded-2xl shadow-xl p-8 mb-8">
+          <h2 className="text-2xl font-bold text-white mb-6 text-center">🏥 Required for Healthcare Licensing</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-4">
               <div className="flex items-start space-x-3">
                 <FiStar className="w-6 h-6 text-yellow-400 mt-1 flex-shrink-0" />
                 <div>
-                  <h3 className="text-white font-semibold mb-1">Exclusive Discounts</h3>
-                  <p className="text-gray-300 text-sm">Access to special pricing not available through regular booking channels.</p>
+                  <h3 className="text-white font-semibold mb-1">Licensing Requirements</h3>
+                  <p className="text-gray-300 text-sm">QCHP (Qatar), SCFHS (Saudi Arabia), DHA (Dubai), HAAD (Abu Dhabi), MOHAP (UAE)</p>
                 </div>
               </div>
               <div className="flex items-start space-x-3">
                 <FiClock className="w-6 h-6 text-blue-400 mt-1 flex-shrink-0" />
                 <div>
-                  <h3 className="text-white font-semibold mb-1">Flexible Scheduling</h3>
-                  <p className="text-gray-300 text-sm">Choose from multiple time slots that fit your schedule.</p>
+                  <h3 className="text-white font-semibold mb-1">Same Official Exam</h3>
+                  <p className="text-gray-300 text-sm">Identical Prometric exam, just at significantly lower cost</p>
                 </div>
               </div>
               <div className="flex items-start space-x-3">
                 <FiShield className="w-6 h-6 text-green-400 mt-1 flex-shrink-0" />
                 <div>
                   <h3 className="text-white font-semibold mb-1">Secure & Reliable</h3>
-                  <p className="text-gray-300 text-sm">Your voucher is guaranteed and backed by our service.</p>
+                  <p className="text-gray-300 text-sm">Your exam booking is guaranteed and backed by our service</p>
                 </div>
               </div>
             </div>
@@ -237,22 +236,22 @@ export default function VoucherSystem() {
               <div className="flex items-start space-x-3">
                 <FiUsers className="w-6 h-6 text-purple-400 mt-1 flex-shrink-0" />
                 <div>
-                  <h3 className="text-white font-semibold mb-1">Limited Availability</h3>
-                  <p className="text-gray-300 text-sm">Each slot has limited capacity ensuring personalized service.</p>
+                  <h3 className="text-white font-semibold mb-1">Reselling Opportunity</h3>
+                  <p className="text-gray-300 text-sm">Buy at $150-200, resell to colleagues at $240-300 official cost</p>
                 </div>
               </div>
               <div className="flex items-start space-x-3">
                 <FiGift className="w-6 h-6 text-red-400 mt-1 flex-shrink-0" />
                 <div>
-                  <h3 className="text-white font-semibold mb-1">Instant Delivery</h3>
-                  <p className="text-gray-300 text-sm">Receive your voucher code immediately after payment.</p>
+                  <h3 className="text-white font-semibold mb-1">Instant Booking</h3>
+                  <p className="text-gray-300 text-sm">Receive your exam confirmation immediately after payment</p>
                 </div>
               </div>
               <div className="flex items-start space-x-3">
                 <FiPercent className="w-6 h-6 text-orange-400 mt-1 flex-shrink-0" />
                 <div>
                   <h3 className="text-white font-semibold mb-1">Significant Savings</h3>
-                  <p className="text-gray-300 text-sm">Save hundreds of dollars on your exam registration.</p>
+                  <p className="text-gray-300 text-sm">Save $90-150 per exam compared to official pricing</p>
                 </div>
               </div>
             </div>
