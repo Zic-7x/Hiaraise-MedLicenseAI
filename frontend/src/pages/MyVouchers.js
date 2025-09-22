@@ -5,6 +5,8 @@ import { motion } from 'framer-motion';
 import { FiGift, FiCalendar, FiClock, FiDownload, FiUser, FiDollarSign, FiShield, FiPlus, FiAlertCircle, FiCheckCircle, FiFileText } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
 import VoucherSubmissionFlow from '../components/VoucherSubmissionFlow';
+import { useAnalytics } from '../utils/useAnalytics';
+import { trackPageView, trackEvent } from '../utils/analytics';
 
 export default function MyVouchers() {
   const [vouchers, setVouchers] = useState([]);
@@ -13,6 +15,15 @@ export default function MyVouchers() {
   const [user, setUser] = useState(null);
   const [profile, setProfile] = useState(null);
   const [showSubmissionFlow, setShowSubmissionFlow] = useState(false);
+  
+  // Enable automatic page tracking
+  useAnalytics();
+
+  // Track page view when component mounts
+  useEffect(() => {
+    trackPageView('/my-vouchers');
+    trackEvent('page_viewed', 'engagement', 'my_vouchers_page');
+  }, []);
   const [selectedVoucher, setSelectedVoucher] = useState(null);
 
   const fetchData = async () => {

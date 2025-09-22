@@ -1,12 +1,23 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet';
 import { Link } from 'react-router-dom';
 import { FiGift, FiPercent, FiClock, FiUsers, FiShield, FiStar, FiCheck, FiArrowRight, FiCalendar, FiDollarSign, FiMapPin, FiPhone, FiMail, FiAlertCircle, FiInfo } from 'react-icons/fi';
 import { motion } from 'framer-motion';
 import BookVoucherButton from '../components/BookVoucherButton';
+import { useAnalytics } from '../utils/useAnalytics';
+import { trackPageView, trackEvent } from '../utils/analytics';
 
 export default function PrometricVouchers() {
   const [activeTab, setActiveTab] = useState('overview');
+  
+  // Enable automatic page tracking
+  useAnalytics();
+
+  // Track page view when component mounts
+  useEffect(() => {
+    trackPageView('/prometric-vouchers');
+    trackEvent('page_viewed', 'engagement', 'prometric_vouchers_page');
+  }, []);
 
   const tabs = [
     { id: 'overview', label: 'Overview', icon: FiInfo },

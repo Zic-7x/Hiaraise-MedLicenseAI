@@ -1,13 +1,24 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet';
 import { useAuth } from '../hooks/useAuth';
 import VoucherPurchaseForm from '../components/VoucherPurchaseForm';
 import AuthModalWrapper from '../components/AuthModalWrapper';
 import { FiGift, FiPercent, FiClock, FiUsers, FiShield, FiStar, FiArrowRight } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
+import { useAnalytics } from '../utils/useAnalytics';
+import { trackPageView, trackEvent } from '../utils/analytics';
 
 export default function VoucherSystem() {
   const { session } = useAuth();
+  
+  // Enable automatic page tracking
+  useAnalytics();
+
+  // Track page view when component mounts
+  useEffect(() => {
+    trackPageView('/vouchers');
+    trackEvent('page_viewed', 'engagement', 'voucher_system_page');
+  }, []);
 
   return (
     <>
