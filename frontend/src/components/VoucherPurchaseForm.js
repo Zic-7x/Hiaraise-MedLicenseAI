@@ -145,6 +145,15 @@ export default function VoucherPurchaseForm({ session }) {
       
       localStorage.setItem('voucher_checkout_data', JSON.stringify(checkoutData));
       
+      // Track proceed_to_payment event
+      if (typeof window !== 'undefined' && window.gtag) {
+        window.gtag('event', 'proceed_to_payment', {
+          event_category: 'voucher_purchase',
+          event_label: selectedSlot?.exam_authority || 'Unknown',
+          value: selectedSlot?.final_price || 0
+        });
+      }
+      
       // Redirect to checkout with voucher slot ID
       navigate(`/checkout?voucher_slot_id=${selectedSlot.id}`);
     } catch (error) {

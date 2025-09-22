@@ -1392,6 +1392,45 @@ export default function Checkout() {
     };
   }, []);
 
+  // Track proceed_to_payment event when checkout page loads
+  useEffect(() => {
+    if (typeof window !== 'undefined' && window.gtag) {
+      let eventCategory = '';
+      let eventLabel = '';
+      let eventValue = 0;
+      
+      if (isAppointmentBooking) {
+        eventCategory = 'appointment_booking';
+        eventLabel = 'Physical Appointment';
+        // Get fee from URL params
+        const fee = queryParams.get('fee');
+        eventValue = fee ? parseFloat(fee) : 0;
+      } else if (isVoucherPurchase) {
+        eventCategory = 'voucher_purchase';
+        eventLabel = 'Voucher Purchase';
+        // Will be updated when voucher data loads
+        eventValue = 0;
+      } else if (stepId) {
+        eventCategory = 'milestone_payment';
+        eventLabel = 'Milestone Payment';
+        // Will be updated when milestone data loads
+        eventValue = 0;
+      } else if (selectedPackage) {
+        eventCategory = 'package_purchase';
+        eventLabel = selectedPackage.country || 'Unknown';
+        eventValue = selectedPackage.price || 0;
+      }
+      
+      if (eventCategory) {
+        window.gtag('event', 'proceed_to_payment', {
+          event_category: eventCategory,
+          event_label: eventLabel,
+          value: eventValue
+        });
+      }
+    }
+  }, [isAppointmentBooking, isVoucherPurchase, stepId, selectedPackage, queryParams]);
+
   // New useEffect to fetch milestone step details if stepId is present
   useEffect(() => {
     const fetchMilestoneStep = async () => {

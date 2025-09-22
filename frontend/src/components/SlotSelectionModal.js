@@ -87,6 +87,37 @@ export default function SlotSelectionModal({
         return;
       }
 
+      // Track proceed_to_payment event
+      if (typeof window !== 'undefined' && window.gtag) {
+        let eventCategory = '';
+        let eventLabel = '';
+        let eventValue = 0;
+        
+        switch (slotType) {
+          case 'appointment':
+            eventCategory = 'appointment_booking';
+            eventLabel = 'Physical Appointment';
+            eventValue = selectedSlot.fee || 0;
+            break;
+          case 'voucher':
+            eventCategory = 'voucher_purchase';
+            eventLabel = selectedSlot?.exam_authority || 'Unknown';
+            eventValue = selectedSlot?.final_price || 0;
+            break;
+          case 'call':
+            eventCategory = 'call_booking';
+            eventLabel = 'Video Call';
+            eventValue = selectedSlot.fee || 0;
+            break;
+        }
+        
+        window.gtag('event', 'proceed_to_payment', {
+          event_category: eventCategory,
+          event_label: eventLabel,
+          value: eventValue
+        });
+      }
+
       // Navigate to checkout based on slot type
       switch (slotType) {
         case 'appointment':
